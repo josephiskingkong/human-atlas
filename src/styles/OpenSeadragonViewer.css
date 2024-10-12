@@ -1,0 +1,27 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    flex: 1;
+}
+
+.openseadragon-viewer {
+    border: 1px solid #efefef;
+    border-radius: 12px;
+    display: flex;
+    min-width: 300px;
+    min-height: 100vh;
+}
+
+.overlay {
+    background-color: rgba(255, 0, 0, 0.5);
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+}
