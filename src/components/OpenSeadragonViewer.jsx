@@ -18,7 +18,7 @@ const OpenSeadragonViewer = () => {
 
             console.log('Right click detected');
             const position = osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(e.clientX, e.clientY));
-            
+
             const info = prompt("Введите информацию для этой точки:", "Новая точка");
             if (info) {
                 addPoint(position.x, position.y, info);
@@ -39,7 +39,13 @@ const OpenSeadragonViewer = () => {
         const element = document.createElement('div');
         element.className = 'overlay';
         element.innerText = '•';
-        element.onclick = () => alert(info);
+        element.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+        });
+        element.addEventListener('click', (e) => {
+            e.stopPropagation(); 
+            alert(info);
+        });
 
         osdViewer.current.addOverlay({
             element: element,
