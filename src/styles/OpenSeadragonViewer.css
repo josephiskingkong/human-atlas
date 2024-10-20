@@ -62,6 +62,7 @@ body {
 .menu-button-open {
     left: 52%;
     background: url('/src/imgs/lines-verticla.svg') center no-repeat;
+    background-color: white;
 }
 
 .zoom-buttons {

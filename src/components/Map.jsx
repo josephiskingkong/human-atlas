@@ -48,7 +48,7 @@ export default function Map() {
         element.innerText = '•';
         element.addEventListener('pointerdown', (e) => {
             e.stopPropagation();
-            
+            alert(info);
         });
         // element.addEventListener('click', (e) => {
         //     e.stopPropagation(); 
