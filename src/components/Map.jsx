@@ -8,6 +8,7 @@ export default function Map() {
     const viewerRef = useRef(null);
     const osdViewer = useRef(null);
     const searchBar = useRef(null);
+    const menuButton = useRef(null);
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
 
     useEffect(() => {
@@ -47,11 +48,12 @@ export default function Map() {
         element.innerText = '•';
         element.addEventListener('pointerdown', (e) => {
             e.stopPropagation();
+            
         });
-        element.addEventListener('click', (e) => {
-            e.stopPropagation(); 
-            alert(info);
-        });
+        // element.addEventListener('click', (e) => {
+        //     e.stopPropagation(); 
+        //     alert("baba");
+        // });
 
         osdViewer.current.addOverlay({
             element: element,
@@ -70,15 +72,17 @@ export default function Map() {
                     <button id='zoom-out' className='zoom-buttons'>-</button>
                 </div>
 
-                <button className='menuButton' onClick={ () => { 
+                <button className='menu-button' ref={ menuButton } onClick={ () => { 
                     if (isMenuOpen) {
                         setIsMenuOpen(false);
                         searchBar.current.className = 'searchbar';
+                        menuButton.current.className = 'menu-button';
                     } else {
                         setIsMenuOpen(true);
-                        searchBar.current.className = 'searchbar searchbar-small';
+                        searchBar.current.className += ' searchbar-small';
+                        menuButton.current.className += ' menu-button-open';
                     }
-                }}>нажми</button>
+                }}></button>
 
                 { isMenuOpen && <div className="menu">
                     <Menu></Menu>
