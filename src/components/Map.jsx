@@ -50,10 +50,6 @@ export default function Map() {
             e.stopPropagation();
             alert(info);
         });
-        // element.addEventListener('click', (e) => {
-        //     e.stopPropagation(); 
-        //     alert("baba");
-        // });
 
         osdViewer.current.addOverlay({
             element: element,
@@ -65,7 +61,7 @@ export default function Map() {
     return (
         <>
             <div className='map-container'>
-                <input className='searchbar' ref={ searchBar }/>
+                { isMenuOpen && <input className='searchbar' placeholder='Поиск...' ref={ searchBar }/> }
 
                 <div className='zoombar'>
                     <button id='zoom-in' className='zoom-buttons'>+</button>
@@ -75,11 +71,9 @@ export default function Map() {
                 <button className='menu-button' ref={ menuButton } onClick={ () => { 
                     if (isMenuOpen) {
                         setIsMenuOpen(false);
-                        searchBar.current.className = 'searchbar';
                         menuButton.current.className = 'menu-button';
                     } else {
                         setIsMenuOpen(true);
-                        searchBar.current.className += ' searchbar-small';
                         menuButton.current.className += ' menu-button-open';
                     }
                 }}></button>
