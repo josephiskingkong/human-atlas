@@ -16,10 +16,28 @@ export default function Map() {
         osdViewer.current = OpenSeadragon({
             id: viewerRef.current.id,
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "tiles.dzi",
+            tileSources: "http://localhost:3001/tiles.dzi",
             zoomInButton: 'zoom-in',
             zoomOutButton: 'zoom-out'
         });
+
+        // fetch('http://localhost:3001/tiles.dzi')
+        //     .then(response => {
+        //         if (!response.ok) {
+        //             throw new Error('Ошибка сети при получении DZI-файла');
+        //         }
+        //         return response.url;
+        //     })
+        //     .then(url => {
+        //         osdViewer.current = OpenSeadragon({
+        //             id: viewerRef.current.id,
+        //             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+        //             tileSources: "http://localhost:3001/tiles.dzi",
+        //             zoomInButton: 'zoom-in',
+        //             zoomOutButton: 'zoom-out'
+        //         });
+        //     })
+        //     .catch(error => console.error('Ошибка при получении DZI-файла:', error));
 
         const handleContextMenu = (e) => {
             e.preventDefault();
