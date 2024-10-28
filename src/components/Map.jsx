@@ -10,6 +10,7 @@ export default function Map() {
     const searchBar = useRef(null);
     const menuButton = useRef(null);
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+    const [ contentPoint, setContentPoint ] = useState('');
 
     useEffect(() => {
         osdViewer.current = OpenSeadragon({
@@ -48,7 +49,9 @@ export default function Map() {
         element.innerText = '•';
         element.addEventListener('pointerdown', (e) => {
             e.stopPropagation();
-            alert(info);
+            setContentPoint(info);
+            setIsMenuOpen(true);
+            menuButton.current.className += ' menu-button-close';
         });
 
         osdViewer.current.addOverlay({
@@ -57,6 +60,11 @@ export default function Map() {
             placement: OpenSeadragon.Placement.CENTER
         });
     };
+
+    function closeButtonHandler() {
+        setIsMenuOpen(false);
+        menuButton.current.className = 'menu-button';
+    }
 
     return (
         <>
@@ -74,12 +82,12 @@ export default function Map() {
                         menuButton.current.className = 'menu-button';
                     } else {
                         setIsMenuOpen(true);
-                        menuButton.current.className += ' menu-button-open';
+                        menuButton.current.className += ' menu-button-close';
                     }
                 }}></button>
 
                 { isMenuOpen && <div className="menu">
-                    <Menu></Menu>
+                    <Menu content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>
                 </div> }
 
                 <div id="openseadragon1" ref={viewerRef} className="openseadragon-viewer">

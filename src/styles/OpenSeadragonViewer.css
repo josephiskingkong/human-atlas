@@ -66,6 +66,21 @@ body {
     background-color: white;
 }
 
+.menu-button-close {
+    display: none;
+}
+
+.close-button {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    margin-left: 34.5%;
+    background: url('/src/imgs/close-button.svg') center no-repeat;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+}
+
 .zoom-buttons {
     width: 50px;
     border: none;
@@ -75,6 +90,7 @@ body {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    cursor: pointer;
 }
 
 .zoombar {
@@ -105,7 +121,7 @@ body {
     position: absolute;
     z-index: 1;
     padding-left: 4%;
-    left: 58%;
+    left: 59%;
     top: 3vh;
     gap: 20px;
     border-radius: 50px;
@@ -118,7 +134,7 @@ body {
     background-position: 25px center;
     backdrop-filter: blur(15px);
     font-size: 16px;
-    width: 30%;
+    width: 34%;
     height: 50px;
     flex-shrink: 0;
     outline: none;
