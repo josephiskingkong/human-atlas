@@ -6,7 +6,7 @@ const PORT = process.env.PORT || 3001;
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use('/tiles_files', express.static(path.join(__dirname, 'tiles_files')));
 
 app.listen(PORT, () => {

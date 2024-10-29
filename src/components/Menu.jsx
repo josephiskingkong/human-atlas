@@ -1,8 +1,8 @@
-export default function Menu({ content, closeMenuHandler }) {
+export default function Menu({ title, content, closeMenuHandler }) {
     return (
         <>
             <button className="close-button" onClick={ closeMenuHandler }></button>
-            <h1>Menu</h1>
+            <h1>{ title }</h1>
             <span>{ content }</span>
             <br />
             <button>OK</button>

@@ -9,14 +9,20 @@ export default function Map() {
     const osdViewer = useRef(null);
     const searchBar = useRef(null);
     const menuButton = useRef(null);
+    const inputTitle = useRef(null);
+    const inputDescription = useRef(null);
     const [ isMenuOpen, setIsMenuOpen ] = useState(false);
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ contentPoint, setContentPoint ] = useState('');
+    const [ titlePoint, setTitlePoint ] = useState('');
+    const [ positionClick, setPositionClick ] = useState({});
 
+    // http://89.187.25.16/1/tiles.dzi
     useEffect(() => {
         osdViewer.current = OpenSeadragon({
             id: viewerRef.current.id,
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "http://localhost:3001/tiles.dzi",
+            tileSources: "https://humanatlas.top/1/tiles.dzi",
             zoomInButton: 'zoom-in',
             zoomOutButton: 'zoom-out'
         });
@@ -43,12 +49,11 @@ export default function Map() {
             e.preventDefault();
 
             console.log('Right click detected');
-            const position = osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(e.clientX, e.clientY));
+            setPositionClick(osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(e.clientX, e.clientY)));
             
-            const info = prompt("Введите информацию для этой точки:", "Новая точка");
-            if (info) {
-                addPoint(position.x, position.y, info);
-            }
+            menuButton.current.className += 'menu-button-close';
+            setIsMenuOpen(false);
+            setIsModalOpen(true);
         };
 
         viewerRef.current.addEventListener('contextmenu', handleContextMenu);
@@ -61,15 +66,32 @@ export default function Map() {
         };
     }, []);
 
-    const addPoint = (x, y, info) => {
+    const savePoint = (event) => {
+        let title = inputTitle.current.value;
+        let description = inputDescription.current.value;
+
+        if (title && description) {
+            addPoint(positionClick.x, positionClick.y, description, title);
+        }
+
+        menuButton.current.className = 'menu-button';
+        setIsModalOpen(false);
+    };
+
+    const addPoint = (x, y, info, title) => {
         const element = document.createElement('div');
         element.className = 'overlay';
         element.innerText = '•';
         element.addEventListener('pointerdown', (e) => {
             e.stopPropagation();
-            setContentPoint(info);
-            setIsMenuOpen(true);
-            menuButton.current.className += ' menu-button-close';
+
+            if (e.button === 0) {
+                setContentPoint(info);
+                setTitlePoint(title);
+                setIsModalOpen(false);
+                setIsMenuOpen(true);
+                menuButton.current.className += ' menu-button-close';
+            }
         });
 
         osdViewer.current.addOverlay({
@@ -81,6 +103,7 @@ export default function Map() {
 
     function closeButtonHandler() {
         setIsMenuOpen(false);
+        setIsModalOpen(false);
         menuButton.current.className = 'menu-button';
     }
 
@@ -88,6 +111,15 @@ export default function Map() {
         <>
             <div className='map-container'>
                 { isMenuOpen && <input className='searchbar' placeholder='Поиск...' ref={ searchBar }/> }
+                
+                { isModalOpen &&
+                    <div className="menu modal-point">
+                        <button className="close-button close-button-point" onClick={ closeButtonHandler }></button>
+                        <input type="text" placeholder='Название...' ref={ inputTitle } className='input-title'/>
+                        <textarea placeholder='Описание...' ref={ inputDescription } className='input-description'></textarea>
+                        <button onClick={ savePoint } className='button-save'>Сохранить</button>
+                    </div> 
+                }
 
                 <div className='zoombar'>
                     <button id='zoom-in' className='zoom-buttons'>+</button>
@@ -105,7 +137,7 @@ export default function Map() {
                 }}></button>
 
                 { isMenuOpen && <div className="menu">
-                    <Menu content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>
+                    <Menu title={ titlePoint } content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>
                 </div> }
 
                 <div id="openseadragon1" ref={viewerRef} className="openseadragon-viewer">
