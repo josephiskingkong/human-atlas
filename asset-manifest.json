@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/human-atlas/static/css/main.50786d3d.css",
-    "main.js": "/human-atlas/static/js/main.467af048.js",
+    "main.js": "/human-atlas/static/js/main.178f2a1b.js",
     "static/js/453.624ff600.chunk.js": "/human-atlas/static/js/453.624ff600.chunk.js",
     "static/media/OpenSans-Regular.ttf": "/human-atlas/static/media/OpenSans-Regular.b8cc747a58ffa52b7ff9.ttf",
     "static/media/search-icon-focus.svg": "/human-atlas/static/media/search-icon-focus.b704933c3258fd30cb39.svg",
@@ -10,11 +10,11 @@
     "index.html": "/human-atlas/index.html",
     "static/media/close-button.svg": "/human-atlas/static/media/close-button.4344e2fbf60d1bdb31f3.svg",
     "main.50786d3d.css.map": "/human-atlas/static/css/main.50786d3d.css.map",
-    "main.467af048.js.map": "/human-atlas/static/js/main.467af048.js.map",
+    "main.178f2a1b.js.map": "/human-atlas/static/js/main.178f2a1b.js.map",
     "453.624ff600.chunk.js.map": "/human-atlas/static/js/453.624ff600.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.50786d3d.css",
-    "static/js/main.467af048.js"
+    "static/js/main.178f2a1b.js"
   ]
 }
