@@ -47,10 +47,14 @@ export default function Map() {
 
         const handleContextMenu = (e) => {
             e.preventDefault();
-
-            console.log('Right click detected');
-            setPositionClick(osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(e.clientX, e.clientY)));
-            
+        
+            const rect = viewerRef.current.getBoundingClientRect();
+        
+            const relativeX = e.clientX - rect.left;
+            const relativeY = e.clientY - rect.top;
+        
+            setPositionClick(osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(relativeX, relativeY)));
+        
             menuButton.current.className += 'menu-button-close';
             setIsMenuOpen(false);
             setIsModalOpen(true);
