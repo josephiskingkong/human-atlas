@@ -55,7 +55,7 @@ export default function Map() {
         
             setPositionClick(osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(relativeX, relativeY)));
         
-            menuButton.current.className += 'menu-button-close';
+            // menuButton.current.className += 'menu-button-close';
             setIsMenuOpen(false);
             setIsModalOpen(true);
         };
@@ -78,7 +78,7 @@ export default function Map() {
             addPoint(positionClick.x, positionClick.y, description, title);
         }
 
-        menuButton.current.className = 'menu-button';
+        // menuButton.current.className = 'menu-button';
         setIsModalOpen(false);
     };
 
@@ -94,7 +94,7 @@ export default function Map() {
                 setTitlePoint(title);
                 setIsModalOpen(false);
                 setIsMenuOpen(true);
-                menuButton.current.className += ' menu-button-close';
+                // menuButton.current.className += ' menu-button-close';
             }
         });
 
@@ -108,7 +108,7 @@ export default function Map() {
     function closeButtonHandler() {
         setIsMenuOpen(false);
         setIsModalOpen(false);
-        menuButton.current.className = 'menu-button';
+        // menuButton.current.className = 'menu-button';
     }
 
     return (
@@ -130,15 +130,15 @@ export default function Map() {
                     <button id='zoom-out' className='zoom-buttons'>-</button>
                 </div>
 
-                <button className='menu-button' ref={ menuButton } onClick={ () => { 
-                    if (isMenuOpen) {
-                        setIsMenuOpen(false);
-                        menuButton.current.className = 'menu-button';
-                    } else {
-                        setIsMenuOpen(true);
-                        menuButton.current.className += ' menu-button-close';
-                    }
-                }}></button>
+                { !isMenuOpen && !isModalOpen &&
+                    <button className='menu-button' ref={ menuButton } onClick={ () => { 
+                        if (isMenuOpen) {
+                            setIsMenuOpen(false);
+                        } else {
+                            setIsMenuOpen(true);
+                        }
+                    }}></button>
+                }
 
                 { isMenuOpen && <div className="menu">
                     <Menu title={ titlePoint } content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>

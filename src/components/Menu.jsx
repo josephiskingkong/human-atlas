@@ -5,7 +5,6 @@ export default function Menu({ title, content, closeMenuHandler }) {
             <h1>{ title }</h1>
             <span>{ content }</span>
             <br />
-            <button>OK</button>
         </>
     );
 }
