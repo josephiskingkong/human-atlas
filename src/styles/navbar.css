@@ -1,0 +1,25 @@
+.navbar {
+    display: flex;
+    width: 100%;
+    height: 10vh;
+    justify-content: space-around;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
+    align-items: center;
+    z-index: 1;
+    position: relative;
+}
+
+.navbar svg {
+    height: 30px;
+    width: 30px;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 55px;
+}
+
+.navbar li {
+    color: #4670B4;
+}
