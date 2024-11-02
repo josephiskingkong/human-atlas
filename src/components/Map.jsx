@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
 import Menu from './Menu'
-import '../styles/OpenSeadragonViewer.css';
+import '../styles/map.css';
 import '../styles/fonts/fonts.css';
 
 export default function Map() {
@@ -127,7 +127,7 @@ export default function Map() {
 
                 <div className='zoombar'>
                     <button id='zoom-in' className='zoom-buttons'>+</button>
-                    <button id='zoom-out' className='zoom-buttons'>-</button>
+                    <button id='zoom-out' className='zoom-buttons'>–</button>
                 </div>
 
                 { !isMenuOpen && !isModalOpen &&
