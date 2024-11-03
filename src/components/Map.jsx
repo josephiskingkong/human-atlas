@@ -1,10 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
 import Menu from './Menu'
 import '../styles/map.css';
 import '../styles/fonts/fonts.css';
 import CreateMenu from './CreateMenu';
 import ZoomBar from './ZoomBar';
+import ToolBar from './ToolBar';
+
+const OpenSeadragonContext = createContext();
 
 export default function Map() {
     const viewerRef = useRef(null);
@@ -14,7 +17,9 @@ export default function Map() {
     const [ isModalOpen, setIsModalOpen ] = useState(false);
     const [ contentPoint, setContentPoint ] = useState('');
     const [ titlePoint, setTitlePoint ] = useState('');
-    const [ positionClick, setPositionClick ] = useState({});
+    const [ positionClick, setPositionClick ] = useState(null);
+    const [ currentPoint, setCurrentPoint ] = useState(null);
+    const [ toolState, setToolState ] = useState('arrow');
 
     // http://89.187.25.16/1/tiles.dzi
     useEffect(() => {
@@ -26,30 +31,41 @@ export default function Map() {
             zoomOutButton: 'zoom-out'
         });
 
-        const handleContextMenu = (e) => {
-            e.preventDefault();
-        
-            const rect = viewerRef.current.getBoundingClientRect();
-        
-            const relativeX = e.clientX - rect.left;
-            const relativeY = e.clientY - rect.top;
-        
-            setPositionClick(osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(relativeX, relativeY)));
-        
-            // menuButton.current.className += 'menu-button-close';
-            setIsMenuOpen(false);
-            setIsModalOpen(true);
-        };
-
-        viewerRef.current.addEventListener('contextmenu', handleContextMenu);
-
         return () => {
             if (osdViewer.current) {
                 osdViewer.current.destroy();
             }
-            viewerRef.current.removeEventListener('contextmenu', handleContextMenu);
+            viewerRef.current.removeEventListener('click', handleContextMenu);
         };
     }, []);
+
+    useEffect(() => {
+        osdViewer.current.addHandler('canvas-click', handleContextMenu);
+
+        return () => {
+            osdViewer.current.removeHandler('canvas-click', handleContextMenu);
+        }
+    }, [toolState]);
+
+    function handleContextMenu(e) {
+        if (toolState == 'add') {
+            e.preventDefaultAction = true;
+
+            // const rect = viewerRef.current.getBoundingClientRect();
+            
+            console.log(toolState);
+
+            // const relativeX = e.clientX - rect.left;
+            // const relativeY = e.clientY - rect.top;
+        
+            setPositionClick(osdViewer.current.viewport.pointFromPixel(e.position));
+        
+            setIsMenuOpen(false);
+            setIsModalOpen(true);
+
+            setToolState('arrow');
+        }
+    };
 
     const addPoint = (x, y, info, title) => {
         const element = document.createElement('div');
@@ -63,9 +79,10 @@ export default function Map() {
                 setTitlePoint(title);
                 setIsModalOpen(false);
                 setIsMenuOpen(true);
-                // menuButton.current.className += ' menu-button-close';
             }
         });
+
+        setCurrentPoint(element);
 
         osdViewer.current.addOverlay({
             element: element,
@@ -81,9 +98,10 @@ export default function Map() {
     }
 
     return (
-        <>
+        <OpenSeadragonContext.Provider value={ osdViewer }>
             <div className='map-container'>
                 <ZoomBar></ZoomBar>
+                <ToolBar setToolState={ setToolState }></ToolBar>
 
                 { !isMenuOpen && !isModalOpen &&
                     <button className='menu-button' ref={ menuButton } onClick={ () => { 
@@ -96,16 +114,27 @@ export default function Map() {
                 }
 
                 { isMenuOpen && 
-                    <Menu title={ titlePoint } content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>
+                    <Menu title={ titlePoint } 
+                        content={ contentPoint } 
+                        closeMenuHandler={ closeButtonHandler }>
+                    </Menu>
                 }
 
                 { isModalOpen &&
-                    <CreateMenu closeMenuHandler={ closeButtonHandler } addPoint={ addPoint } positionClick={ positionClick } setIsModalOpen={ setIsModalOpen }></CreateMenu>
+                    <CreateMenu 
+                        closeMenuHandler={ closeButtonHandler } 
+                        addPoint={ addPoint } 
+                        positionClick={ positionClick } 
+                        setIsModalOpen={ setIsModalOpen }
+                        currentElement={ currentPoint }
+                        osdViewer={ osdViewer }
+                        viewerRef={ viewerRef }>
+                    </CreateMenu>
                 }
 
-                <div id="openseadragon1" ref={viewerRef} className="openseadragon-viewer">
+                <div id="openseadragon1" ref={ viewerRef } className="openseadragon-viewer">
                 </div>
             </div>
-        </>
+        </OpenSeadragonContext.Provider>
     );
 }

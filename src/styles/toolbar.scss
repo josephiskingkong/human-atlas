@@ -1,0 +1,63 @@
+@import 'vars';
+
+.toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: 1;
+    top: 3vh;
+    left: 10%;
+    gap: 37px;
+    background-color: white;
+    border-radius: 44px;
+    box-shadow: $box-shadow-menu;
+    width: 370px;
+    height: 90px;
+    flex-shrink: 0;
+
+    .arrow-button {
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+        border-style: none;
+        box-shadow: $box-shadow-menu;
+        cursor: pointer;
+        background: url('/src/imgs/arrow-tool.svg') center no-repeat;
+    }
+
+    .add-button {
+        height: 55px;
+        width: 55px;
+        font-size: 36px;
+        font-weight: 700;
+        background: linear-gradient(237deg, #518BE9 10.83%, #4670B4 89.17%);
+        border-radius: 50%;
+        border-style: none;
+        box-shadow: $box-shadow-menu;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        cursor: pointer;
+    }
+
+    .pen-button {
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+        border-style: none;
+        box-shadow: $box-shadow-menu;
+        cursor: pointer;
+        background: url('/src/imgs/pen-tool.svg') center no-repeat;
+    }
+
+    .del-button {
+        height: 55px;
+        width: 55px;
+        border-radius: 50%;
+        border-style: none;
+        box-shadow: $box-shadow-menu;
+        cursor: pointer;
+        background: url('/src/imgs/del-tool.svg') center no-repeat;
+    }
+}

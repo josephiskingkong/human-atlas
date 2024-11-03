@@ -54,7 +54,7 @@ body {
     .menu-content {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
 
         .style-text {
             white-space: pre-wrap;
@@ -88,9 +88,6 @@ body {
     background-color: white;
     border: none;
     cursor: pointer;
-
-    &.close-button-point {
-    }
 }
 
 .menu-button {
@@ -172,6 +169,7 @@ body {
     top: 3vh;
     height: 85vh;
     max-height: 85vh;
+    overflow-y: hidden;
 }
 
 .input-title {

@@ -1,6 +1,15 @@
 import React, { useRef } from 'react';
+import OpenSeadragon from 'openseadragon';
 
-export default function CreateMenu({ closeMenuHandler, addPoint, positionClick, setIsModalOpen }) {
+export default function CreateMenu({ 
+    closeMenuHandler, 
+    addPoint, 
+    positionClick, 
+    setIsModalOpen, 
+    currentElement, 
+    osdViewer, 
+    viewerRef
+}) {
     const inputTitle = useRef(null);
     const inputDescription = useRef(null);
 
@@ -11,8 +20,25 @@ export default function CreateMenu({ closeMenuHandler, addPoint, positionClick, 
         if (title && description) {
             addPoint(positionClick.x, positionClick.y, description, title);
         }
+    };
 
+    const changePosition = () => {
         setIsModalOpen(false);
+
+        viewerRef.current.addEventListener('click', (e) => {
+            e.preventDefaultAction = true;
+            
+            const rect = viewerRef.current.getBoundingClientRect();
+        
+            const relativeX = e.clientX - rect.left;
+            const relativeY = e.clientY - rect.top;
+        
+            const points = osdViewer.current.viewport.pointFromPixel(new OpenSeadragon.Point(relativeX, relativeY));
+
+            setIsModalOpen(true);
+            
+            osdViewer.current.updateOverlay(currentElement, new OpenSeadragon.Point(points.x, points.y));
+        }, { once: true });
     };
 
     return (
@@ -20,10 +46,13 @@ export default function CreateMenu({ closeMenuHandler, addPoint, positionClick, 
             <div className='menu-content'>
                 <div className='title-container'>
                     <input type="text" placeholder='Название...' ref={ inputTitle } className='input-title'/>
-                    <button className="close-button close-button-point" onClick={ closeMenuHandler }></button>
+                    <button className="close-button" onClick={ closeMenuHandler }></button>
                 </div>
                 <textarea placeholder='Описание...' ref={ inputDescription } className='input-description'></textarea>
-                <button onClick={ savePoint } className='button-save'>Сохранить</button>
+                <div className='buttons-container'>
+                    <button onClick={ changePosition }>ED</button>
+                    <button onClick={ savePoint } className='button-save'>Сохранить</button>
+                </div>
             </div>
         </div> 
     );
