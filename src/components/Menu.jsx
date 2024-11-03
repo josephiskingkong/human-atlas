@@ -5,10 +5,14 @@ export default function Menu({ title, content, closeMenuHandler }) {
         <>
             <SearchBar></SearchBar>
             <div className="menu">
-                <button className="close-button" onClick={ closeMenuHandler }></button>
-                <h1>{ title }</h1>
-                <span>{ content }</span>
-                <br />
+                <div className="menu-content">
+                    <div className="title-container">
+                        <h1 className="style-text">{ title }</h1>
+                        <button className="close-button" onClick={ closeMenuHandler }></button>
+                    </div>
+                    <pre className="style-text">{ content }</pre>
+                    <br />
+                </div>
             </div>
         </>
     );

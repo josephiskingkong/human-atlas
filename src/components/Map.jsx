@@ -83,10 +83,6 @@ export default function Map() {
     return (
         <>
             <div className='map-container'>
-                { isModalOpen &&
-                    <CreateMenu closeMenuHandler={ closeButtonHandler } addPoint={ addPoint } positionClick={ positionClick } setIsModalOpen={ setIsModalOpen }></CreateMenu>
-                }
-
                 <ZoomBar></ZoomBar>
 
                 { !isMenuOpen && !isModalOpen &&
@@ -101,6 +97,10 @@ export default function Map() {
 
                 { isMenuOpen && 
                     <Menu title={ titlePoint } content={ contentPoint } closeMenuHandler={ closeButtonHandler }></Menu>
+                }
+
+                { isModalOpen &&
+                    <CreateMenu closeMenuHandler={ closeButtonHandler } addPoint={ addPoint } positionClick={ positionClick } setIsModalOpen={ setIsModalOpen }></CreateMenu>
                 }
 
                 <div id="openseadragon1" ref={viewerRef} className="openseadragon-viewer">
