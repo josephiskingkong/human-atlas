@@ -1,0 +1,8 @@
+.point {
+  height: 84px;
+  width: 58px;
+  background: url("/src/imgs/point.svg") center no-repeat;
+  padding: 5px;
+  cursor: pointer;
+  position: absolute;
+}/*# sourceMappingURL=point.css.map */

@@ -1,24 +1,53 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import OpenSeadragon from 'openseadragon';
+import { addPointToBack } from '../api/add-point';
+import { editPoint } from '../api/edit-point';
 
 export default function CreateMenu({ 
-    closeMenuHandler, 
-    addPoint, 
+    closeMenuHandler,
     positionClick, 
     setIsModalOpen, 
     currentElement, 
     osdViewer, 
-    viewerRef
+    viewerRef,
+    toolState,
+    title,
+    content,
+    id
 }) {
     const inputTitle = useRef(null);
     const inputDescription = useRef(null);
+    const saveButton = useRef(null);
+
+    useEffect(() => {
+        console.log("IMAAAA");
+        console.log(title + " " + content + " " + id);  
+    }, [])
+
+    useEffect(() => {
+        if (saveButton.current) {
+            saveButton.current.addEventListener('click', savePoint);
+            console.log("ADD LISTENEEEER!!!", toolState);
+        }
+    
+        return () => {
+            if (saveButton.current) {
+                saveButton.current.removeEventListener('click', savePoint);
+                console.log("DELETE LISTENEEEEER!!!");
+            }
+        };
+    }, [toolState]);
 
     const savePoint = () => {
         let title = inputTitle.current.value;
         let description = inputDescription.current.value;
+        
+        console.log("SAVE: ", toolState);
+
+        console.log("SAVE ID: ", id);
 
         if (title && description) {
-            addPoint(positionClick.x, positionClick.y, description, title);
+            editPoint({ id: id, name: title, description: description });
         }
     };
 
@@ -45,13 +74,13 @@ export default function CreateMenu({
         <div className="menu modal-point">
             <div className='menu-content'>
                 <div className='title-container'>
-                    <input type="text" placeholder='Название...' ref={ inputTitle } className='input-title'/>
+                    <input type="text" placeholder={ 'Название...' } defaultValue={ title } ref={ inputTitle } className='input-title'/>
                     <button className="close-button" onClick={ closeMenuHandler }></button>
                 </div>
-                <textarea placeholder='Описание...' ref={ inputDescription } className='input-description'></textarea>
+                <textarea placeholder={ 'Описание...' } defaultValue={ content } ref={ inputDescription } className='input-description'></textarea>
                 <div className='buttons-container'>
                     <button onClick={ changePosition }>ED</button>
-                    <button onClick={ savePoint } className='button-save'>Сохранить</button>
+                    <button ref={ saveButton } className='button-save'>Сохранить</button>
                 </div>
             </div>
         </div> 

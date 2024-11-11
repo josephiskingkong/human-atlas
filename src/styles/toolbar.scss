@@ -8,17 +8,17 @@
     z-index: 1;
     top: 3vh;
     left: 10%;
-    gap: 37px;
+    gap: 30px;
     background-color: white;
     border-radius: 44px;
     box-shadow: $box-shadow-menu;
-    width: 370px;
-    height: 90px;
+    width: 280px;
+    height: 60px;
     flex-shrink: 0;
 
     .arrow-button {
-        height: 55px;
-        width: 55px;
+        height: 40px;
+        width: 40px;
         border-radius: 50%;
         border-style: none;
         box-shadow: $box-shadow-menu;
@@ -27,23 +27,18 @@
     }
 
     .add-button {
-        height: 55px;
-        width: 55px;
-        font-size: 36px;
-        font-weight: 700;
-        background: linear-gradient(237deg, #518BE9 10.83%, #4670B4 89.17%);
+        height: 40px;
+        width: 40px;
         border-radius: 50%;
         border-style: none;
         box-shadow: $box-shadow-menu;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         cursor: pointer;
+        background: url('/src/imgs/add-tool.svg') center no-repeat;
     }
 
     .pen-button {
-        height: 55px;
-        width: 55px;
+        height: 40px;
+        width: 40px;
         border-radius: 50%;
         border-style: none;
         box-shadow: $box-shadow-menu;
@@ -52,8 +47,8 @@
     }
 
     .del-button {
-        height: 55px;
-        width: 55px;
+        height: 40px;
+        width: 40px;
         border-radius: 50%;
         border-style: none;
         box-shadow: $box-shadow-menu;

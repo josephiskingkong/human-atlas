@@ -6,17 +6,17 @@
   z-index: 1;
   top: 3vh;
   left: 10%;
-  gap: 37px;
+  gap: 30px;
   background-color: white;
   border-radius: 44px;
   box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
-  width: 370px;
-  height: 90px;
+  width: 280px;
+  height: 60px;
   flex-shrink: 0;
 }
 .toolbar .arrow-button {
-  height: 55px;
-  width: 55px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   border-style: none;
   box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
@@ -24,22 +24,17 @@
   background: url("/src/imgs/arrow-tool.svg") center no-repeat;
 }
 .toolbar .add-button {
-  height: 55px;
-  width: 55px;
-  font-size: 36px;
-  font-weight: 700;
-  background: linear-gradient(237deg, #518BE9 10.83%, #4670B4 89.17%);
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   border-style: none;
   box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   cursor: pointer;
+  background: url("/src/imgs/add-tool.svg") center no-repeat;
 }
 .toolbar .pen-button {
-  height: 55px;
-  width: 55px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   border-style: none;
   box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
@@ -47,8 +42,8 @@
   background: url("/src/imgs/pen-tool.svg") center no-repeat;
 }
 .toolbar .del-button {
-  height: 55px;
-  width: 55px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
   border-style: none;
   box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
