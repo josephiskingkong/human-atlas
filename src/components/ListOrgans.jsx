@@ -3,6 +3,7 @@ import { getOrgansByCategoryId } from "../api/get-organ";
 import Organ from "./Organ";
 import '../styles/llistOrgans/listOrgans.css';
 import Navbar from "./Navbar";
+import FormFiles from "./FormFiles";
 
 export default function ListOrgans() {
     const [ listOrgans, setListOrgans ] = useState([]);
@@ -22,13 +23,16 @@ export default function ListOrgans() {
     return (
         <>
             <Navbar></Navbar>
+            <div className="page-organs">
+                <FormFiles></FormFiles>
 
-            <div className="listOrgans">
-                { listOrgans != 0 &&
-                    listOrgans.map((organ) => {
-                        return (<Organ id={organ.id} name={organ.name} key={organ.id}></Organ>);
-                    })
-                }
+                <div className="listOrgans">
+                    { listOrgans != 0 &&
+                        listOrgans.map((organ) => {
+                            return (<Organ id={organ.id} name={organ.name} key={organ.id}></Organ>);
+                        })
+                    }
+                </div>
             </div>
         </>
     );
