@@ -9,10 +9,12 @@ import ToolBar from './ToolBar';
 import { getPointById, getPointsByOrganId } from '../api/get-points';
 import { deletePointById } from '../api/del-point';
 import { addPointToBack } from '../api/add-point';
+import "../OpenSeadragonScalebar/openseadragon-scalebar";
+import { getOrganByOrganId } from '../api/get-organ';
 
 const OpenSeadragonContext = createContext();
 
-export default function Map() {
+export default function Map({ organId }) {
     const viewerRef = useRef(null);
     const osdViewer = useRef(null);
     const menuButton = useRef(null);
@@ -27,18 +29,43 @@ export default function Map() {
     const [ points, setPoints ] = useState([]);
 
     useEffect(() => {
-        osdViewer.current = OpenSeadragon({
-            id: viewerRef.current.id,
-            prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "https://humanatlas.top/tiles/1/tiles.dzi",
-            zoomInButton: 'zoom-in',
-            zoomOutButton: 'zoom-out'
-        });
-
-        // loadPointsBack();
-
-        console.log("EFFECTS", toolState);
-        console.log("POINTS", points);
+        const initializeViewer = async () => {
+            osdViewer.current = OpenSeadragon({
+                id: viewerRef.current.id,
+                prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
+                tileSources: `https://tiles.humanatlas.top/${organId}/${organId}.dzi`,
+                zoomInButton: 'zoom-in',
+                zoomOutButton: 'zoom-out'
+            });
+    
+            // Ожидаем возвращение mpp_x
+            const mpp_x = await getMpp();
+    
+            const pixelsPerMeter = 1 / (mpp_x * 1e-6);
+            console.log(pixelsPerMeter);
+    
+            osdViewer.current.scalebar({
+                type: OpenSeadragon.ScalebarType.MICROSCOPY,
+                pixelsPerMeter: pixelsPerMeter,
+                color: "#4670B4",
+                fontColor: "#4670B4",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                barThickness: 1,
+                location: OpenSeadragon.ScalebarLocation.BOTTOM_LEFT,
+                xOffset: 10,
+                yOffset: 10,
+                minWidth: "200px",
+                maxWidth: "100px",
+                stayInsideImage: false
+            });
+    
+            console.log("EFFECTS", toolState);
+            console.log("POINTS", points);
+        };
+    
+        initializeViewer();
+    
+        // return cleanup function
         // return () => {
         //     if (osdViewer.current) {
         //         osdViewer.current.destroy();
@@ -47,8 +74,17 @@ export default function Map() {
         // };
     }, []);
 
+    async function getMpp() {
+        console.log("MPP");
+        const organ = await getOrganByOrganId(organId);
+
+        console.log(organ);
+
+        return Number(organ.mpp_x);
+    }
+
     async function loadPointsBack() {
-        let res = await getPointsByOrganId(1);
+        let res = await getPointsByOrganId(organId);
 
         res.forEach((item) => addPoint(item.id, item.x, item.y, item.description, item.name));
     }
@@ -232,8 +268,7 @@ export default function Map() {
 
                 { isModalOpen &&
                     <CreateMenu 
-                        closeMenuHandler={ closeButtonHandler } 
-                        positionClick={ positionClick } 
+                        closeMenuHandler={ closeButtonHandler }
                         setIsModalOpen={ setIsModalOpen }
                         currentElement={ currentPoint }
                         osdViewer={ osdViewer }

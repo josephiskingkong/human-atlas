@@ -1,6 +1,8 @@
+import endpoint from "./endpoints";
+
 async function getPointsByOrganId(organid) {
     try {
-        const response = await fetch(`https://humanatlas.top/v1/points/get-by-organid/${organid}`);
+        const response = await fetch(`https://${endpoint}/v1/points/get-by-organid/${organid}`);
 
         if (!response.ok) {
             const errorData = await response.json();
@@ -17,7 +19,7 @@ async function getPointsByOrganId(organid) {
 
 async function getPointById(id) {
     try {
-        const response = await fetch(`https://humanatlas.top/v1/points/get/${id}`);
+        const response = await fetch(`https://${endpoint}/v1/points/get/${id}`);
 
         if (!response.ok) {
             const errorData = await response.json();

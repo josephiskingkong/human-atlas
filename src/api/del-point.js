@@ -1,6 +1,9 @@
+import endpoint from "./endpoints";
+
+
 async function deletePointById(id) {
     try {
-        const response = await fetch('https://humanatlas.top/v1/points/delete', {
+        const response = await fetch(`https://${endpoint}/v1/points/delete`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

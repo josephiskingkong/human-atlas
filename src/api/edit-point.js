@@ -1,6 +1,8 @@
+import endpoint from "./endpoints";
+
 async function editPoint(point) {
     try {
-        const response = await fetch('https://humanatlas.top/v1/points/edit', {
+        const response = await fetch(`https://${endpoint}/v1/points/edit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
