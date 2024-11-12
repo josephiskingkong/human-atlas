@@ -222,7 +222,7 @@ export default function Map({ organId }) {
             
             const position = osdViewer.current.viewport.pointFromPixel(e.position);
 
-            const res = await addPointToBack(position.x, position.y, 1, '', '');
+            const res = await addPointToBack(position.x, position.y, organId, '', '');
             console.log("POINT ID", res.point_id);
             setIdPoint(res.point_id);
             addPoint(res.point_id, position.x, position.y, '', '');
