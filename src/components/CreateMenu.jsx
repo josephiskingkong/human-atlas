@@ -5,7 +5,6 @@ import { editPoint } from '../api/edit-point';
 
 export default function CreateMenu({ 
     closeMenuHandler,
-    positionClick, 
     setIsModalOpen, 
     currentElement, 
     osdViewer, 
