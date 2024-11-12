@@ -1,20 +1,24 @@
 {
   "files": {
-    "main.css": "/human-atlas/static/css/main.50786d3d.css",
-    "main.js": "/human-atlas/static/js/main.178f2a1b.js",
+    "main.css": "/human-atlas/static/css/main.e4424016.css",
+    "main.js": "/human-atlas/static/js/main.ef1cd227.js",
     "static/js/453.624ff600.chunk.js": "/human-atlas/static/js/453.624ff600.chunk.js",
     "static/media/OpenSans-Regular.ttf": "/human-atlas/static/media/OpenSans-Regular.b8cc747a58ffa52b7ff9.ttf",
     "static/media/search-icon-focus.svg": "/human-atlas/static/media/search-icon-focus.b704933c3258fd30cb39.svg",
     "static/media/search-icon.svg": "/human-atlas/static/media/search-icon.58ae273b920a86bc6a80.svg",
-    "static/media/lines-verticla.svg": "/human-atlas/static/media/lines-verticla.e8b629448a6ec42cc57e.svg",
+    "static/media/pen-tool.svg": "/human-atlas/static/media/pen-tool.c94752cb38d02b037554.svg",
+    "static/media/point.svg": "/human-atlas/static/media/point.12eb80b4e24e7e075ec3.svg",
+    "static/media/arrow-tool.svg": "/human-atlas/static/media/arrow-tool.72ad4c9aae963ad2424e.svg",
     "index.html": "/human-atlas/index.html",
+    "static/media/del-tool.svg": "/human-atlas/static/media/del-tool.42fd45116f4e344c86ad.svg",
     "static/media/close-button.svg": "/human-atlas/static/media/close-button.4344e2fbf60d1bdb31f3.svg",
-    "main.50786d3d.css.map": "/human-atlas/static/css/main.50786d3d.css.map",
-    "main.178f2a1b.js.map": "/human-atlas/static/js/main.178f2a1b.js.map",
+    "static/media/add-tool.svg": "/human-atlas/static/media/add-tool.24a38a0dd3a3e11a3c14.svg",
+    "main.e4424016.css.map": "/human-atlas/static/css/main.e4424016.css.map",
+    "main.ef1cd227.js.map": "/human-atlas/static/js/main.ef1cd227.js.map",
     "453.624ff600.chunk.js.map": "/human-atlas/static/js/453.624ff600.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.50786d3d.css",
-    "static/js/main.178f2a1b.js"
+    "static/css/main.e4424016.css",
+    "static/js/main.ef1cd227.js"
   ]
 }
