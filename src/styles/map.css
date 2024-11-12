@@ -1,7 +1,7 @@
 * {
   margin: 0;
   padding: 0;
-  font-family: "OpenSans";
+  font-family: "NunitoSans";
 }
 
 body {
@@ -13,7 +13,7 @@ body {
   width: 100%;
   min-width: 300px;
   min-height: 300px;
-  height: 90vh;
+  height: 100vh;
 }
 
 .openseadragon-container :focus {
@@ -32,56 +32,6 @@ body {
 .map-container {
   display: flex;
   position: relative;
-}
-
-.menu {
-  background-color: white;
-  position: absolute;
-  z-index: 1;
-  top: 12vh;
-  left: 58%;
-  width: 40%;
-  height: 76vh;
-  max-height: 76vh;
-  overflow-y: auto;
-  border-radius: 20px;
-  padding: 2%;
-  box-sizing: border-box;
-  box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
-}
-.menu .menu-content {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.menu .menu-content .style-text {
-  white-space: pre-wrap;
-  overflow: visible;
-  overflow-wrap: break-word;
-  -webkit-hyphens: auto;
-          hyphens: auto;
-}
-.menu::-webkit-scrollbar {
-  width: 0px;
-}
-
-.title-container {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-.title-container h1, .title-container input {
-  width: 90%;
-}
-
-.close-button {
-  width: 25px;
-  height: 25px;
-  padding-top: 40px;
-  background: url("/src/imgs/close-button.svg") center no-repeat;
-  background-color: white;
-  border: none;
-  cursor: pointer;
 }
 
 .menu-button {
@@ -130,34 +80,6 @@ body {
   width: 70px;
   height: 140px;
   flex-shrink: 0;
-}
-
-.searchbar {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  z-index: 1;
-  padding-left: 60px;
-  left: 59%;
-  top: 3vh;
-  gap: 20px;
-  border-radius: 50px;
-  border: none;
-  box-sizing: border-box;
-  box-shadow: 0px 0px 6px -1px rgba(0, 0, 0, 0.16);
-  background: #FFF;
-  background-image: url("/src/imgs/search-icon.svg");
-  background-repeat: no-repeat;
-  background-position: 25px center;
-  -webkit-backdrop-filter: blur(15px);
-          backdrop-filter: blur(15px);
-  font-size: 16px;
-  width: 37.5%;
-  height: 50px;
-  flex-shrink: 0;
-  outline: none;
 }
 
 .modal-point {

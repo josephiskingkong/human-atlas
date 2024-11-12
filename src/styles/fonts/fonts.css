@@ -4,3 +4,17 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+    font-family: 'NunitoSans';
+    src: url("/src/styles/fonts/NunitoSans.ttf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NunitoSans';
+    src: url("/src/styles/fonts/NunitoSans-Italic.ttf");
+    font-weight: normal;
+    font-style: italic;
+}

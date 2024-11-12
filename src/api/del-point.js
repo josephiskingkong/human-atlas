@@ -1,6 +1,6 @@
 async function deletePointById(id) {
     try {
-        const response = await fetch('https://humanatlas.top/v1/points/delete', {
+        const response = await fetch('https://api.humanatlas.top/v1/points/delete', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

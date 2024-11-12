@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import OpenSeadragon from 'openseadragon';
-import { addPointToBack } from '../api/add-point';
-import { editPoint } from '../api/edit-point';
+import { addPointToBack } from '../../api/add-point';
+import { editPoint } from '../../api/edit-point';
 
 export default function CreateMenu({ 
     closeMenuHandler,

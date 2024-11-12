@@ -1,6 +1,6 @@
 async function editPoint(point) {
     try {
-        const response = await fetch('https://humanatlas.top/v1/points/edit', {
+        const response = await fetch('https://api.humanatlas.top/v1/points/edit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

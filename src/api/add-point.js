@@ -1,6 +1,6 @@
 async function addPointToBack(x, y, organid, description, name) {
     try {
-        const response = await fetch('https://humanatlas.top/v1/points/add', {
+        const response = await fetch('https://api.humanatlas.top/v1/points/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -5,7 +5,6 @@ import Navbar from './Navbar';
 const OpenSeadragonViewer = () => {
     return (
         <>
-            <Navbar></Navbar>
             <Map></Map>
         </>
     );

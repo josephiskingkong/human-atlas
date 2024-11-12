@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
-import Menu from './Menu'
+import Menu from './menu/Menu'
 import '../styles/map.css';
 import '../styles/fonts/fonts.css';
-import CreateMenu from './CreateMenu';
+import CreateMenu from './menu/CreateMenu';
 import ZoomBar from './ZoomBar';
 import ToolBar from './ToolBar';
 import { getPointById, getPointsByOrganId } from '../api/get-points';
@@ -30,9 +30,15 @@ export default function Map() {
         osdViewer.current = OpenSeadragon({
             id: viewerRef.current.id,
             prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
-            tileSources: "https://humanatlas.top/tiles/1/tiles.dzi",
+            tileSources: "https://tiles.humanatlas.top/1/1.dzi",
             zoomInButton: 'zoom-in',
-            zoomOutButton: 'zoom-out'
+            zoomOutButton: 'zoom-out',
+            blend: true
+        });
+
+        osdViewer.current.addHandler('tile-drawing', function(event) {
+            const context = event.context;
+            context.imageSmoothingEnabled = false;
         });
 
         // loadPointsBack();

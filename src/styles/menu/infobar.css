@@ -1,0 +1,39 @@
+.info-bar {
+  border-radius: 24px;
+  background: var(--main-gradient, linear-gradient(181deg, #3754ed -4.39%, #263db8 101.53%));
+  padding: 13px;
+}
+.info-bar .info-text-container {
+  padding-top: 20px;
+  margin-bottom: 10px;
+  padding-left: 6px;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+}
+.info-bar .info-text-container .info-name {
+  color: #fff;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%;
+}
+.info-bar .info-text-container .info-category {
+  color: #fff;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%;
+}
+
+.close-button {
+  width: 40px;
+  height: 60px;
+  background: url("/src/imgs/close-button.svg") center no-repeat;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  left: -53px;
+  border-radius: 6px;
+  background-color: #131b62;
+}/*# sourceMappingURL=infobar.css.map */
