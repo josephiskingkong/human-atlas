@@ -125,6 +125,11 @@ export default function Map({ organId }) {
 
             setToolState('arrow');
 
+            if (idPoint === id) {
+                setIsMenuOpen(false);
+                setIsModalOpen(false);
+            }
+
             console.log(toolState);
         }
 
