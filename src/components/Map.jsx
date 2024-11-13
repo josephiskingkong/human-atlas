@@ -107,7 +107,7 @@ export default function Map({ organId }) {
         points.forEach((item) => osdViewer.current.removeOverlay(item.element));
     }
 
-    const onClickElement = (id, info, title, element, toolState, e) => {
+    async function onClickElement(id, info, title, element, toolState, e) {
         e.stopPropagation();
 
         console.log("CLICKELEMENT");
@@ -117,12 +117,13 @@ export default function Map({ organId }) {
         if (toolState === 'del') {
             e.preventDefaultAction = true;
             osdViewer.current.removeOverlay(element);
-            deletePointById(id);
-
+            const res = await deletePointById(id);
+            console.log(res);
             setPoints((prevPoints) => prevPoints.filter((point) => point.id !== id));
+
             setToolState('arrow');
 
-            console.log(toolState)
+            console.log(toolState);
         }
 
         if (toolState === 'arrow') {
@@ -146,8 +147,6 @@ export default function Map({ organId }) {
 
             setIsModalOpen(true);
             setIsMenuOpen(false);
-
-            setToolState('arrow');
             // element.addEventListener('pointerdown', handleClickElement);
 
             console.log(toolState);
@@ -224,15 +223,19 @@ export default function Map({ organId }) {
 
             const res = await addPointToBack(position.x, position.y, organId, '', '');
             console.log("POINT ID", res.point_id);
+            setToolState('arrow');
+
             setIdPoint(res.point_id);
             addPoint(res.point_id, position.x, position.y, '', '');
 
             setPositionClick(position);
-            
+            setIdPoint(res.point_id);
+            setTitlePoint('');
+            setContentPoint('');
+
             setIsMenuOpen(false);
             setIsModalOpen(true);
             
-            setToolState('arrow');
         }
     };
 
@@ -273,11 +276,13 @@ export default function Map({ organId }) {
                         currentElement={ currentPoint }
                         osdViewer={ osdViewer }
                         viewerRef={ viewerRef }
+                        setToolState={ setToolState }
                         toolState={ toolState }
                         addPoint={addPoint}
                         title={titlePoint}
                         content={contentPoint}
-                        id={idPoint}>
+                        id={idPoint}
+                        setPoints={setPoints}>
                     </CreateMenu>
                 }
 

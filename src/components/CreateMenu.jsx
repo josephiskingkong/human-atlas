@@ -9,10 +9,12 @@ export default function CreateMenu({
     currentElement, 
     osdViewer, 
     viewerRef,
+    setToolState,
     toolState,
     title,
     content,
-    id
+    id,
+    setPoints
 }) {
     const inputTitle = useRef(null);
     const inputDescription = useRef(null);
@@ -37,7 +39,7 @@ export default function CreateMenu({
         };
     }, [toolState]);
 
-    const savePoint = () => {
+    const savePoint = async () => {
         let title = inputTitle.current.value;
         let description = inputDescription.current.value;
         
@@ -46,9 +48,29 @@ export default function CreateMenu({
         console.log("SAVE ID: ", id);
 
         if (title && description) {
-            editPoint({ id: id, name: title, description: description });
+            changePoint(id, title, description);
+
+            setToolState('arrow');
+            setIsModalOpen(false);
         }
     };
+
+    async function changePoint(id, name, description) {
+        const res = await editPoint({ id: id, name: title, description: description });
+            setPoints((prevPoints) => {
+                return prevPoints.map((point) => {
+                    if (point.id === id) {
+                        point.name = title;
+                        point.description = description;
+                    }
+
+                    return point;
+                });
+            });
+        
+        setToolState('');
+        setToolState('arrow');
+    }
 
     const changePosition = () => {
         setIsModalOpen(false);
@@ -78,7 +100,6 @@ export default function CreateMenu({
                 </div>
                 <textarea placeholder={ 'Описание...' } defaultValue={ content } ref={ inputDescription } className='input-description'></textarea>
                 <div className='buttons-container'>
-                    <button onClick={ changePosition }>ED</button>
                     <button ref={ saveButton } className='button-save'>Сохранить</button>
                 </div>
             </div>
