@@ -150,8 +150,6 @@ export default function Map({ organId }) {
             console.log("PEEEEEEEEEEN", toolState);
             console.log(title + " " + info);
 
-            setToolState('arrow');
-
             setIsModalOpen(true);
             setIsMenuOpen(false);
             // element.addEventListener('pointerdown', handleClickElement);
