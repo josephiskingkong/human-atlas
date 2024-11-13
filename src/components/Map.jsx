@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import OpenSeadragon from 'openseadragon';
 import Menu from './Menu'
 import '../styles/map.css';
@@ -29,6 +29,8 @@ export default function Map({ organId }) {
     const [ points, setPoints ] = useState([]);
 
     useEffect(() => {
+        console.log("ORGAN ID", organId);
+
         const initializeViewer = async () => {
             osdViewer.current = OpenSeadragon({
                 id: viewerRef.current.id,
@@ -145,6 +147,11 @@ export default function Map({ organId }) {
             setTitlePoint(title);
             setIdPoint(id);
 
+            console.log("PEEEEEEEEEEN", toolState);
+            console.log(title + " " + info);
+
+            setToolState('arrow');
+
             setIsModalOpen(true);
             setIsMenuOpen(false);
             // element.addEventListener('pointerdown', handleClickElement);
@@ -154,11 +161,8 @@ export default function Map({ organId }) {
     }
 
     useEffect(() => {
-        if (toolState === 'del') {
-
-        }
-        console.log(points);
-    }, [points]);
+        console.log("CONTEEEENT", contentPoint);
+    }, [contentPoint]);
 
     const addPoint = (id, x, y, info, title) => {
         const element = document.createElement('div');  
@@ -193,6 +197,13 @@ export default function Map({ organId }) {
 
     // http://89.187.25.16/1/tiles.dzi
 
+    // useEffect(() => {
+    //     if (toolState === 'pen') {
+    //         console.log(toolState);
+    //         setToolState('arrow');
+    //     }
+    // }, [points]);
+
     useEffect(() => {
         osdViewer.current.addHandler('canvas-click', handleContextMenu);
 
@@ -223,13 +234,11 @@ export default function Map({ organId }) {
 
             const res = await addPointToBack(position.x, position.y, organId, '', '');
             console.log("POINT ID", res.point_id);
-            setToolState('arrow');
 
             setIdPoint(res.point_id);
             addPoint(res.point_id, position.x, position.y, '', '');
 
             setPositionClick(position);
-            setIdPoint(res.point_id);
             setTitlePoint('');
             setContentPoint('');
 
