@@ -1,0 +1,16 @@
+@import "../base/variables.scss";
+
+.point-container {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  box-shadow: $point-shadow;
+
+  .marker {
+    width: 12px;
+    height: 12px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 5px solid $main-color;
+  }
+}

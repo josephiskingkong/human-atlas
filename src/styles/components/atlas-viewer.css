@@ -1,0 +1,7 @@
+.openseadragon-viewer {
+    height: 100vh;
+}
+
+.openseadragon-container :focus {
+    outline: none;
+}

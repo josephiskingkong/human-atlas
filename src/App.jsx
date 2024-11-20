@@ -1,17 +1,15 @@
-import React from 'react';
-import OpenSeadragonViewer from './components/OpenSeadragonViewer';
-import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
-import ListOrgans from './components/ListOrgans';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import SlidePage from './pages/SlidePage';
+import './styles/base/reset.css'
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route exact path='/human-atlas' Component={ ListOrgans } />
-                <Route exact path='/human-atlas/:id' Component={ OpenSeadragonViewer } />
-            </Routes>
-        </Router>
-    );
+  return (
+    <Router>
+      <Routes>
+        <Route path="human-atlas/slide/:id" element={<SlidePage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
