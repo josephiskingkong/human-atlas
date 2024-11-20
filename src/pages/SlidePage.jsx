@@ -71,6 +71,7 @@ const SlidePage = () => {
             ref={viewerRef}
             slideData={slideData}
             onViewerReady={handleViewerReady}
+            className="atlas-viewer"
           />
           <TogglePointsCheckbox
             togglePointsVisibility={togglePointsVisibility}

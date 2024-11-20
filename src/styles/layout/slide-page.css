@@ -28,6 +28,21 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+.overlay-menu-grid .toolbar-layout *,
+.overlay-menu-grid .point-menu-layout * {
+  pointer-events: auto;
+}
+
+.slide-page-container {
+  position: relative;
+}
+
+.atlas-viewer {
+  position: relative;
+  z-index: 1;
 }
 
 .toolbar-layout {
