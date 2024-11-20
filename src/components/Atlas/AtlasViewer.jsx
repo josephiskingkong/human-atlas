@@ -1,4 +1,9 @@
-import React, { useImperativeHandle, forwardRef, useEffect, useRef } from "react";
+import React, {
+  useImperativeHandle,
+  forwardRef,
+  useEffect,
+  useRef,
+} from "react";
 import { createRoot } from "react-dom/client";
 import OpenSeadragon from "openseadragon";
 import PointMarker from "./PointMarker";
@@ -6,13 +11,14 @@ import PointMarker from "./PointMarker";
 const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
   const osdViewer = useRef(null);
   const viewerRef = useRef(null);
-  const overlaysRef = useRef([]); // Хранилище для контейнеров точек
+  const overlays = useRef([]);
+  const pointsData = useRef([]);
 
   const addPoint = (point) => {
     const overlayContainer = document.createElement("div");
     overlayContainer.className = "overlay-container";
 
-    overlaysRef.current.push(overlayContainer);
+    overlays.current.push({ point, container: overlayContainer });
 
     osdViewer.current.addOverlay({
       element: overlayContainer,
@@ -24,29 +30,49 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     root.render(<PointMarker info={point.info} />);
   };
 
-  const togglePoints = (hidden) => {
-    overlaysRef.current.forEach((overlay) => {
-      overlay.style.display = hidden ? "none" : "block";
+  const removeOverlays = () => {
+    overlays.current.forEach(({ container }) => {
+      osdViewer.current.removeOverlay(container);
     });
+    overlays.current = [];
+  };
+
+  const showOverlays = () => {
+    pointsData.current.forEach((point) => addPoint(point));
+  };
+
+  const togglePoints = (hidden) => {
+    if (hidden) {
+      removeOverlays();
+    } else {
+      showOverlays();
+    }
   };
 
   useImperativeHandle(ref, () => ({
-    addPoint,
     togglePoints,
   }));
 
   useEffect(() => {
     if (osdViewer.current) return;
 
+    pointsData.current = slideData.points;
+
     osdViewer.current = OpenSeadragon({
       id: viewerRef.current.id,
       prefixUrl: "https://openseadragon.github.io/openseadragon/images/",
       tileSources: slideData.dziPath,
       crossOriginPolicy: "Anonymous",
+      zoomInButton: "zoom-in",
+      zoomOutButton: "zoom-out",
+    });
+
+    osdViewer.current.addHandler("canvas-click", (event) => {
+        event.preventDefaultAction = true; 
     });
 
     osdViewer.current.addHandler("open", () => {
-      slideData.points.forEach(addPoint);
+      pointsData.current.forEach((point) => addPoint(point));
       if (onViewerReady) {
         onViewerReady();
       }
@@ -57,9 +83,8 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
         osdViewer.current.destroy();
         osdViewer.current = null;
       }
-
-      overlaysRef.current.forEach((overlay) => overlay.remove());
-      overlaysRef.current = [];
+      overlays.current.forEach(({ container }) => container.remove());
+      overlays.current = [];
     };
   }, [slideData, onViewerReady]);
 

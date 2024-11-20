@@ -1,0 +1,106 @@
+@import "../base/variables.scss";
+
+.openseadragon-viewer {
+  height: 100vh;
+}
+
+.openseadragon-viewer :focus {
+  outline: none;
+}
+
+.zoombar {
+  display: flex;
+  width: 45px;
+  height: 92px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  position: fixed;
+  top: 50%;
+  left: 25px;
+  transform: translateY(-50%);
+  user-select: none;
+  cursor: inherit !important;
+  gap: 6px;
+
+  button {
+    display: flex;
+    width: 37px;
+    height: 37px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: $primary-color;
+    font-size: 28px;
+    font-weight: 700;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  #zoom-in {
+
+  }
+
+  #zoom-out {
+
+  }
+}
+
+.toggle-points-checkbox {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+  
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  
+    padding: 10px 15px;
+    border-radius: 8px;
+  
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px); 
+    -webkit-backdrop-filter: blur(10px);
+  
+    z-index: 100;
+    user-select: none;
+  
+    color: $secondary-color; 
+
+  }
+
+.toggle-points-checkbox input {
+  display: none;
+}
+
+.custom-checkbox {
+  width: 18px;
+  height: 18px;
+  background-color: #f9f9f9;
+  border: 0.2px solid #ccc;
+  border-radius: 4px;
+  position: relative;
+  flex-shrink: 0;
+  transition: background-color 0.15s, border-color 0.15s;
+  box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.1);
+}
+
+.toggle-points-checkbox input:checked + .custom-checkbox {
+  background-color: $primary-color;
+  border-color: $primary-color;
+}
+
+.toggle-points-checkbox input:checked + .custom-checkbox::after {
+  content: "";
+  position: absolute;
+  top: 2.5px;
+  left: 5.5px;
+  width: 5px;
+  height: 8px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}

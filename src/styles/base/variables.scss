@@ -1,6 +1,10 @@
-$main-color: #3754ed;
-$seconday-color: #131b62;
+$primary-color: #3754ed;
+$primary-dark-color: #131b62;
+$secondary-color: #242424;
 $shadow-color: #131b6220;
+
+$primary-gradient: linear-gradient(181deg, $primary-color -4.39%, #263DB8 101.53%);
+
 $point-shadow: 0px 0px 9px 2px $shadow-color;
 
 $main-border: 0.2px solid var(--default-stroke, #c5cace);

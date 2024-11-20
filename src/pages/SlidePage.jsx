@@ -7,8 +7,12 @@ import { TILES_URL } from "../config/constants";
 import { getOrganByOrganId } from "../hooks/organs/getOrgan";
 import "../styles/components/atlas-viewer.css";
 import TogglePointsCheckbox from "../components/Atlas/TogglePointsCheckbox";
+import arrow from "../assets/images/arrow.svg";
 
-import '../styles/layout/slide-page.css'
+import "../styles/layout/slide-page.css";
+import Zoombar from "../components/Atlas/ZoomBar";
+import ToolBar from "../components/Atlas/ToolBar";
+import PointMenu from "../components/Atlas/PointMenu";
 
 const SlidePage = () => {
   const { id } = useParams();
@@ -57,14 +61,31 @@ const SlidePage = () => {
 
   return (
     <div className="slide-page-container">
-      <TogglePointsCheckbox togglePointsVisibility={togglePointsVisibility} />
-
       {slideData && (
-        <AtlasViewer
-          ref={viewerRef}
-          slideData={slideData}
-          onViewerReady={handleViewerReady}
-        />
+        <>
+          <button className="go-back-button">
+            <img src={arrow} alt="arrow" />
+          </button>
+
+          <AtlasViewer
+            ref={viewerRef}
+            slideData={slideData}
+            onViewerReady={handleViewerReady}
+          />
+          <TogglePointsCheckbox
+            togglePointsVisibility={togglePointsVisibility}
+          />
+          <Zoombar />
+
+          <div className="overlay-menu-grid">
+            <div className="toolbar-layout">
+              <ToolBar />
+            </div>
+            <div className="point-menu-layout">
+              <PointMenu organ={slideData.organ} />
+            </div>
+          </div>
+        </>
       )}
 
       {(loadingData || !viewerReady) && <LoadingSpinner />}
