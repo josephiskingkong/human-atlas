@@ -1,0 +1,80 @@
+@import "../base/variables.scss";
+
+.admin-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  padding-top: 32px;
+
+  .admin-container {
+    grid-column: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+
+    .admin-header {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .admin-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .menu-title {
+      color: #000;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 800;
+    }
+  }
+}
+
+.panel-navigate-button {
+  width: 100%;
+  height: 60px;
+  border: $main-border;
+  background: none;
+  border-radius: 16px;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding-inline: 24px;
+
+  justify-content: space-between;
+
+  .button-info {
+    .navigate-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    gap: 20px;
+
+    color: #080e29;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .navigate-arrow {
+    filter: invert(100%) invert(22%) sepia(32%) saturate(7471%)
+            hue-rotate(230deg) brightness(101%) contrast(86%);
+
+    transform: scaleX(-1);
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background-color: #fafafa;
+  }
+}

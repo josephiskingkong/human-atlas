@@ -1,0 +1,55 @@
+.float-menu-button {
+  border-radius: 12px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  background: #fff;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+  cursor: pointer;
+}
+
+.indev-wrapper {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.indev-wrapper .indev-container {
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+.indev-wrapper .indev-container .indev-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+.indev-wrapper .indev-container .indev-header .indev-icon {
+  width: 96px;
+  height: 96px;
+  padding-bottom: 16px;
+}
+.indev-wrapper .indev-container .indev-header .indev-title {
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 110%;
+  color: #1d1d1d;
+}
+.indev-wrapper .indev-container .indev-header .indev-description {
+  font-size: 16px;
+  font-weight: 500;
+  color: #535353;
+}
+.indev-wrapper .indev-container .indev-button {
+  width: 150px;
+  height: 45px;
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  background: #3754ed;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 700;
+}/*# sourceMappingURL=indev-page.css.map */

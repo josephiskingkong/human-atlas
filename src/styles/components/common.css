@@ -1,0 +1,17 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b1b1b1;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.breadcrumb-link {
+  cursor: pointer;
+  text-decoration: none;
+  color: #b1b1b1;
+}
+.breadcrumb-link:hover {
+  color: #8e8e8e;
+}/*# sourceMappingURL=common.css.map */
