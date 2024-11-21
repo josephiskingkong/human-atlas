@@ -10,9 +10,12 @@ async function getMainCategories() {
         }
 
         const categories = await response.json();
+        categories.sort((a, b) => a.name.localeCompare(b.name));
+
         return categories;
     } catch (error) {
         console.error('Error fetching categories: ', error.message);
+        return [];
     }
 }
 
@@ -26,9 +29,30 @@ async function getCategoriesByParentId(categoryid) {
         }
 
         const categories = await response.json();
+        categories.sort((a, b) => a.name.localeCompare(b.name));
+
         return categories;
     } catch (error) {
         console.error('Error fetching categories: ', error.message);
+        return [];
+    }
+}
+
+async function getCategoryById(id) {
+    try {
+        const response = await fetch(`${ENDPOINT}/v1/categories/get/${id}`);
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to fetch categories');
+        }
+
+        const category = await response.json();
+
+        return category;
+    } catch (error) {
+        console.error('Error fetching categories: ', error.message);
+        return [];
     }
 }
 
@@ -36,7 +60,7 @@ async function addCategory(name, categoryid = null) {
     const body = {
         name,
         categoryid
-    }
+    };
 
     const filteredBody = Object.fromEntries(
         Object.entries(body).filter(([_, value]) => value !== null)
@@ -48,7 +72,7 @@ async function addCategory(name, categoryid = null) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: filteredBody
+            body: JSON.stringify(filteredBody)
         });
 
         if (!response.ok) {
@@ -60,7 +84,8 @@ async function addCategory(name, categoryid = null) {
         return result;
     } catch (error) {
         console.error('Error adding category:', error.message);
+        return null;
     }
 }
 
-module.exports = { getCategoriesByParentId, getMainCategories, addCategory }
+export { getCategoriesByParentId, getMainCategories, addCategory, getCategoryById };
