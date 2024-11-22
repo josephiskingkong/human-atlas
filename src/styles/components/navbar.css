@@ -1,0 +1,26 @@
+.navbar-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  background-color: #fff;
+}
+.navbar-wrapper .navbar-container {
+  grid-column: 2;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-wrapper .navbar-container .navbar-logo {
+  color: #3754ed;
+  font-size: 24px;
+  font-weight: 900;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}/*# sourceMappingURL=navbar.css.map */
