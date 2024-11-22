@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
-import Breadcrumbs from "../../components/Common/Breadcrumbs";
-import NavBar from "../../components/Common/NavBar";
 import { getMainCategories } from "../../hooks/categories";
-import AddCategoryModal from "../../components/Common/AddCategoryModal";
+import AddCategoryModal from "../../components/Modals/AddCategoryModal";
 
 import "../../styles/layout/admin-menu.css";
 import SkeletonHorizontalLoader from "../../components/Common/SkeletonHorizontalLoader";
 import AdminPageLayout from "./AdminPageLayout";
-import PanelNavigateButton from "../../components/Common/PanelNavigateButton";
-import { useLocation } from "react-router-dom";
+import PanelNavigateEditableButton from "../../components/Common/PanelEditableButton";
 
 export default function CategoriesPage() {
-  const location = useLocation();
-
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(null);
@@ -66,7 +61,7 @@ export default function CategoriesPage() {
     <AdminPageLayout title="Разделы">
       <div className="admin-content">
         <button className="admin-add-button" onClick={() => setShowModal(true)}>
-          + Добавить категорию
+          + Добавить раздел
         </button>
         {notFound ? (
           <div className="error">{notFound}</div>
@@ -74,7 +69,7 @@ export default function CategoriesPage() {
           <ul className="categories-list">
             {categories.map((category, index) => (
               <li key={category.id} className="category-item">
-              <PanelNavigateButton
+              <PanelNavigateEditableButton
                 title={category.name}
                 path={`${category.id}`}
               />

@@ -6,6 +6,7 @@
   height: 80px;
   display: grid;
   grid-template-columns: 1fr 8fr 1fr;
+  background-color: #fff;
 
   .navbar-container {
     grid-column: 2;

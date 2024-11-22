@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/layout/admin-menu.css";
 import arrow from "../../assets/images/arrow.svg";
 
-export default function PanelNavigateButton({ title, icon, path }) {
+export default function PanelNavigateButton({ title, icon, path, isEditable }) {
     const navigate = useNavigate();
 
     const handleClick = () => {

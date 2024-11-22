@@ -2,10 +2,13 @@ import React, { useRef, useState } from "react";
 import "../../styles/components/modal.css";
 import { addCategory } from "../../hooks/categories";
 import { MoonLoader } from "react-spinners";
+import { useNotification } from "../../context/NotificationContext";
 
 export default function AddCategoryModal({ onClose, onAddCategory }) {
   const modalRef = useRef(null);
   const [loading, setLoading] = useState(false);
+
+  const { showNotification } = useNotification();
 
   const handleOverlayClick = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -17,7 +20,7 @@ export default function AddCategoryModal({ onClose, onAddCategory }) {
     e.preventDefault();
     const categoryName = e.target.elements.categoryName.value.trim();
     if (!categoryName) {
-      alert("Введите название категории");
+      showNotification("Введите название категории", "info");
       return;
     }
 
@@ -45,14 +48,14 @@ export default function AddCategoryModal({ onClose, onAddCategory }) {
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal-container" ref={modalRef}>
         <div className="modal-header">
-          <h2>Добавить категорию</h2>
+          <h2>Добавить раздел</h2>
           <button className="close-button" onClick={onClose}>
             ✕
           </button>
         </div>
         <form onSubmit={handleSubmit} className="modal-form">
           <div className="form-group">
-            <label htmlFor="categoryName">Название категории</label>
+            <label htmlFor="categoryName">Название раздела</label>
             <input
               id="categoryName"
               type="text"
