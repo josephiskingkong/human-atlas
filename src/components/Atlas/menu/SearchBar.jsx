@@ -1,5 +1,5 @@
-import divider from '../../assets/images/divider.svg';
-import search from '../../assets/images/search.svg';
+import divider from '../../../assets/images/divider.svg';
+import search from '../../../assets/images/search.svg';
 
 export default function SearchBar() {
     return (

@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
+import atlasStore from '../redux/atlas/atlas-store'
 import AtlasViewer from "../components/Atlas/AtlasViewer";
 import LoadingSpinner from "../components/Common/LoadingSpinner";
 import { TILES_URL } from "../config/constants";
@@ -12,7 +13,9 @@ import arrow from "../assets/images/arrow.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
-import PointMenu from "../components/Atlas/PointMenu";
+import PointMenu from "../components/Atlas/menu/point-menu/PointMenu";
+import { Provider } from "react-redux";
+import Menu from "../components/Atlas/menu/Menu";
 
 const SlidePage = () => {
   const { id } = useParams();
@@ -60,37 +63,39 @@ const SlidePage = () => {
   };
 
   return (
-    <div className="slide-page-container">
-      {slideData && (
-        <>
-          <button className="go-back-button">
-            <img src={arrow} alt="arrow" />
-          </button>
+    <Provider store={ atlasStore }>
+      <div className="slide-page-container">
+        {slideData && (
+          <>
+            <button className="go-back-button">
+              <img src={arrow} alt="arrow" />
+            </button>
 
-          <AtlasViewer
-            ref={viewerRef}
-            slideData={slideData}
-            onViewerReady={handleViewerReady}
-            className="atlas-viewer"
-          />
-          <TogglePointsCheckbox
-            togglePointsVisibility={togglePointsVisibility}
-          />
-          <Zoombar />
+            <AtlasViewer
+              ref={viewerRef}
+              slideData={slideData}
+              onViewerReady={handleViewerReady}
+              className="atlas-viewer"
+            />
+            <TogglePointsCheckbox
+              togglePointsVisibility={togglePointsVisibility}
+            />
+            <Zoombar />
 
-          <div className="overlay-menu-grid">
-            <div className="toolbar-layout">
-              <ToolBar />
+            <div className="overlay-menu-grid">
+              <div className="toolbar-layout">
+                <ToolBar />
+              </div>
+              <div className="point-menu-layout">
+                <Menu slideData={ slideData } />
+              </div>
             </div>
-            <div className="point-menu-layout">
-              <PointMenu organ={slideData.organ} />
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
 
-      {(loadingData || !viewerReady) && <LoadingSpinner />}
-    </div>
+        {(loadingData || !viewerReady) && <LoadingSpinner />}
+      </div>
+    </Provider>
   );
 };
 

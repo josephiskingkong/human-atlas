@@ -10,10 +10,10 @@
   justify-content: center;
   border: none;
   position: absolute;
-  top: 25px;
+  top: 5vh;
   left: 25px;
   cursor: pointer;
-  z-index: 9;
+  z-index: 2;
 }
 .go-back-button img {
   transform: scale(0.85);
@@ -26,7 +26,7 @@
   width: 100vw;
   height: 100vh;
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 5fr 3fr;
   overflow: hidden;
   z-index: 2;
   pointer-events: none;
@@ -56,6 +56,6 @@
 .point-menu-layout {
   display: flex;
   align-items: flex-start;
-  justify-content: center;
+  justify-content: flex-end;
   padding: 25px 25px 25px 0px;
 }/*# sourceMappingURL=slide-page.css.map */

@@ -65,11 +65,10 @@
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px);
   
-    z-index: 100;
+    z-index: 2;
     user-select: none;
   
     color: $secondary-color; 
-
   }
 
 .toggle-points-checkbox input {
