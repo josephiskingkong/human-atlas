@@ -23,7 +23,7 @@ function ToolButton({ icon, name, hotkey, isActive = false, onClick }) {
     >
       <button
         className={`tool-button ${isActive ? "active-tool" : ""}`}
-        onClick={onClick}
+        onPointerDown={onClick}
         title={`${name} (${modifierKey} + ${hotkey.toUpperCase()})`}
         aria-pressed={isActive}
       >

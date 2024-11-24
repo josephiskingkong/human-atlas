@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setIsMenuOpen, setActiveTool, setTargetPoint, setIsInfoOpen } from "../../redux/atlas/atlas-slice";
 import OpenSeadragon from "openseadragon";
 
-export default function PointMarker({ point }) {
+export default function PointMarker({ point, osdViewer }) {
   const isMenuOpen = useSelector((state) => state.atlas.isMenuOpen);
   const isInfoOpen = useSelector((state) => state.atlas.isInfoOpen);
   const activeTool = useSelector((state) => state.atlas.activeTool);
@@ -16,7 +16,9 @@ export default function PointMarker({ point }) {
     console.log("INIT", point);
   }, []);
 
-  const pointHandler = () => {
+  const pointHandler = (event) => {
+    event.preventDefault();
+
     if (activeTool === "Редактировать точку") {
       if (!isMenuOpen) {
         dispatch(setIsMenuOpen(true));
@@ -36,11 +38,18 @@ export default function PointMarker({ point }) {
       console.log("CURSOR", point);
       dispatch(setTargetPoint({ ...point }));
     }
+
+    if (activeTool === "Переместить точку") {
+      console.log("START-MOVE");
+      dispatch(setTargetPoint({ ...point, status: 'move' }))
+    }
   }
 
   return (
-    <div className="point-container" onPointerDown={ pointHandler }>
-      <div className={ targetPoint.id === point.id && (isMenuOpen || isInfoOpen) ? "marker marker-select" : "marker"}></div>
+    <div className="point-container" 
+      onPointerDown={ pointHandler }
+    >
+      <div className={ (targetPoint.id === point.id && (isMenuOpen || isInfoOpen)) || (targetPoint.id === point.id && targetPoint.status === 'move') ? "marker marker-select" : "marker"}></div>
     </div>
   );
 }
