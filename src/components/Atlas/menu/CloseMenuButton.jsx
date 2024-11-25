@@ -1,6 +1,6 @@
-export default function CloseMenuButton({ isMenuOpen, isInfoOpen, closeHandler }) {
+export default function CloseMenuButton({ currMenu, closeHandler }) {
     return (
-        <button className={ (!isMenuOpen && !isInfoOpen) ? 'close-button' : 'close-button close-button-open' } 
+        <button className={ currMenu === 'close' ? 'close-button' : 'close-button close-button-open' } 
             onClick={ closeHandler }
         ></button>
     );

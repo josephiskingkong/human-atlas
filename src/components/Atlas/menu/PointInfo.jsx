@@ -5,8 +5,8 @@ export default function PointInfo() {
 
     return (
         <div className="point-info-container">
+            <h1>{ targetPoint.name }<br/></h1>
             <pre>
-                <h1>{ targetPoint.name }<br/></h1>
                 { targetPoint.description }
             </pre>
         </div>

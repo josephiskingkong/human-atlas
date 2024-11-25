@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import "../../styles/components/point-marker.css";
 import { useDispatch, useSelector } from "react-redux";
-import { setIsMenuOpen, setActiveTool, setTargetPoint, setIsInfoOpen } from "../../redux/atlas/atlas-slice";
+import { setIsMenuOpen, setActiveTool, setTargetPoint, setIsInfoOpen, setCurrMenu } from "../../redux/atlas/atlas-slice";
 import OpenSeadragon from "openseadragon";
 
 export default function PointMarker({ point, osdViewer }) {
-  const isMenuOpen = useSelector((state) => state.atlas.isMenuOpen);
-  const isInfoOpen = useSelector((state) => state.atlas.isInfoOpen);
+  const currMenu = useSelector((state) => state.atlas.currMenu);
   const activeTool = useSelector((state) => state.atlas.activeTool);
   const targetPoint = useSelector((state) => state.atlas.targetPoint);
 
@@ -20,27 +19,17 @@ export default function PointMarker({ point, osdViewer }) {
     event.preventDefault();
 
     if (activeTool === "Редактировать точку") {
-      if (!isMenuOpen) {
-        dispatch(setIsMenuOpen(true));
-      }
-      
-      console.log("EDIT", point);
-
+      dispatch(setCurrMenu('menu'));
       dispatch(setTargetPoint({ ...point }));
       dispatch(setActiveTool("Курсор"));
     }
 
     if (activeTool === "Курсор") {
-      if (!isInfoOpen) {
-        dispatch(setIsInfoOpen(true));
-      }
-
-      console.log("CURSOR", point);
+      dispatch(setCurrMenu('info'));
       dispatch(setTargetPoint({ ...point }));
     }
 
     if (activeTool === "Переместить точку") {
-      console.log("START-MOVE");
       dispatch(setTargetPoint({ ...point, status: 'move' }))
     }
   }
@@ -49,7 +38,11 @@ export default function PointMarker({ point, osdViewer }) {
     <div className="point-container" 
       onPointerDown={ pointHandler }
     >
-      <div className={ (targetPoint.id === point.id && (isMenuOpen || isInfoOpen)) || (targetPoint.id === point.id && targetPoint.status === 'move') ? "marker marker-select" : "marker"}></div>
+      <div className={ 
+        (targetPoint.id === point.id && (currMenu !== 'close' || targetPoint.status === 'move')) ? 
+          "marker marker-select" : "marker"
+      }>
+      </div>
     </div>
   );
 }

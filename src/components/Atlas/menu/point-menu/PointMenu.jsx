@@ -1,9 +1,8 @@
-import '../../../../styles/components/point-menu.css';
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HintMenu from "./HintMenu";
 import { editPoint } from "../../../../hooks/points";
-import { setIsMenuOpen, setTargetPoint } from "../../../../redux/atlas/atlas-slice";
+import { setCurrMenu, setIsMenuOpen, setTargetPoint } from "../../../../redux/atlas/atlas-slice";
 import DeleteModal from "./DeleteModal";
 import { deletePointById } from "../../../../hooks/points";
 
@@ -28,31 +27,40 @@ export default function PointMenu() {
 
         if (title && description) {
             console.log(title + " " + description);
-            const res = await editPoint({ id: id, name: title, description: description });
             
+            saveToBack(id, title, description);
+
             const newPoint = {
                 ...targetPoint,
-                id: id,
+                id,
                 name: title,
-                description: description
+                description
             };
             
             dispatch(setTargetPoint({ ...newPoint }));
             console.log(newPoint);
 
-            dispatch(setIsMenuOpen(false));
+            dispatch(setCurrMenu('close'));
         }
     };
     
-    
-    const delPoint = async () => {
-        const res = await deletePointById(targetPoint.id);
+    const saveToBack = async (id, title, description) => {
+        const res = await editPoint({ id, name: title, description });
         console.log(res);
+    };
+
+    const delPoint = async () => {
+        delFromBack(targetPoint.id);
         
         dispatch(setTargetPoint({ id: targetPoint.id, status: 'del' }));
-        dispatch(setIsMenuOpen(false));
+        dispatch(setCurrMenu('close'));
     }
     
+    const delFromBack = async (id) => {
+        const res = await deletePointById(id);
+        console.log(res);
+    }
+
     const closeModal = () => {
         setIsDelModalOpen(false);
     };
@@ -67,7 +75,7 @@ export default function PointMenu() {
                 <HintMenu/>
             }
 
-            <div className="point-menu-container">
+            <div className='point-menu-container'>
                 <input type="text" className="input-title"
                     value={ titlePoint }
                     onChange={ (event) => setTitlePoint(event.target.value) }

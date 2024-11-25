@@ -86,7 +86,7 @@
   transform: rotate(180deg);
 }
 .point-menu .hint-menu {
-  position: absolute;
+  position: fixed;
   right: 38%;
   top: 30vh;
   background: #F8F8F8;
@@ -94,6 +94,7 @@
   border: 0.2px #C5CACE solid;
   padding: 15px;
   line-height: 26px;
+  z-index: 15;
 }
 .point-menu .hint-menu .span-comb {
   color: #3754ED;
@@ -106,24 +107,29 @@
   font-weight: 600;
   word-wrap: break-word;
 }
-.point-menu .point-menu-container, .point-menu .point-info-container {
+.point-menu .menu-container {
+  width: 100%;
+  height: 70.5vh;
+  position: relative;
+  box-sizing: border-box;
+  margin-top: 14px;
+  padding: 20px;
+  box-shadow: 0px 0px 25px rgba(55, 84, 237, 0.05);
+  border-radius: 24px;
+  overflow: hidden;
+  overflow-y: auto;
+  border: 0.2px #C5CACE solid;
+  background: #EEF3F7;
+}
+.point-menu .menu-container .point-menu-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 24px;
   width: 100%;
-  height: 70.5vh;
-  position: relative;
-  padding: 20px;
-  box-sizing: border-box;
-  margin-top: 14px;
-  box-shadow: 0px 0px 25px rgba(55, 84, 237, 0.05);
-  border-radius: 24px;
-  overflow: hidden;
-  border: 0.2px #C5CACE solid;
-  background: #EEF3F7;
+  height: 100%;
 }
-.point-menu .point-menu-container .input-title, .point-menu .point-info-container .input-title {
+.point-menu .menu-container .point-menu-container .input-title {
   height: 12%;
   width: 100%;
   border-radius: 10px;
@@ -133,7 +139,7 @@
   outline: none;
   font-size: 20px;
 }
-.point-menu .point-menu-container .input-info, .point-menu .point-info-container .input-info {
+.point-menu .menu-container .point-menu-container .input-info {
   resize: none;
   height: 100%;
   width: 100%;
@@ -144,12 +150,12 @@
   outline: none;
   font-size: 20px;
 }
-.point-menu .point-menu-container .point-info-buttons, .point-menu .point-info-container .point-info-buttons {
+.point-menu .menu-container .point-menu-container .point-info-buttons {
   display: flex;
   width: 100%;
   justify-content: space-between;
 }
-.point-menu .point-menu-container .point-info-buttons .save-button, .point-menu .point-info-container .point-info-buttons .save-button {
+.point-menu .menu-container .point-menu-container .point-info-buttons .save-button {
   width: 45%;
   height: 53px;
   background: #3754ED;
@@ -161,7 +167,7 @@
   font-weight: 700;
   cursor: pointer;
 }
-.point-menu .point-menu-container .point-info-buttons .del-button, .point-menu .point-info-container .point-info-buttons .del-button {
+.point-menu .menu-container .point-menu-container .point-info-buttons .del-button {
   width: 45%;
   height: 53px;
   background: #F8F8F8;
@@ -174,22 +180,57 @@
   word-wrap: break-word;
   cursor: pointer;
 }
-.point-menu .point-menu-container .point-info-buttons .save-button:active, .point-menu .point-menu-container .point-info-buttons .del-button:active, .point-menu .point-info-container .point-info-buttons .save-button:active, .point-menu .point-info-container .point-info-buttons .del-button:active {
+.point-menu .menu-container .point-menu-container .point-info-buttons .save-button:active, .point-menu .menu-container .point-menu-container .point-info-buttons .del-button:active {
   background-color: rgba(55, 85, 237, 0.5333333333);
 }
-.point-menu .point-info-container {
+.point-menu .menu-container .point-info-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 28px;
+  gap: 24px;
+  padding: 14px 20px 14px 20px;
   overflow: hidden;
   overflow-y: auto;
-}
-.point-menu .point-info-container pre {
   white-space: pre-wrap;
-  overflow: visible;
+  overflow: auto;
   overflow-wrap: break-word;
   -webkit-hyphens: auto;
           hyphens: auto;
-}/*# sourceMappingURL=point-menu.css.map */
+}
+.point-menu .menu-container .point-info-container pre {
+  font-size: large;
+}
+.point-menu .menu-container .point-search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+  font-size: 20px;
+  overflow-y: auto;
+}
+.point-menu .menu-container .point-search-container h3 {
+  color: #C5CACE;
+}
+.point-menu .menu-container .point-search-container .search-item {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 0.2px #C5CACE solid;
+  background-color: white;
+  height: 120px;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.point-menu .menu-container .point-search-container .search-item .item-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}/*# sourceMappingURL=menu.css.map */

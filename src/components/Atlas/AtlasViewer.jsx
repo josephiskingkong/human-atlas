@@ -10,7 +10,7 @@ import "../../service/osd-scalebar/openseadragon-scalebar";
 import PointMarker from "./PointMarker";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "../../redux/atlas/atlas-store";
-import { setActiveTool, setIsMenuOpen, setIsInfoOpen, setTargetPoint } from "../../redux/atlas/atlas-slice";
+import { setActiveTool, setCurrMenu, setTargetPoint } from "../../redux/atlas/atlas-slice";
 import { addPointToBack, editPoint } from "../../hooks/points";
 import { getOrganByOrganId } from "../../hooks/organs";
 
@@ -188,7 +188,7 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
         addPoint(newPoint);
         pointsData.current.push(newPoint);
         dispatch(setTargetPoint(newPoint));
-        dispatch(setIsMenuOpen(true));
+        dispatch(setCurrMenu('menu'));
         dispatch(setActiveTool("Курсор"));
       }
 
@@ -208,8 +208,7 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     if (!osdViewer.current) return;
 
     if (activeTool === "Переместить точку") {
-      dispatch(setIsMenuOpen(false));
-      dispatch(setIsInfoOpen(false));
+      dispatch(setCurrMenu('close'));
     } else if (targetPoint.status === 'move') {
       console.log("REMOVE STATUS", targetPoint);
       editPointMove(targetPoint.id, targetPoint.x, targetPoint.y);
@@ -233,6 +232,8 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
   useEffect(() => {
     removeOverlay();
     showOverlay();
+    
+    slideData.points = pointsData.current;
   }, [pointsData.current]);
 
   return (

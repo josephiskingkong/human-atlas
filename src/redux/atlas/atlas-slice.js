@@ -2,8 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     activeTool: 'Курсор',
-    isMenuOpen: false,
-    isInfoOpen: false,
+    currMenu: 'close',
+    searchString: '',
     targetPoint: {
         description: '',
         id: 0,
@@ -21,19 +21,11 @@ const atlasSlice = createSlice({
         setActiveTool(state, action) {
             state.activeTool = action.payload;
         },
-        setIsMenuOpen(state, action) {
-            state.isMenuOpen = action.payload;
-            
-            if (action.payload) {
-                state.isInfoOpen = false;
-            }
+        setCurrMenu(state, action) {
+            state.currMenu = action.payload;
         },
-        setIsInfoOpen(state, action) {
-            state.isInfoOpen = action.payload
-
-            if (action.payload) {
-                state.isMenuOpen = false;
-            }
+        setSearchString(state, action) {
+            state.searchString = action.payload;
         },
         setTargetPoint(state, action) {
             state.targetPoint = action.payload;
@@ -43,8 +35,8 @@ const atlasSlice = createSlice({
 
 export const {
     setActiveTool,
-    setIsMenuOpen,
-    setIsInfoOpen,
+    setCurrMenu,
+    setSearchString,
     setTargetPoint
 } = atlasSlice.actions;
 

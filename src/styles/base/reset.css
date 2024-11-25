@@ -30,7 +30,7 @@
 }
 *::-webkit-scrollbar-thumb {
   border-radius: 100px;
-  background-color: #ccc;
+  background-color: #e6e6e6;
 }
 *::-webkit-scrollbar-track {
   margin: 20px 0;

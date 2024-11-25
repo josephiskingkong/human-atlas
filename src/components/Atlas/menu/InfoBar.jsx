@@ -1,11 +1,11 @@
 import CloseMenuButton from "./CloseMenuButton";
 import SearchBar from "./SearchBar";
 
-export default function InfoBar({ title, category, closeMenuHandler, isMenuOpen = true, isInfoOpen = true }) {
+export default function InfoBar({ title, category, currMenu }) {
     return (
         <div className="info-bar-container">
             <SearchBar></SearchBar>
-            { (isMenuOpen || isInfoOpen) && 
+            { currMenu !== 'close' && 
                 <div className="info-container">
                     <div className="organ-title">
                         {title}

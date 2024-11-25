@@ -1,70 +1,74 @@
 import InfoBar from "./InfoBar";
-import '../../../styles/components/point-menu.css';
+import '../../../styles/components/menu/menu.css';
 import CloseMenuButton from "./CloseMenuButton";
 import { useDispatch, useSelector } from "react-redux";
 import PointInfo from "./PointInfo";
 import PointMenu from "./point-menu/PointMenu";
 import { useEffect, useState } from "react";
-import { setIsInfoOpen, setIsMenuOpen } from "../../../redux/atlas/atlas-slice";
+import { setCurrMenu, setIsInfoOpen, setIsMenuOpen } from "../../../redux/atlas/atlas-slice";
+import PointSearch from "./point-search/PointSearch";
 
 export default function Menu({ slideData }) {
-    const isMenuOpen = useSelector((state) => state.atlas.isMenuOpen);
-    const isInfoOpen = useSelector((state) => state.atlas.isInfoOpen);
+    const currMenu = useSelector((state) => state.atlas.currMenu);
 
     const dispatch = useDispatch();
 
-    const [ currMenu, setCurrMenu ] = useState('info');
+    const [ prevMenu, setPrevMenu ] = useState('info');
 
     useEffect(() => {
-        if (isMenuOpen) setCurrMenu('menu');
-        if (isInfoOpen) setCurrMenu('info');
-    }, [isMenuOpen, isInfoOpen]);
+        if (currMenu === 'menu') setPrevMenu('menu');
+        if (currMenu === 'info') setPrevMenu('info');
+    }, [currMenu]);
 
     const closeMenuHandler = () => {
-        console.log(currMenu);
-        if (!isMenuOpen && !isInfoOpen) {
-            switch (currMenu) {
+        console.log(prevMenu);
+        if (currMenu === 'close') {
+            switch (prevMenu) {
                 case 'menu':  
-                    dispatch(setIsMenuOpen(true));
+                    dispatch(setCurrMenu('menu'));
 
                     break;
                 case 'info':
-                    dispatch(setIsInfoOpen(true));
+                    dispatch(setCurrMenu('info'));
     
                     break;
                 default:
-                    dispatch(setIsMenuOpen(true));
+                    dispatch(setCurrMenu('menu'));
 
                     break;
             }
         } else {
-            if (isMenuOpen) {
-                dispatch(setIsMenuOpen(false));
-                setCurrMenu('menu');
-
-                return;
+            if (currMenu === 'menu') {
+                setPrevMenu('menu');
             }
     
-            if (isInfoOpen) {
-                dispatch(setIsInfoOpen(false));
-                setCurrMenu('info');
-
-                return;
+            if (currMenu === 'info') {
+                setPrevMenu('info');
             }
+
+            dispatch(setCurrMenu('close'));
         }
     }
 
     return (
         <div className="point-menu">
-            <CloseMenuButton isMenuOpen={ isMenuOpen } isInfoOpen={ isInfoOpen } closeHandler={ closeMenuHandler }/>
-            <InfoBar title={slideData.organ.name} category="TODO" isMenuOpen={ isMenuOpen } isInfoOpen={ isInfoOpen }/>
+            <CloseMenuButton currMenu={ currMenu } closeHandler={ closeMenuHandler }/>
+            <InfoBar title={slideData.organ.name} category="TODO" points={ slideData.points } currMenu={ currMenu }/>
 
-            { isInfoOpen &&
-                <PointInfo/>
-            }
+            { (currMenu !== 'close') &&
+                <div className="menu-container">
+                    { currMenu === 'info' &&
+                        <PointInfo/>
+                    }
 
-            { isMenuOpen &&
-                <PointMenu/>
+                    { currMenu === 'menu' &&
+                        <PointMenu/>
+                    }
+
+                    { currMenu ==='search' &&
+                        <PointSearch points={ slideData.points }/>
+                    }
+                </div>
             }
         </div>
     )
