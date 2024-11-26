@@ -1,0 +1,77 @@
+@import '../base/variables.scss';
+
+.blur {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 99;
+    pointer-events: auto;
+}
+
+.modal-content {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    width: 25%;
+    height: 25%;
+    background-color: #EEF3F7;
+    border: 0.20px #C5CACE solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    gap: 30px;
+    font-weight: 550;
+
+    .modal-text {
+        text-align: center;
+        font-size: 28px;
+        user-select: none;
+    }
+
+    .buttons-container {
+        width: 80%;
+        display: flex;
+        justify-content: space-between;
+
+        .button-yes {
+            width: 40%;
+            height: 35px;
+            font-size: 15px;
+            font-weight: 700;
+            background-color: white;
+            color: $primary-color;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .button-no {
+            width: 40%;
+            height: 35px;
+            font-size: 15px;
+            font-weight: 700;
+            background-color: $primary-color;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .button-yes:hover {
+            background-color: rgba(255, 0, 0, 0.5);
+            color: white;
+        }
+
+        .button-no:hover {
+            background-color: rgba(0, 128, 0, 0.5);
+        }
+    }
+}

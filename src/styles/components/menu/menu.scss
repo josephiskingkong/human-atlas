@@ -1,0 +1,127 @@
+@import '../../base/variables.scss';
+
+.searchbar {
+  height: 45px;
+  border-radius: 11px;
+  border: 0.2px solid #c5cace;
+  background: #eef3f7;
+  box-shadow: 0 0 25px 0 rgba(55, 84, 237, 0.05);
+  color: rgba(8, 14, 41, 0.6);
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  min-width: 250px;
+
+  input {
+    width: 100%;
+    font-size: 20px;
+    height: 100%;
+    font-weight: 400;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0 0px 0px 18px;
+    &::placeholder {
+      font-size: 20px;
+      font-weight: 400;
+      color: rgba(8, 14, 41, 0.5);
+    }
+  }
+
+  .searchButton {
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 18px 0 16px;
+    cursor: pointer;
+  }
+}
+
+.info-bar-container {
+    padding: 13px;
+    background: $primary-gradient;
+    border-radius: 24px;
+
+    .info-container {
+        padding-top: 10px;
+        color: #fff;
+
+        padding-left: 4px;
+
+        .organ-title {
+            font-size: 32px;
+            font-weight: 600;
+        }
+
+        .organ-category {
+            font-size: 20px;
+            font-weight: 400;
+        }
+    }
+}
+
+.point-menu {
+  flex: 1;
+  width: 100%;
+  max-width: 550px;
+
+  .hint-menu {
+    position: fixed;
+    right: 38%;
+    top: 30vh;
+    background: #F8F8F8; 
+    border-radius: 12px; 
+    border: 0.20px #C5CACE solid;
+    padding: 15px;
+    line-height: 26px;
+    z-index: 15;
+
+    .span-comb {
+        color: #3754ED;
+        font-size: 20px;
+        font-weight: 700;
+        word-wrap: break-word
+    }
+
+    .span-other {
+        color: #3754ED;
+        font-weight: 600;
+        word-wrap: break-word
+    }
+  }
+
+  .close-button {
+    position: absolute;
+    top: 5vh;
+    right: 38%;
+    height: 50px;
+    background: url('/src/assets/images/close.svg') center no-repeat;
+    width: 40px;
+    background-color: #131B62; 
+    border-radius: 6px;
+    border-style: none;
+    cursor: pointer;
+  }
+
+  .close-button-open {
+    transform: rotate(180deg);
+  }
+
+  .menu-container {
+    width: 100%;
+    height: 70.5vh;
+    position: relative;
+    box-sizing: border-box; 
+    margin-top: 14px;
+    padding: 20px;
+    box-shadow: 0px 0px 25px rgba(55, 84, 237, 0.05); 
+    border-radius: 24px; 
+    overflow: hidden;
+    overflow-y: auto;
+    border: 0.20px #C5CACE solid;
+    background: #EEF3F7;
+  }
+}
+
