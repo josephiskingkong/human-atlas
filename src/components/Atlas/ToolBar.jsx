@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-
-import PropTypes from "prop-types";
+import { setActiveTool } from "../../redux/atlas/atlas-slice";
 
 import cursor from "../../assets/images/cursor.svg";
 import addPoint from "../../assets/images/add-point.svg";
@@ -9,8 +8,9 @@ import move from "../../assets/images/move-point.svg";
 import divider from "../../assets/images/divider.svg";
 
 import "../../styles/components/toolbar.css";
+import { useDispatch, useSelector } from "react-redux";
 
-function ToolButton({ icon, name, hotkey, isActive, onClick }) {
+function ToolButton({ icon, name, hotkey, isActive = false, onClick }) {
   const [isHovered, setIsHovered] = useState(false);
 
   const modifierKey = /Mac/i.test(navigator.platform) ? "CMD" : "CTRL";
@@ -23,7 +23,7 @@ function ToolButton({ icon, name, hotkey, isActive, onClick }) {
     >
       <button
         className={`tool-button ${isActive ? "active-tool" : ""}`}
-        onClick={onClick}
+        onPointerDown={onClick}
         title={`${name} (${modifierKey} + ${hotkey.toUpperCase()})`}
         aria-pressed={isActive}
       >
@@ -41,20 +41,9 @@ function ToolButton({ icon, name, hotkey, isActive, onClick }) {
   );
 }
 
-ToolButton.propTypes = {
-  icon: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  hotkey: PropTypes.string.isRequired,
-  isActive: PropTypes.bool,
-  onClick: PropTypes.func.isRequired,
-};
-
-ToolButton.defaultProps = {
-  isActive: false,
-};
-
 export default function ToolBar() {
-  const [activeTool, setActiveTool] = useState("Курсор");
+  const activeTool = useSelector((state) => state.atlas.activeTool);
+  const dispatch = useDispatch();
 
   const tools = [
     { icon: cursor, name: "Курсор", hotkey: "b" },
@@ -64,7 +53,8 @@ export default function ToolBar() {
   ];
 
   const handleToolChange = (name) => {
-    setActiveTool(name);
+    console.log(name);
+    dispatch(setActiveTool(name));
   };
 
   const handleKeyDown = (event) => {
