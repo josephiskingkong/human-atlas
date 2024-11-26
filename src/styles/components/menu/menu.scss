@@ -64,6 +64,33 @@
 
 .point-menu {
   flex: 1;
+  width: 100%;
+  max-width: 550px;
+
+  .hint-menu {
+    position: fixed;
+    right: 38%;
+    top: 30vh;
+    background: #F8F8F8; 
+    border-radius: 12px; 
+    border: 0.20px #C5CACE solid;
+    padding: 15px;
+    line-height: 26px;
+    z-index: 15;
+
+    .span-comb {
+        color: #3754ED;
+        font-size: 20px;
+        font-weight: 700;
+        word-wrap: break-word
+    }
+
+    .span-other {
+        color: #3754ED;
+        font-weight: 600;
+        word-wrap: break-word
+    }
+  }
 
   .close-button {
     position: absolute;
@@ -82,31 +109,6 @@
     transform: rotate(180deg);
   }
 
-  .hint-menu {
-    position: fixed;
-    right: 38%;
-    top: 30vh;
-    background: #F8F8F8; 
-    border-radius: 12px; 
-    border: 0.20px #C5CACE solid;
-    padding: 15px;
-    line-height: 26px;
-    z-index: 15;
-
-    .span-comb {
-      color: #3754ED;
-      font-size: 20px;
-      font-weight: 700;
-      word-wrap: break-word
-    }
-
-    .span-other {
-      color: #3754ED;
-      font-weight: 600;
-      word-wrap: break-word
-    }
-  }
-
   .menu-container {
     width: 100%;
     height: 70.5vh;
@@ -120,132 +122,6 @@
     overflow-y: auto;
     border: 0.20px #C5CACE solid;
     background: #EEF3F7;
-
-    .point-menu-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      width: 100%;
-      height: 100%;
-
-      .input-title {
-        height: 12%;
-        width: 100%;
-        border-radius: 10px;
-        padding: 5px 18px 5px 18px;
-        box-sizing: border-box; 
-        border: 1px solid #ccc;
-        outline: none;
-        font-size: 20px;
-      }
-  
-      .input-info {
-        resize: none;
-        height: 100%;
-        width: 100%;
-        border-radius: 10px;
-        padding: 14px 18px 18px 18px;
-        box-sizing: border-box; 
-        border: 1px solid #ccc;
-        outline: none;
-        font-size: 20px;
-      }
-  
-      .point-info-buttons {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        
-        .save-button {
-          width: 45%; 
-          height: 53px;
-          background: #3754ED;
-          box-shadow: 0px 0px 9px 3px rgba(40, 63, 186, 0.25) inset;
-          border-style: none;
-          border-radius: 10px;
-          color: white;
-          font-size: 20px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-  
-        .del-button {
-          width: 45%; 
-          height: 53px;
-          background: #F8F8F8;
-          box-shadow: 0px 0px 10px rgba(40, 63, 186, 0.10) inset;
-          border-radius: 10px;
-          border: 0.20px #C5CACE solid;
-          color: #3754ED;
-          font-size: 20px;
-          font-weight: 700;
-          word-wrap: break-word;
-          cursor: pointer;
-        }
-  
-        .save-button:active, .del-button:active {
-          background-color: #3755ed88;
-        }
-      }
-    }
-  
-    .point-info-container {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
-      gap: 24px;
-      padding: 14px 20px 14px 20px;
-      overflow: hidden;
-      overflow-y: auto;
-      white-space: pre-wrap;
-      overflow: auto;
-      overflow-wrap: break-word;
-      hyphens: auto;
-      pre {
-       font-size:large;
-      }
-    }
-
-    .point-search-container {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      padding: 20px;
-      font-size: 20px;
-      overflow-y: auto;
-      
-      h3 {
-        color: #C5CACE;
-      }
-
-      .search-item {
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-        box-sizing: border-box;
-        border-radius: 20px;
-        border: 0.20px #C5CACE solid;
-        background-color: white;
-        height: 120px;
-        width: 100%;
-        overflow: hidden;
-        cursor: pointer;
-        user-select: none;
-
-        .item-title {
-
-        }
-
-        .item-description {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          max-width: 400px;
-        }
-      }
-    }
   }
 }
 

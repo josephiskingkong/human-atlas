@@ -4,8 +4,8 @@ import atlasStore from '../redux/atlas/atlas-store'
 import AtlasViewer from "../components/Atlas/AtlasViewer";
 import LoadingSpinner from "../components/Common/LoadingSpinner";
 import { TILES_URL } from "../config/constants";
-import { getOrganByOrganId } from "../hooks/organs";
-import { getPointsByOrganId } from "../hooks/points";
+import { getOrganByOrganId } from "../hooks/organs/getOrgan";
+import { getPointsByOrganId } from "../hooks/points/getPoint";
 import "../styles/components/atlas-viewer.css";
 import TogglePointsCheckbox from "../components/Atlas/TogglePointsCheckbox";
 import arrow from "../assets/images/arrow.svg";

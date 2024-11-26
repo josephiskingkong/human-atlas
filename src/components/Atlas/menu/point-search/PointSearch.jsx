@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { search } from "../../../../service/fuse/search";
 import { useSelector } from "react-redux";
 import SearchItem from "./SearchItem";
+import "../../../../styles/components/menu/point-search.css";
 
 export default function PointSearch({ points }) {
     const [ searchList, setSearchList ] = useState([]);

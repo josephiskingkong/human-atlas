@@ -1,4 +1,6 @@
 import { useSelector } from "react-redux";
+import Markdown from "../../Common/Markdown";
+import "../../../styles/components/menu/point-info.css";
 
 export default function PointInfo() {
     const targetPoint = useSelector((state) => state.atlas.targetPoint);
@@ -6,9 +8,9 @@ export default function PointInfo() {
     return (
         <div className="point-info-container">
             <h1>{ targetPoint.name }<br/></h1>
-            <pre>
-                { targetPoint.description }
-            </pre>
+            <div className="markdown">
+                <Markdown>{ targetPoint.description }</Markdown>
+            </div>
         </div>
     );
 }

@@ -69,21 +69,8 @@
 
 .point-menu {
   flex: 1;
-}
-.point-menu .close-button {
-  position: absolute;
-  top: 5vh;
-  right: 38%;
-  height: 50px;
-  background: url("/src/assets/images/close.svg") center no-repeat;
-  width: 40px;
-  background-color: #131B62;
-  border-radius: 6px;
-  border-style: none;
-  cursor: pointer;
-}
-.point-menu .close-button-open {
-  transform: rotate(180deg);
+  width: 100%;
+  max-width: 550px;
 }
 .point-menu .hint-menu {
   position: fixed;
@@ -107,6 +94,21 @@
   font-weight: 600;
   word-wrap: break-word;
 }
+.point-menu .close-button {
+  position: absolute;
+  top: 5vh;
+  right: 38%;
+  height: 50px;
+  background: url("/src/assets/images/close.svg") center no-repeat;
+  width: 40px;
+  background-color: #131B62;
+  border-radius: 6px;
+  border-style: none;
+  cursor: pointer;
+}
+.point-menu .close-button-open {
+  transform: rotate(180deg);
+}
 .point-menu .menu-container {
   width: 100%;
   height: 70.5vh;
@@ -120,117 +122,4 @@
   overflow-y: auto;
   border: 0.2px #C5CACE solid;
   background: #EEF3F7;
-}
-.point-menu .menu-container .point-menu-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  width: 100%;
-  height: 100%;
-}
-.point-menu .menu-container .point-menu-container .input-title {
-  height: 12%;
-  width: 100%;
-  border-radius: 10px;
-  padding: 5px 18px 5px 18px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 20px;
-}
-.point-menu .menu-container .point-menu-container .input-info {
-  resize: none;
-  height: 100%;
-  width: 100%;
-  border-radius: 10px;
-  padding: 14px 18px 18px 18px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  outline: none;
-  font-size: 20px;
-}
-.point-menu .menu-container .point-menu-container .point-info-buttons {
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-}
-.point-menu .menu-container .point-menu-container .point-info-buttons .save-button {
-  width: 45%;
-  height: 53px;
-  background: #3754ED;
-  box-shadow: 0px 0px 9px 3px rgba(40, 63, 186, 0.25) inset;
-  border-style: none;
-  border-radius: 10px;
-  color: white;
-  font-size: 20px;
-  font-weight: 700;
-  cursor: pointer;
-}
-.point-menu .menu-container .point-menu-container .point-info-buttons .del-button {
-  width: 45%;
-  height: 53px;
-  background: #F8F8F8;
-  box-shadow: 0px 0px 10px rgba(40, 63, 186, 0.1) inset;
-  border-radius: 10px;
-  border: 0.2px #C5CACE solid;
-  color: #3754ED;
-  font-size: 20px;
-  font-weight: 700;
-  word-wrap: break-word;
-  cursor: pointer;
-}
-.point-menu .menu-container .point-menu-container .point-info-buttons .save-button:active, .point-menu .menu-container .point-menu-container .point-info-buttons .del-button:active {
-  background-color: rgba(55, 85, 237, 0.5333333333);
-}
-.point-menu .menu-container .point-info-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 24px;
-  padding: 14px 20px 14px 20px;
-  overflow: hidden;
-  overflow-y: auto;
-  white-space: pre-wrap;
-  overflow: auto;
-  overflow-wrap: break-word;
-  -webkit-hyphens: auto;
-          hyphens: auto;
-}
-.point-menu .menu-container .point-info-container pre {
-  font-size: large;
-}
-.point-menu .menu-container .point-search-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  padding: 20px;
-  font-size: 20px;
-  overflow-y: auto;
-}
-.point-menu .menu-container .point-search-container h3 {
-  color: #C5CACE;
-}
-.point-menu .menu-container .point-search-container .search-item {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  border-radius: 20px;
-  border: 0.2px #C5CACE solid;
-  background-color: white;
-  height: 120px;
-  width: 100%;
-  overflow: hidden;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-}
-.point-menu .menu-container .point-search-container .search-item .item-description {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 400px;
 }/*# sourceMappingURL=menu.css.map */

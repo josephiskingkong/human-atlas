@@ -1,0 +1,33 @@
+.point-search-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  font-size: 20px;
+  overflow-y: auto;
+}
+.point-search-container h3 {
+  color: #C5CACE;
+}
+.point-search-container .search-item {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  border: 0.2px #C5CACE solid;
+  background-color: white;
+  height: 120px;
+  width: 100%;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.point-search-container .search-item .item-description {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 400px;
+}/*# sourceMappingURL=point-search.css.map */

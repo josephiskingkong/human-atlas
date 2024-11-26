@@ -11,8 +11,9 @@ import PointMarker from "./PointMarker";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "../../redux/atlas/atlas-store";
 import { setActiveTool, setCurrMenu, setTargetPoint } from "../../redux/atlas/atlas-slice";
-import { addPointToBack, editPoint } from "../../hooks/points";
-import { getOrganByOrganId } from "../../hooks/organs";
+import { addPointToBack } from "../../hooks/points/addPoint";
+import { editPoint } from "../../hooks/points/editPoint";
+import { getOrganByOrganId } from "../../hooks/organs/getOrgan";
 
 const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
   const activeTool = useSelector((state) => state.atlas.activeTool);

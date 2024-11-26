@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import HintMenu from "./HintMenu";
-import { editPoint } from "../../../../hooks/points";
-import { setCurrMenu, setIsMenuOpen, setTargetPoint } from "../../../../redux/atlas/atlas-slice";
+import { editPoint } from "../../../../hooks/points/editPoint";
+import { setCurrMenu, setTargetPoint } from "../../../../redux/atlas/atlas-slice";
 import DeleteModal from "./DeleteModal";
-import { deletePointById } from "../../../../hooks/points";
+import { deletePointById } from "../../../../hooks/points/deletePoint";
+import pencil from "../../../../assets/images/pencil.svg"
+import pencilBlue from "../../../../assets/images/pencil-blue.svg"
+import eye from "../../../../assets/images/eye.svg"
+import eyeBlue from "../../../../assets/images/eye-blue.svg"
+import Markdown from "../../../Common/Markdown";
+import ButtonIcon from "./ButtonIcon";
+import "../../../../styles/components/menu/point-menu.css";
 
 export default function PointMenu() {
     const targetPoint = useSelector((state) => state.atlas.targetPoint);
@@ -14,6 +21,10 @@ export default function PointMenu() {
     const [ infoPoint, setInfoPoint ] = useState('');
     const [ isFocus, setIsFocus ] = useState(false);
     const [ isDelModalOpen, setIsDelModalOpen ] = useState(false);
+    const [ isMarkdown, setIsMarkdown ] = useState(true);
+    const [ activeButton, setActiveButton ] = useState('markdown');
+
+    const textArea = useRef(null);
 
     useEffect(() => {
         setTitlePoint(targetPoint.name);
@@ -24,6 +35,8 @@ export default function PointMenu() {
         let id = targetPoint.id;
         let title = titlePoint;
         let description = infoPoint;
+
+        console.log('CLICK', id, title, description);
 
         if (title && description) {
             console.log(title + " " + description);
@@ -64,6 +77,27 @@ export default function PointMenu() {
     const closeModal = () => {
         setIsDelModalOpen(false);
     };
+
+    const textAreaHandler = (event) => {
+        if (isFocus) {
+            const textarea = textArea.current;
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            
+            const selectedText = infoPoint.slice(start, end);
+
+            if (event.ctrlKey && event.key === "b") {
+                event.preventDefault();
+                setInfoPoint(`${infoPoint.slice(0, start)}**${selectedText}**${infoPoint.slice(end)}`);
+            } else if (event.ctrlKey && event.key === "i") {
+                event.preventDefault();
+                setInfoPoint(`${infoPoint.slice(0, start)}*${selectedText}*${infoPoint.slice(end)}`);
+            } else if (event.ctrlKey && event.key === "u") {
+                event.preventDefault();
+                setInfoPoint(`${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(end)}`);
+            }
+        }
+    };
     
     return (
         <> 
@@ -79,15 +113,45 @@ export default function PointMenu() {
                 <input type="text" className="input-title"
                     value={ titlePoint }
                     onChange={ (event) => setTitlePoint(event.target.value) }
-                    onFocus={ () => setIsFocus(true) }
-                    onBlur={ () => setIsFocus(false) }
                 ></input>
-                <textarea type="text" className="input-info"
-                    value={ infoPoint }
-                    onChange={ (event) => setInfoPoint(event.target.value) }
-                    onFocus={ () => setIsFocus(true) }
-                    onBlur={ () => setIsFocus(false) }
-                />
+                <div className="textarea-container">
+                    <div className="view-info-buttons">
+                        <ButtonIcon 
+                            alt={ 'markdown' } 
+                            isActive={ activeButton === 'markdown' } 
+                            onClick={ () => {
+                                setActiveButton('markdown');
+                                setIsMarkdown(true);
+                            }}
+                        >{ activeButton === 'markdown' ? pencil : pencilBlue }</ButtonIcon>
+                        <ButtonIcon 
+                            alt={ 'view' } 
+                            isActive={ activeButton === 'view' } 
+                            onClick={ () => { 
+                                setActiveButton('view');
+                                setIsMarkdown(false);
+                            }}
+                        >{ activeButton === 'view' ? eye : eyeBlue }</ButtonIcon>
+                    </div>
+                    <div className="input-info-container">
+                        { isMarkdown && 
+                            <textarea type="text" className="input-info"
+                                ref={ textArea }
+                                value={ infoPoint }
+                                onChange={ (event) => setInfoPoint(event.target.value) }
+                                onKeyDown={ textAreaHandler }
+                                onFocus={ () => setIsFocus(true) }
+                                onBlur={ () => setIsFocus(false) }
+                            />
+                        }
+
+                        { !isMarkdown &&
+                            <div className="markdown-info">
+                                <Markdown>{ infoPoint }</Markdown>
+                            </div>
+                        }
+                    </div>
+                </div>
                 <div className="point-info-buttons">
                     <button className="save-button" onClick={ saveHandler }>Сохранить</button>
                     <button className="del-button" onClick={ () => setIsDelModalOpen(true) }>Удалить</button>
