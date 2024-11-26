@@ -1,0 +1,50 @@
+.float-menu-button {
+  border-radius: 12px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  background: #fff;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+  cursor: pointer;
+}
+
+.notification {
+  position: fixed;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  font-size: 14px;
+  transition: top 0.5s ease, opacity 0.5s ease;
+}
+
+.notification.notification-visible {
+  top: 20px;
+  opacity: 1;
+}
+
+.notification.notification-hidden {
+  top: -50px;
+  opacity: 0;
+}
+
+.notification-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.notification-info {
+  background-color: #fff;
+  color: #3754ed;
+}
+
+.notification-error {
+  background-color: #f02b2b;
+  color: white;
+}/*# sourceMappingURL=notification.css.map */
