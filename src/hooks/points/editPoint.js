@@ -1,8 +1,8 @@
-import { ENDPOINT } from "../../config/constants";
+import { apiRequest } from "../../config/apiRequest";
 
 async function editPoint(point) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/points/edit`, {
+        const response = await apiRequest(`/v1/points/edit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -10,13 +10,11 @@ async function editPoint(point) {
             body: JSON.stringify(point)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to edit point');
+        if (response.error) {
+            throw new Error(response.error || 'Failed to add point');
         }
 
-        const result = await response.json();
-        return result;
+        return response;
     } catch (error) {
         console.error('Error editing point:', error.message);
     }

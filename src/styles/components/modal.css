@@ -84,4 +84,55 @@
 }
 .modal-form .submit-button:hover {
   background-color: #2040eb;
+}
+
+.login-form, .registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.login-form .form-group, .registration-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.login-form .form-group label, .registration-form .form-group label {
+  font-size: 16px;
+  font-weight: 600;
+}
+.login-form .form-group.error input, .registration-form .form-group.error input {
+  border-color: red;
+}
+.login-form .form-group .error-text, .registration-form .form-group .error-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.login-form .form-group input, .registration-form .form-group input {
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  padding: 8px;
+  border-radius: 8px;
+}
+.login-form .submit-button, .registration-form .submit-button {
+  border: none;
+  background-color: #3754ed;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.login-form .switch-form-text, .registration-form .switch-form-text {
+  color: #4d4d4d;
+  font-weight: 0;
+  font-size: 14px;
+}
+.login-form .switch-form-text button, .registration-form .switch-form-text button {
+  background: none;
+  border: none;
+  color: #3754ed;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
 }/*# sourceMappingURL=modal.css.map */

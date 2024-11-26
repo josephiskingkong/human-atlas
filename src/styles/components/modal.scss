@@ -87,3 +87,63 @@
     }
   }
 }
+
+
+.login-form, .registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    & label {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    &.error input {
+      border-color: red;
+    }
+    
+    .error-text {
+      color: red;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    & input {
+      border: $main-border;
+      padding: 8px;
+      border-radius: 8px;
+    }
+  }
+
+  .submit-button {
+    border: none;
+    background-color: $primary-color;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 12px;
+  }
+
+  .switch-form-text {
+    color: #4d4d4d;
+    font-weight: 0;
+    font-size: 14px;
+
+    button {
+      background: none;
+      border: none;
+      color: $primary-color;
+      font-weight: 600;
+      font-size: 14px;
+
+      cursor: pointer;
+    }
+  }
+}

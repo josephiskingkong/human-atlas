@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState } from "react";
 import "../styles/context/notification.css";
 import infoIcon from "../assets/images/info.svg";
 import errorIcon from "../assets/images/forbidden.svg";
+import checkIcon from "../assets/images/check.svg";
 
 const NotificationContext = createContext();
 
@@ -24,6 +25,8 @@ export function NotificationProvider({ children }) {
     switch (notification.type) {
       case "error":
         return errorIcon;
+      case "success":
+        return checkIcon;
       case "info":
       default:
         return infoIcon;

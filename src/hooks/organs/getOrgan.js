@@ -1,16 +1,14 @@
-import { ENDPOINT } from "../../config/constants";
+import { apiRequest } from "../../config/apiRequest";
 
 async function getOrganByOrganId(organid) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/organs/get/${organid}`);
+        const response = await apiRequest(`/v1/organs/get/${organid}`);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch organs');
+        if (response.error) {
+            throw new Error(response.error || 'Failed to add point');
         }
 
-        const organ = await response.json();
-        return organ;
+        return response;
     } catch (error) {
         console.error('Error fetching organ by organ ID:', error.message);
     }
@@ -18,15 +16,13 @@ async function getOrganByOrganId(organid) {
 
 async function getOrgansByCategoryId(organid) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/organs/get-by-categoryid/${organid}`);
+        const response = await apiRequest(`/v1/organs/get-by-categoryid/${organid}`);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch organs');
+        if (response.error) {
+            throw new Error(response.error || 'Failed to add point');
         }
 
-        const organs = await response.json();
-        return organs;
+        return response;
     } catch (error) {
         console.error('Error fetching organ by organs ID:', error.message);
     }

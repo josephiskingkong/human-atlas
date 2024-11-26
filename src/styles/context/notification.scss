@@ -39,6 +39,11 @@
 }
 
 .notification-error {
-  background-color: #f02b2b;
+  background-color: $red-color;
+  color: white;
+}
+
+.notification-success {
+  background-color: #2fbc00;
   color: white;
 }

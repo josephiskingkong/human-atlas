@@ -4,11 +4,13 @@ import "../../styles/components/slide-item.css";
 import { useNavigate } from "react-router-dom";
 import { deleteOrganById } from "../../hooks/organs/deleteOrgan";
 import ConfirmationModal from "../Modals/ConfirmationModal";
+import { useNotification } from "../../context/NotificationContext";
 
 export default function SlideItem({ img, title, status, path, id, onDelete }) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const navigate = useNavigate();
+  const { showNotification } = useNotification();
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -19,7 +21,7 @@ export default function SlideItem({ img, title, status, path, id, onDelete }) {
       }
     } catch (error) {
       console.error("Error deleting slide:", error);
-      alert("Не удалось удалить слайд.");
+      showNotification("Не удалось удалить слайд", "error");
     } finally {
       setIsDeleting(false);
       setShowConfirmModal(false);
@@ -84,6 +86,8 @@ export default function SlideItem({ img, title, status, path, id, onDelete }) {
         onClose={() => setShowConfirmModal(false)}
         onConfirm={handleDelete}
         title="Подтвердите удаление"
+        actionName="Удалить"
+        actionColor="red"
         message={`Вы уверены, что хотите удалить слайд "${title}"?`}
       />
     </div>

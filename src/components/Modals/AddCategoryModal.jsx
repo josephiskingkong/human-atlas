@@ -1,20 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import ModalLayout from "./ModalLayout";
 import "../../styles/components/modal.css";
 import { addCategory } from "../../hooks/categories";
 import { MoonLoader } from "react-spinners";
 import { useNotification } from "../../context/NotificationContext";
 
 export default function AddCategoryModal({ onClose, onAddCategory }) {
-  const modalRef = useRef(null);
   const [loading, setLoading] = useState(false);
-
   const { showNotification } = useNotification();
-
-  const handleOverlayClick = (e) => {
-    if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
-    }
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,57 +17,39 @@ export default function AddCategoryModal({ onClose, onAddCategory }) {
       return;
     }
 
-    setLoading(true); 
+    setLoading(true);
     try {
       const newCategory = await addCategory(categoryName);
-
       if (newCategory) {
-        newCategory.name = categoryName;
-        newCategory.id = newCategory.categoryid;
-        onAddCategory(newCategory);
+        onAddCategory({ name: categoryName, id: newCategory.categoryid });
         onClose();
       } else {
-        alert("Категория не была добавлена. Проверьте данные и попробуйте снова.");
+        showNotification("Категория не была добавлена. Проверьте данные.", "error");
       }
     } catch (err) {
-      console.error("Error adding category:", err);
-      alert("Не удалось добавить категорию");
+      showNotification("Ошибка при добавлении категории", "error");
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
-      <div className="modal-container" ref={modalRef}>
-        <div className="modal-header">
-          <h2>Добавить раздел</h2>
-          <button className="close-button" onClick={onClose}>
-            ✕
+    <ModalLayout title="Добавить раздел" onClose={onClose}>
+      <form onSubmit={handleSubmit} className="modal-form">
+        <div className="form-group">
+          <label htmlFor="categoryName">Название раздела</label>
+          <input
+            id="categoryName"
+            type="text"
+            placeholder="Введите название"
+          />
+        </div>
+        <div className="form-group">
+          <button type="submit" className="submit-button" disabled={loading}>
+            {loading ? <MoonLoader size={14} color="#fff" /> : "Добавить"}
           </button>
         </div>
-        <form onSubmit={handleSubmit} className="modal-form">
-          <div className="form-group">
-            <label htmlFor="categoryName">Название раздела</label>
-            <input
-              id="categoryName"
-              type="text"
-              placeholder="Введите название"
-            />
-          </div>
-          <div className="form-group">
-            {loading ? (
-                <button type="submit" className="submit-button">
-                    <MoonLoader size={14} color="#fff" />
-              </button>
-            ) : (
-              <button type="submit" className="submit-button">
-                Добавить
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
-    </div>
+      </form>
+    </ModalLayout>
   );
 }

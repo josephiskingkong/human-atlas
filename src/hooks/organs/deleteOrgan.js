@@ -1,8 +1,8 @@
-import { ENDPOINT } from "../../config/constants";
+import { apiRequest } from "../../config/apiRequest";
 
 async function deleteOrganById(id) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/organs/delete`, {
+        const response = await apiRequest(`/v1/organs/delete`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -10,15 +10,13 @@ async function deleteOrganById(id) {
             body: JSON.stringify({ id })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to delete point');
+        if (response.error) {
+            throw new Error('Failed to delete point');
         }
 
-        const result = await response.json();
-        return result;
+        return response;
     } catch (error) {
-        console.error('Error deleting organ:', error.message);
+        throw new Error('Error deleting organ:', error.message)
     }
 }
 

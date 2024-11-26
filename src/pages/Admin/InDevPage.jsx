@@ -17,7 +17,7 @@ export default function InDevPage() {
     <div className="indev-wrapper">
       <div className="indev-container">
         <div className="indev-header">
-          <img src={dev} className="indev-icon"/>
+          <img src={dev} alt="Development" className="indev-icon"/>
           <div className="indev-title">Раздел находится в разработке</div>
           <div className="indev-description">
             Вернитесь сюда немного позже

@@ -1,18 +1,11 @@
-import { ENDPOINT } from "../config/constants";
-
+import { apiRequest } from "../config/apiRequest";
 async function getMainCategories() {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/categories/get-mains/`);
+        const response = await apiRequest(`/v1/categories/get-mains/`);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch categories');
-        }
+        response.sort((a, b) => a.name.localeCompare(b.name));
 
-        const categories = await response.json();
-        categories.sort((a, b) => a.name.localeCompare(b.name));
-
-        return categories;
+        return response;
     } catch (error) {
         console.error('Error fetching categories: ', error.message);
         return [];
@@ -21,17 +14,11 @@ async function getMainCategories() {
 
 async function getCategoriesByParentId(categoryid) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/categories/get-by-categoryid/${categoryid}`);
+        const response = await apiRequest(`/v1/categories/get-by-categoryid/${categoryid}`);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch categories');
-        }
+        response.sort((a, b) => a.name.localeCompare(b.name));
 
-        const categories = await response.json();
-        categories.sort((a, b) => a.name.localeCompare(b.name));
-
-        return categories;
+        return response;
     } catch (error) {
         console.error('Error fetching categories: ', error.message);
         return [];
@@ -40,16 +27,9 @@ async function getCategoriesByParentId(categoryid) {
 
 async function getCategoryById(id) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/categories/get/${id}`);
+        const response = await apiRequest(`/v1/categories/get/${id}`);
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to fetch categories');
-        }
-
-        const category = await response.json();
-
-        return category;
+        return response;
     } catch (error) {
         console.error('Error fetching categories: ', error.message);
         return [];
@@ -67,7 +47,7 @@ async function addCategory(name, categoryid = null) {
     );
 
     try {
-        const response = await fetch(`${ENDPOINT}/v1/categories/add`, {
+        const response = await apiRequest(`/v1/categories/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -75,13 +55,7 @@ async function addCategory(name, categoryid = null) {
             body: JSON.stringify(filteredBody)
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to add category');
-        }
-
-        const result = await response.json();
-        return result;
+        return response;
     } catch (error) {
         console.error('Error adding category:', error.message);
         return null;

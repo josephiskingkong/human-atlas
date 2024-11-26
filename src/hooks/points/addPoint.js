@@ -1,8 +1,8 @@
-import { ENDPOINT } from "../../config/constants";
+import { apiRequest } from "../../config/apiRequest";
 
 async function addPointToBack(x, y, organid, description, name) {
     try {
-        const response = await fetch(`${ENDPOINT}/v1/points/add`, {
+        const response = await apiRequest(`/v1/points/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -10,13 +10,11 @@ async function addPointToBack(x, y, organid, description, name) {
             body: JSON.stringify({ x, y, organid, name, description })
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Failed to add point');
+        if (response.error) {
+            throw new Error(response.error || 'Failed to add point');
         }
 
-        const result = await response.json();
-        return result;
+        return response;
     } catch (error) {
         console.error('Error adding point:', error.message);
     }

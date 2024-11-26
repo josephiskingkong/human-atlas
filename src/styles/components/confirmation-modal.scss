@@ -15,8 +15,15 @@
 }
 
 .confirm-button {
-  background: #f44336;
   color: #fff;
+
+  &.red {
+    background-color: #f44336;
+  }
+
+  &.green {
+    background-color: #2fbc00;
+  }
 }
 
 .cancel-button {

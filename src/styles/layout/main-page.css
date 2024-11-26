@@ -1,0 +1,18 @@
+.main-page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  padding-top: 32px;
+  padding-bottom: 20px;
+}
+.main-page-wrapper .main-page-container {
+  grid-column: 2;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+}
+.main-page-wrapper .main-page-container .main-header .main-title {
+  color: #000;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 800;
+}/*# sourceMappingURL=main-page.css.map */

@@ -47,4 +47,9 @@
 .notification-error {
   background-color: #f02b2b;
   color: white;
+}
+
+.notification-success {
+  background-color: #2fbc00;
+  color: white;
 }/*# sourceMappingURL=notification.css.map */
