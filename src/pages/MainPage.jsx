@@ -29,7 +29,7 @@ const MainPage = () => {
             <div className="main-title">Главная страница</div>
           </div>
           {user?.isAdmin && (
-            <PanelNavigateButton title="Админ-панель" path="/admin" />
+            <PanelNavigateButton title="Админ-панель" path="admin" />
           )}
         </div>
       </div>
