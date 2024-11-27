@@ -64,7 +64,7 @@ const SlidePage = () => {
   };
 
   const handleGoBack = () => {
-    navigate(`/admin/categories/${slideData.organ.categoryid}`)
+    navigate(`/human-atlas/admin/categories/${slideData.organ.categoryid}`)
   }
 
   return (

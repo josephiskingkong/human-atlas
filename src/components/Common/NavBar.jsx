@@ -90,7 +90,7 @@ export default function NavBar() {
   };
 
   const handleGoToMainPage = () => {
-    navigate("/")
+    navigate("/human-atlas/")
   }
 
   return (

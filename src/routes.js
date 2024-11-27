@@ -8,13 +8,13 @@ const SlidesListPage = lazy(() => import('./pages/Admin/SlidesListPage'))
 const MainPage = lazy(() => import('./pages/MainPage'))
 
 const routes = [
-  { path: '/', element: <MainPage /> },
-  { path: '/slide/:id', element: <SlidePage /> },
-  { path: '/admin/slide/:id', element: <SlidePage /> },
-  { path: '/admin/', element: <AdminMenu /> },
-  { path: '/admin/in-dev/', element: <InDevPage /> },
-  { path: '/admin/categories/', element: <CategoriesPage /> },
-  { path: 'admin/categories/:categoryid', element: <SlidesListPage /> },
+  { path: '/human-atlas/', element: <MainPage /> },
+  { path: '/human-atlas/slide/:id', element: <SlidePage /> },
+  { path: '/human-atlas/admin/slide/:id', element: <SlidePage /> },
+  { path: '/human-atlas/admin/', element: <AdminMenu /> },
+  { path: '/human-atlas/admin/in-dev/', element: <InDevPage /> },
+  { path: '/human-atlas/admin/categories/', element: <CategoriesPage /> },
+  { path: '/human-atlas/admin/categories/:categoryid', element: <SlidesListPage /> },
 ];
 
 export default routes;

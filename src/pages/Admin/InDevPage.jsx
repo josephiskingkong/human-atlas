@@ -9,7 +9,7 @@ export default function InDevPage() {
     if (window.history.length > 1) {
       navigate(-1); 
     } else {
-      navigate("/admin"); 
+      navigate("/human-atlas/admin"); 
     }
   };
 

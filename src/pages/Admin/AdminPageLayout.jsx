@@ -14,14 +14,14 @@ export default function AdminPageLayout({ title, children }) {
       try {
         const user = JSON.parse(userCookie);
         if (!user.isAdmin) {
-          navigate("/"); 
+          navigate("/human-atlas/"); 
         }
       } catch (error) {
         console.error("Ошибка парсинга куки с пользователем:", error);
-        navigate("/"); 
+        navigate("/human-atlas/"); 
       }
     } else {
-      navigate("/"); 
+      navigate("/human-atlas/"); 
     }
   }, [navigate]);
 

@@ -8,9 +8,9 @@ import AdminPageLayout from "./AdminPageLayout";
 export default function AdminMenu() {
   return (
     <AdminPageLayout title="Управление сайтом">
-            <PanelNavigateButton title="Слайды и разделы" icon={sections} path="/admin/categories/"/>
-            <PanelNavigateButton title="Пользователи (в разработке)" icon={user} path="/admin/in-dev/"/>
-            <PanelNavigateButton title="Тестирование (в разработке)" icon={test} path="/admin/in-dev/"/>
+            <PanelNavigateButton title="Слайды и разделы" icon={sections} path="/human-atlas/admin/categories/"/>
+            <PanelNavigateButton title="Пользователи (в разработке)" icon={user} path="/human-atlas/admin/in-dev/"/>
+            <PanelNavigateButton title="Тестирование (в разработке)" icon={test} path="/human-atlas/admin/in-dev/"/>
     </AdminPageLayout>
   );
 }
