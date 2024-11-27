@@ -4,7 +4,7 @@ async function addOrgan(formData) {
     try {
         const response = await apiRequest(`/v1/organs/add`, {
             method: 'POST',
-            body: formData
+            body: formData,
         });
 
         if (response.error) {
@@ -13,7 +13,7 @@ async function addOrgan(formData) {
 
         return response;
     } catch (error) {
-        console.error('Error adding organ:', error.message);
+        throw error
     }
 }
 

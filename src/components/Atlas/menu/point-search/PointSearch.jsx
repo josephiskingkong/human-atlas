@@ -33,7 +33,7 @@ export default function PointSearch({ points }) {
             }
 
             { searchList.length === 0 &&
-                <h2>По вашему запросу ничего не найдено :(</h2>
+                <span>По вашему запросу ничего не найдено :(</span>
             }
         </div>
     );

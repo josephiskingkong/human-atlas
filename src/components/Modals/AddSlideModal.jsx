@@ -4,6 +4,7 @@ import "../../styles/components/modal.css";
 import { addOrgan } from "../../hooks/organs/addOrgan";
 import { MoonLoader } from "react-spinners";
 import { useNotification } from "../../context/NotificationContext";
+import { TooLargeError } from "../../config/errors";
 
 export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
   const [loading, setLoading] = useState(false);
@@ -46,7 +47,10 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
         showNotification("Слайд не добавлен, проверьте данные", "error");
       }
     } catch (err) {
-      showNotification("Ошибка при добавлении слайда", "error");
+      if (err instanceof TooLargeError) {
+        return showNotification("Вес загружаемого файла превышает 4ГБ", "error");
+      }
+      return showNotification("Ошибка при добавлении слайда", "error");
     } finally {
       setLoading(false);
     }

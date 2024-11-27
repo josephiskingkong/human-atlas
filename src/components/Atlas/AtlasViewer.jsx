@@ -14,11 +14,14 @@ import { setActiveTool, setCurrMenu, setTargetPoint } from "../../redux/atlas/at
 import { addPointToBack } from "../../hooks/points/addPoint";
 import { editPoint } from "../../hooks/points/editPoint";
 import { getOrganByOrganId } from "../../hooks/organs/getOrgan";
+import { useNotification } from "../../context/NotificationContext";
 
 const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
   const activeTool = useSelector((state) => state.atlas.activeTool);
   const targetPoint = useSelector((state) => state.atlas.targetPoint);
   const dispatch = useDispatch();
+
+  const { showNotification } = useNotification();
 
   const osdViewer = useRef(null);
   const viewerRef = useRef(null);
@@ -175,6 +178,8 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
         const position = osdViewer.current.viewport.pointFromPixel(e.position);
 
         const res = await addPointToBack(position.x, position.y, slideData.organ.id, '', '');
+        showNotification("Точка успешно добавлена", "info")
+
         console.log("POINT ID", res.point_id);
 
         const newPoint = {

@@ -1,9 +1,25 @@
+import { useEffect, useState } from "react";
 import NavBar from "../components/Common/NavBar";
 import PanelNavigateButton from "../components/Common/PanelNavigateButton";
+import Cookies from "js-cookie";
 
 import "../styles/layout/main-page.css";
 
 const MainPage = () => {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const userCookie = Cookies.get("user");
+    if (userCookie) {
+      try {
+        const parsedUser = JSON.parse(userCookie);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Ошибка парсинга куки с пользователем:", error);
+      }
+    }
+  }, []);
+
   return (
     <>
       <NavBar />
@@ -12,7 +28,9 @@ const MainPage = () => {
           <div className="main-header">
             <div className="main-title">Главная страница</div>
           </div>
-          <PanelNavigateButton title="Админ-панель" path="/admin" />
+          {user?.isAdmin && (
+            <PanelNavigateButton title="Админ-панель" path="/admin" />
+          )}
         </div>
       </div>
     </>

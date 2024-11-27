@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 import { ENDPOINT } from "./constants";
+import { TooLargeError } from "./errors";
 
 let showSessionExpiredModal = null;
 
@@ -19,23 +20,35 @@ const handleSessionExpired = () => {
 
 export const apiRequest = async (url, options = {}) => {
   const csrfToken = localStorage.getItem("csrfToken");
+  const accessToken = Cookies.get("accessToken"); 
 
   const headers = {
-    "Content-Type": "application/json",
     "X-XSRF-TOKEN": csrfToken,
     ...options.headers,
   };
 
+  const credentials = {
+    credentials: "include", 
+  };
+
+  if (accessToken) {
+    headers["Cookie"] = `accessToken=${accessToken}`; 
+  }
+
   try {
     const response = await fetch(`${ENDPOINT}${url}`, {
       ...options,
+      ...credentials,
       headers,
-      credentials: "include",
     });
 
     if (response.status === 401) {
       handleSessionExpired();
       return;
+    }
+
+    if (response.status === 413) {
+      throw new TooLargeError();
     }
 
     if (!response.ok) {
@@ -46,6 +59,8 @@ export const apiRequest = async (url, options = {}) => {
     return await response.json();
   } catch (error) {
     console.error("Ошибка API:", error);
-    throw error;
+    if (!error.message?.includes("SyntaxError: Unexpected token")) {
+      throw error;
+    }
   }
 };

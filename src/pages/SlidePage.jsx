@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import atlasStore from '../redux/atlas/atlas-store'
 import AtlasViewer from "../components/Atlas/AtlasViewer";
@@ -23,6 +23,7 @@ const SlidePage = () => {
   const [slideData, setSlideData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSlideData = async () => {
@@ -62,12 +63,16 @@ const SlidePage = () => {
     setViewerReady(true);
   };
 
+  const handleGoBack = () => {
+    navigate(`/admin/categories/${slideData.organ.categoryid}`)
+  }
+
   return (
     <Provider store={ atlasStore }>
       <div className="slide-page-container">
         {slideData && (
           <>
-            <button className="go-back-button">
+            <button className="go-back-button" onClick={handleGoBack}>
               <img src={arrow} alt="arrow" />
             </button>
 

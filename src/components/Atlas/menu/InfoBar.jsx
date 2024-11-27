@@ -1,9 +1,9 @@
-import CloseMenuButton from "./CloseMenuButton";
 import SearchBar from "./SearchBar";
 
-export default function InfoBar({ title, category, currMenu }) {
+export default function InfoBar({ title, category, currMenu, closeButton }) {
     return (
         <div className="info-bar-container">
+            { closeButton }
             <SearchBar></SearchBar>
             { currMenu !== 'close' && 
                 <div className="info-container">

@@ -1,7 +1,7 @@
 @import '../../base/variables.scss';
 
 .searchbar {
-  height: 45px;
+  height: 50px;
   border-radius: 11px;
   border: 0.2px solid #c5cace;
   background: #eef3f7;
@@ -26,6 +26,10 @@
       font-weight: 400;
       color: rgba(8, 14, 41, 0.5);
     }
+  }
+
+  .divider {
+    height: 40px;
   }
 
   .searchButton {
@@ -63,9 +67,12 @@
 }
 
 .point-menu {
-  flex: 1;
+  position: relative;
   width: 100%;
   max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 
   .hint-menu {
     position: fixed;
@@ -94,8 +101,7 @@
 
   .close-button {
     position: absolute;
-    top: 5vh;
-    right: 38%;
+    left: -60px;
     height: 50px;
     background: url('/src/assets/images/close.svg') center no-repeat;
     width: 40px;
@@ -111,7 +117,7 @@
 
   .menu-container {
     width: 100%;
-    height: 70.5vh;
+    flex: 1;
     position: relative;
     box-sizing: border-box; 
     margin-top: 14px;

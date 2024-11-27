@@ -52,8 +52,7 @@ export default function Menu({ slideData }) {
 
     return (
         <div className="point-menu">
-            <CloseMenuButton currMenu={ currMenu } closeHandler={ closeMenuHandler }/>
-            <InfoBar title={slideData.organ.name} category="TODO" points={ slideData.points } currMenu={ currMenu }/>
+            <InfoBar title={slideData.organ.name} category="TODO" points={ slideData.points } currMenu={ currMenu } closeButton={<CloseMenuButton currMenu={ currMenu } closeHandler={ closeMenuHandler }/> } />
 
             { (currMenu !== 'close') &&
                 <div className="menu-container">

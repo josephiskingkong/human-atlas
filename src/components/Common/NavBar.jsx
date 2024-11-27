@@ -61,6 +61,7 @@ export default function NavBar() {
     Cookies.remove("accessToken");
     setUser(null);
     setIsDropdownOpen(false);
+    window.location.reload();
   };
 
   const handleLoginSuccess = (userData, accessToken) => {
@@ -68,6 +69,7 @@ export default function NavBar() {
     Cookies.set("accessToken", accessToken, { secure: true });
     setUser(userData);
     setShowLoginModal(false);
+    window.location.reload();
   };
 
   const toggleDropdown = () => {

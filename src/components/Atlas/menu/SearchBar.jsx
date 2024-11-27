@@ -28,7 +28,7 @@ export default function SearchBar() {
                     }
                 }}
             />
-            <img src={divider} style={{ height: "46px" }} alt="divider" />
+            <img src={divider} className="divider" alt="divider" />
             <button className="searchButton" 
                 onPointerDown={ searchHandler }
             >
