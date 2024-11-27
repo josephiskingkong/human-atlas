@@ -16,6 +16,7 @@ function Breadcrumbs() {
     admin: "Админ-панель",
     slide: "Слайд",
     categories: "Разделы",
+    "human-atlas": "Гисто Атлас"
   };
 
   useEffect(() => {
