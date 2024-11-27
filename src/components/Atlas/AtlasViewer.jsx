@@ -225,7 +225,9 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
 
     return () => {
       console.log("remove HANDLERS");
-      osdViewer.current.removeHandler("canvas-click", canvasClick);
+      if (osdViewer.current) {
+        osdViewer.current.removeHandler("canvas-click", canvasClick);
+      }
     };
   }, [activeTool, targetPoint])
 
