@@ -9,7 +9,7 @@ export default function ModalLayout({ title, children, onClose, className }) {
   };
 
   return (
-    <div className="modal-overlay" onClick={handleOverlayClick}>
+    <div className="modal-overlay" onPointerDown={handleOverlayClick}>
       <div className={`modal-container ${className || ""}`}>
         <div className="modal-header">
           <h2>{title}</h2>

@@ -53,10 +53,11 @@
 
 .toolbar-layout {
   width: 100%;
+  height: calc(100vh - 25px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding: 25px;
+  // padding: 25px;
 }
 
 .point-menu-layout {
@@ -64,4 +65,6 @@
   align-items: flex-start;
   justify-content: flex-end;
   padding: 25px 25px 25px 0px;
+  height: calc(100vh - 50px);
+
 }
