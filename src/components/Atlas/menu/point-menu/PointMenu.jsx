@@ -42,10 +42,10 @@ export default function PointMenu() {
     let title = titlePoint;
     let description = infoPoint;
 
-    if (title && description) {
+    if (title) {
       console.log(title + " " + description);
 
-      await editPoint({ id, name: title, description });
+      editPoint({ id, name: title, description });
 
       const newPoint = {
         ...targetPoint,
@@ -59,7 +59,9 @@ export default function PointMenu() {
 
       dispatch(setCurrMenu("close"));
 
-      showNotification("Точка успешно обновлена", "info")
+      showNotification("Точка успешно обновлена", "info");
+    } else {
+      showNotification("У точки должно быть название", "error");
     }
   };
 
@@ -77,33 +79,33 @@ export default function PointMenu() {
   };
 
   const textAreaHandler = (event) => {
-    if (isFocus) {
-      const textarea = textArea.current;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-
-      const selectedText = infoPoint.slice(start, end);
-
-      if (event.ctrlKey && event.key === "b") {
-        event.preventDefault();
-        setInfoPoint(
-          `${infoPoint.slice(0, start)}**${selectedText}**${infoPoint.slice(
-            end
-          )}`
-        );
-      } else if (event.ctrlKey && event.key === "i") {
-        event.preventDefault();
-        setInfoPoint(
-          `${infoPoint.slice(0, start)}*${selectedText}*${infoPoint.slice(end)}`
-        );
-      } else if (event.ctrlKey && event.key === "u") {
-        event.preventDefault();
-        setInfoPoint(
-          `${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(
-            end
-          )}`
-        );
-      }
+    const textarea = textArea.current;
+  
+    if (!isFocus || !textarea) return;
+  
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = infoPoint.slice(start, end);
+  
+    const isBoldShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyB";
+    const isItalicShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyI";
+    const isUnderlineShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyU";
+  
+    if (isBoldShortcut) {
+      event.preventDefault();
+      setInfoPoint(
+        `${infoPoint.slice(0, start)}**${selectedText}**${infoPoint.slice(end)}`
+      );
+    } else if (isItalicShortcut) {
+      event.preventDefault();
+      setInfoPoint(
+        `${infoPoint.slice(0, start)}*${selectedText}*${infoPoint.slice(end)}`
+      );
+    } else if (isUnderlineShortcut) {
+      event.preventDefault();
+      setInfoPoint(
+        `${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(end)}`
+      );
     }
   };
 
@@ -119,7 +121,7 @@ export default function PointMenu() {
         actionColor="red"
       />
 
-      {/* {isFocus && <HintMenu />} */}
+      {isFocus && <HintMenu />}
 
       <div className="point-menu-container">
         <input
@@ -129,7 +131,7 @@ export default function PointMenu() {
           onChange={(event) => setTitlePoint(event.target.value)}
         ></input>
         <div className="textarea-container">
-          {/* <div className="view-info-buttons">
+          <div className="view-info-buttons">
             <ButtonIcon
               alt={"markdown"}
               isActive={activeButton === "markdown"}
@@ -150,9 +152,9 @@ export default function PointMenu() {
             >
               {activeButton === "view" ? eye : eyeBlue}
             </ButtonIcon>
-          </div> */}
+          </div>
           <div className="input-info-container">
-            {/* {!isMarkdown ? (
+            {!isMarkdown ? (
               <div className="markdown-wrapper">
                 <Markdown>{infoPoint}</Markdown>
               </div>
@@ -167,17 +169,7 @@ export default function PointMenu() {
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
               />
-            )} */}
-            <textarea
-              type="text"
-              className="input-info"
-              ref={textArea}
-              value={infoPoint}
-              onChange={(event) => setInfoPoint(event.target.value)}
-              onKeyDown={textAreaHandler}
-              onFocus={() => setIsFocus(true)}
-              onBlur={() => setIsFocus(false)}
-            />
+            )}
           </div>
         </div>
         <div className="point-info-buttons">

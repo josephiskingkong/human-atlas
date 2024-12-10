@@ -132,6 +132,7 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     const organ = await getOrganByOrganId(slideData.organ.id);
 
     const mpp_x = Number(organ.mpp_x);
+    console.log(mpp_x);
     const pixelsPerMeter = 1 / (mpp_x * 1e-6);
 
     osdViewer.current.scalebar({

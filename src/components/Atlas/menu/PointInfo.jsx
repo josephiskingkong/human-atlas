@@ -8,7 +8,7 @@ export default function PointInfo() {
     return (
         <div className="point-info-container">
             <h1>{ targetPoint.name }<br/></h1>
-            <div className="markdown">
+            <div className="markdown-wrapper">
                 <Markdown>{ targetPoint.description }</Markdown>
             </div>
         </div>

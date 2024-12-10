@@ -31,7 +31,9 @@
   display: grid;
   grid-template-columns: 5fr 3fr;
 
-  overflow: hidden;
+  // overflow: hidden;
+  padding: 25px;
+  box-sizing: border-box;
 
   z-index: 2;
   pointer-events: none;
@@ -53,7 +55,7 @@
 
 .toolbar-layout {
   width: 100%;
-  height: calc(100vh - 25px);
+  // height: calc(100vh - 25px);
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -64,7 +66,8 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-end;
-  padding: 25px 25px 25px 0px;
-  height: calc(100vh - 50px);
+  overflow: auto;
+  // padding: 25px 25px 25px 0px;
+  // height: calc(100vh - 50px);
 
 }

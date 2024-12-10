@@ -68,6 +68,9 @@
   margin: 0;
   padding: 0;
   font-family: "Nunito Sans";
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 *::-webkit-scrollbar {
