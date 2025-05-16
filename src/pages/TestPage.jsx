@@ -18,24 +18,24 @@ const TestPage = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState([]);
   const [textAnswer, setTextAnswer] = useState("");
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 минут
+  const [timeLeft, setTimeLeft] = useState();
   const [testStarted, setTestStarted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Получение теста и вопросов
   useEffect(() => {
+    setLoading(true);
+
     const fetchTest = async () => {
-      setLoading(true);
       try {
         const test = await apiRequest(`/v1/tests/${testId}`);
         setTestInfo(test);
-
+        console.log(test);
+        setTimeLeft(test.duration * 60);
         const questionsApi = await apiRequest(`/v1/tests/${testId}/questions`, {
           method: "GET",
         });
 
-        // Преобразуем вопросы и ответы из API в локальный формат
         const questionsMapped = questionsApi.map((q) => {
           const type = mapApiTypeToLocal(q.type);
           let correctAnswer = null;
@@ -47,7 +47,9 @@ const TestPage = () => {
             correctAnswer = correct ? correct.text : null;
           } else if (type === "multiple") {
             options = q.answers.map((a) => a.text);
-            correctAnswer = q.answers.filter((a) => a.isCorrect).map((a) => a.text);
+            correctAnswer = q.answers
+              .filter((a) => a.isCorrect)
+              .map((a) => a.text);
           } else if (type === "text") {
             correctAnswer = q.answers.map((a) => a.text)[0] || "";
           }
@@ -64,17 +66,44 @@ const TestPage = () => {
         setQuestions(questionsMapped);
         setAnswers(Array(questionsMapped.length).fill(null));
         setTestStarted(true);
+        setLoading(false);
       } catch (e) {
         setTestInfo(null);
         setQuestions([]);
       }
-      setLoading(false);
     };
 
-    if (testId) fetchTest();
+    fetchTest();
   }, [testId]);
 
-  // Локальное сохранение прогресса (можно убрать если не нужно)
+  useEffect(() => {
+    const savedTest = localStorage.getItem("reactTest");
+    console.log(savedTest);
+
+    if (savedTest && testStarted === true) {
+      const testData = JSON.parse(savedTest);
+
+      const currentTime = new Date().getTime();
+      const endTime = testData.startTime + testData.initialTime * 1000;
+
+      if (currentTime < endTime) {
+        setCurrentQuestion(testData.currentQuestion || 0);
+        setAnswers(
+          testData.answers && testData.answers.length
+            ? testData.answers
+            : Array(testData.questionCount || 0).fill(null)
+        );
+        setTimeLeft(Math.floor((endTime - currentTime) / 1000));
+        setTestStarted(true);
+      } else {
+        localStorage.removeItem("reactTest");
+        setTestStarted(false);
+      }
+
+      setLoading(false);
+    }
+  }, [testStarted]);
+
   useEffect(() => {
     if (testStarted && questions.length > 0) {
       try {
@@ -82,24 +111,33 @@ const TestPage = () => {
           testId,
           currentQuestion,
           answers,
-          startTime: new Date().getTime() - (30 * 60 - timeLeft) * 1000,
-          initialTime: 30 * 60,
+          startTime:
+            new Date().getTime() - (testInfo.duration * 60 - timeLeft) * 1000,
+          initialTime: testInfo.duration * 60,
+          questionCount: questions.length,
         };
         localStorage.setItem("reactTest", JSON.stringify(testData));
       } catch (e) {
         // ignore
       }
     }
-  }, [testStarted, testId, currentQuestion, answers, timeLeft, questions.length]);
+  }, [
+    testStarted,
+    testId,
+    currentQuestion,
+    answers,
+    timeLeft,
+    questions.length,
+    testInfo,
+  ]);
 
   // Таймер
   useEffect(() => {
-    if (testStarted && timeLeft > 0) {
+    if (testStarted && timeLeft >= 0) {
       const timer = setInterval(() => {
         setTimeLeft((prevTime) => {
           if (prevTime <= 1) {
             clearInterval(timer);
-            alert("Время истекло! Тест завершен.");
             localStorage.removeItem("reactTest");
             return 0;
           }
