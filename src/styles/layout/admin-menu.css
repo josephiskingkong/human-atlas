@@ -118,22 +118,25 @@
 
 .dropdown-menu {
   position: absolute;
-  top: 100%;
+  top: 120%;
   right: 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   padding: 8px;
+  width: -moz-max-content;
+  width: max-content;
   background: #fff;
   border-radius: 12px;
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
   gap: 2px;
 }
 .dropdown-menu .dropdown-item {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   background-color: #fff;
+  word-break: keep-all;
   border: none;
   gap: 6px;
   padding: 6px;
@@ -152,6 +155,9 @@
 }
 .dropdown-menu .dropdown-item:hover {
   background-color: #f7f7f7;
+}
+.dropdown-menu .dropdown-item .admin-logo {
+  margin: 0;
 }
 
 .slides-grid {

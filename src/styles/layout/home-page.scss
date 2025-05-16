@@ -39,8 +39,8 @@
             cursor: pointer;
 
             &:hover {
-                transform: scale(1.05);
-                box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
+                transform: scale(1.02);
+                box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.276);
             }
         }
     }
@@ -102,8 +102,8 @@
             }
 
             &:hover {
-                transform: scale(1.05); /* Немного увеличивается */
-                box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6); /* Эффект свечения */
+                transform: scale(1.02); /* Немного увеличивается */
+                box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.117); /* Эффект свечения */
             }
         } 
     }

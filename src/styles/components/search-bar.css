@@ -2,12 +2,14 @@
   margin-bottom: 1.5rem;
   position: relative;
   width: 100%;
+      z-index: 1;
 }
 .search__container {
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
+
 }
 .search__input {
   width: 100%;
@@ -20,7 +22,7 @@
 }
 .search__input:focus {
   outline: none;
-  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
+  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.135);
   border-color: transparent;
 }
 .search__icon {

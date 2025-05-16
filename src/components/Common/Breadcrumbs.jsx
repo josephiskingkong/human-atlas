@@ -17,7 +17,8 @@ function Breadcrumbs() {
     slide: "Слайд",
     categories: "Разделы",
     "human-atlas": "Гисто Атлас",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "tests": "Тесты",
   };
 
   useEffect(() => {

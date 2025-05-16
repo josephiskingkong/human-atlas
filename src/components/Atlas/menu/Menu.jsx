@@ -7,7 +7,6 @@ import PointMenu from "./point-menu/PointMenu";
 import { useEffect, useState } from "react";
 import { setCurrMenu } from "../../../redux/atlas/atlas-slice";
 import PointSearch from "./point-search/PointSearch";
-import { getCategoryById } from "../../../hooks/categories";
 
 export default function Menu({ slideData }) {
   const currMenu = useSelector((state) => state.atlas.currMenu);

@@ -10,7 +10,7 @@ export default function AdminMenu() {
     <AdminPageLayout title="Управление сайтом">
             <PanelNavigateButton title="Слайды и разделы" icon={sections} path="categories/"/>
             <PanelNavigateButton title="Пользователи (в разработке)" icon={user} path="in-dev/"/>
-            <PanelNavigateButton title="Тестирование (в разработке)" icon={test} path="tests/"/>
+            <PanelNavigateButton title="Тестирование" icon={test} path="tests/"/>
     </AdminPageLayout>
   );
 }

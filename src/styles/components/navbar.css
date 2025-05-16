@@ -33,6 +33,23 @@
   cursor: pointer;
 }
 
+.navbar-buttons {
+  display: flex;
+  gap: 72px;
+  flex-direction: row;
+  align-items: center;
+}
+.navbar-buttons .sections {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  color: #3754ed;
+  font-weight: 400;
+}
+.navbar-buttons .sections * {
+  cursor: pointer;
+}
+
 .login-button {
   border: solid 0.2px #3754ed;
   padding: 8px 12px;
@@ -52,4 +69,18 @@
 .profile-info {
   position: relative;
   cursor: pointer;
+}
+
+.admin-logo {
+  margin-right: 8px;
+  display: inline-flex;
+  font-weight: 800;
+  font-size: 14px;
+  background-color: #3754ed;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
 }/*# sourceMappingURL=navbar.css.map */

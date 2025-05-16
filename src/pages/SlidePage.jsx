@@ -8,24 +8,37 @@ import { getPointsByOrganId } from "../hooks/points/getPoint";
 import "../styles/components/atlas-viewer.css";
 import TogglePointsCheckbox from "../components/Atlas/TogglePointsCheckbox";
 import arrow from "../assets/images/arrow.svg";
-import ruler from "../assets/images/ruler.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
 import { setCurrMenu } from "../redux/atlas/atlas-slice";
-import { Provider, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Menu from "../components/Atlas/menu/Menu";
+import Cookies from "js-cookie";
 
 const SlidePage = () => {
   const dispatch = useDispatch();
 
   const { id } = useParams();
   const viewerRef = useRef(null);
+  const [user, setUser] = useState(null);
   const [slideData, setSlideData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
   const navigate = useNavigate();
   const [measureActive, setMeasureActive] = useState(false);
+
+  useEffect(() => {
+    const userCookie = Cookies.get("user");
+    if (userCookie) {
+      try {
+        const parsedUser = JSON.parse(userCookie);
+        setUser(parsedUser);
+      } catch (error) {
+        console.error("Ошибка парсинга куки с пользователем:", error);
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const fetchSlideData = async () => {
@@ -56,9 +69,12 @@ const SlidePage = () => {
   };
 
   const handleGoBack = () => {
-    if (!slideData) return;
-    navigate(`/human-atlas/admin/categories/${slideData.organ.categoryid}`)
+  if (window.history.length > 1) {
+    navigate(-1);
+  } else {
+    navigate("/human-atlas/");
   }
+};
 
   const handleRulerClick = () => {
     setMeasureActive(!measureActive);
@@ -84,11 +100,13 @@ const SlidePage = () => {
           <Zoombar />
 
           <div className="overlay-menu-grid">
-            <div className="toolbar-layout">
-              <ToolBar />
-            </div>
+            {user.isAdmin && (
+              <div className="toolbar-layout">
+                <ToolBar />
+              </div>
+            )}
             <div className="point-menu-layout">
-              <Menu slideData={ slideData } />
+              <Menu slideData={slideData} />
             </div>
           </div>
         </>

@@ -27,6 +27,28 @@
   }
 }
 
+.navbar-buttons {
+  display: flex;
+  gap: 72px;
+
+  flex-direction: row;
+
+  align-items: center;
+
+  .sections {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+
+    color: $primary-color;
+    font-weight: 400;
+
+    * {
+      cursor: pointer;
+    }
+  }
+}
+
 .login-button {
   border: solid 0.2px $primary-color;
   padding: 8px 12px;
@@ -48,4 +70,18 @@
 .profile-info {
   position: relative;
   cursor: pointer;
+}
+
+.admin-logo {
+  margin-right: 8px;
+  display: inline-flex;
+  font-weight: 800;
+  font-size: 14px;
+  background-color: $primary-color;
+  color: #fff;
+  width: 20px;
+  height: 20px;
+  align-items: center;
+justify-content: center;
+  border-radius: 4px;
 }
