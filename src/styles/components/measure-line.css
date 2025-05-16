@@ -1,52 +1,41 @@
 .measure-line-overlay {
-  position: relative;
-  pointer-events: none;
-}
-
-.measure-line-points {
   position: absolute;
-  width: 0;
-  height: 0;
-}
-
-.measure-circle {
-  position: relative;
-  width: 8px;
-  height: 8px;
-  margin: -4px; 
-  border-radius: 50%;
-  background: #ff5050;
-  border: 2px solid #fff;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-}
-
-/* можно дифференцировать стили для первой и второй точки */
-.measure-circle-p1 {
-  /* первая точка */
-}
-.measure-circle-p2 {
-
-  margin-left: 20px;
+  pointer-events: none;
 }
 
 .measure-line-segment {
   position: absolute;
-  left: 0;
-  top: 0;
   height: 2px;
   background: #ff5050;
-  margin: -1px 0 0 -1px; 
+  transform-origin: left center;
 }
 
-.measure-line-distance {
+.measure-point {
   position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5050;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+}
+
+.measure-point-start {
   left: 0;
-  top: -20px;
-  font: 12px/1.2 sans-serif;
-  color: #333;
-  background: #fff;
+}
+
+.measure-point-end {
+  right: 0;
+}
+
+.measure-distance {
+  position: absolute;
+  transform: translateX(-50%);
+  background: white;
   padding: 2px 6px;
   border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  pointer-events: none; 
-}
+}/*# sourceMappingURL=measure-line.css.map */

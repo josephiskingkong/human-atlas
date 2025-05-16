@@ -85,7 +85,7 @@ const AtlasViewer = forwardRef(
       overlays.current.push({
         measureLine: true,
         container: c,
-        ...lineData
+        ...lineData,
       });
 
       // Рендерим React-компонент внутри контейнера
@@ -95,7 +95,7 @@ const AtlasViewer = forwardRef(
       osdViewer.current.addOverlay({
         element: c,
         location: new OpenSeadragon.Point(0, 0),
-        placement: OpenSeadragon.Placement.TOP_LEFT
+        placement: OpenSeadragon.Placement.TOP_LEFT,
       });
     };
 
@@ -174,10 +174,12 @@ const AtlasViewer = forwardRef(
         );
         removeOverlayForPoint(targetPoint.id);
       } else {
-        pointsData.current = pointsData.current.map((p) =>
-          p.id === targetPoint.id
-            ? { ...p, ...targetPoint, status: undefined }
-            : p
+        const { status, ...targetWithoutStatus } = targetPoint;
+        console.log(targetWithoutStatus);
+        pointsData.current = pointsData.current.map((point) =>
+          point.id === targetPoint.id
+            ? { ...point, ...targetWithoutStatus }
+            : point
         );
       }
     }, [targetPoint]);
@@ -255,20 +257,20 @@ const AtlasViewer = forwardRef(
             const p2 = pos;
 
             // Удаляем временную точку
-            const tempOverlays = overlays.current.filter(o => o.temp);
+            const tempOverlays = overlays.current.filter((o) => o.temp);
             tempOverlays.forEach(({ container }) => {
               osdViewer.current.removeOverlay(container);
             });
-            overlays.current = overlays.current.filter(o => !o.temp);
+            overlays.current = overlays.current.filter((o) => !o.temp);
 
             // Рассчитываем расстояние в миллиметрах
             const dx = p2.x - p1.x;
-const dy = p2.y - p1.y;
-const length = Math.sqrt(dx * dx + dy * dy);
-// mpp в микрометрах на пиксель, оставляем в микрометрах для точности
-const distMm = length * (mpp / 1000);
-console.log('Точки измерения:', p1, p2, 'Расстояние:', distMm);
-console.log('mpp:', mpp, 'Расстояние:', distMm, 'мм');
+            const dy = p2.y - p1.y;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            // mpp в микрометрах на пиксель, оставляем в микрометрах для точности
+            const distMm = length * (mpp / 1000);
+            console.log("Точки измерения:", p1, p2, "Расстояние:", distMm);
+            console.log("mpp:", mpp, "Расстояние:", distMm, "мм");
 
             // Добавляем измерительную линию через React компонент
             addMeasureLine(p1, p2, distMm);
@@ -294,6 +296,36 @@ console.log('mpp:', mpp, 'Расстояние:', distMm, 'мм');
       slideData.organ.id,
       showNotification,
     ]);
+
+    const removeOverlay = () => {
+      overlays.current.forEach(({ point, container }) => {
+        if (point.id === targetPoint.id) {
+          osdViewer.current.removeOverlay(container);
+        }
+      });
+
+      console.log("REMOVE OVERLAY", targetPoint);
+
+      overlays.current = overlays.current.filter(
+        ({ point }) => point.id !== targetPoint.id
+      );
+    };
+
+    const showOverlay = () => {
+      pointsData.current.forEach((point) => {
+        if (point.id === targetPoint.id) {
+          console.log("SHOW OVERLAY", point);
+          addPoint(point);
+        }
+      });
+    };
+
+    useEffect(() => {
+      removeOverlay();
+      showOverlay();
+
+      slideData.points = pointsData.current;
+    }, [pointsData.current]);
 
     return (
       <div className="map-container">

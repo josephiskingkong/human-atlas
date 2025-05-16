@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import Footer from "../components/MainPage/Footer";
 import Navbar from "../components/MainPage/Navbar";
 import Topic from "../components/MainPage/Topic";
@@ -5,6 +6,7 @@ import Topic from "../components/MainPage/Topic";
 import "../styles/layout/home-page.css";
 
 export default function HomePage() {
+  const navigate = useNavigate();
   const topics = [
     {
       id: 1,
@@ -40,7 +42,14 @@ export default function HomePage() {
             микроскопические структуры тканей и органов с помощью
             высококачественных изображений и описаний.
           </p>
-          <button className="go-to-library">Библиотека слайдов</button>
+          <button
+            className="go-to-library"
+            onClick={() => {
+              navigate("/human-atlas/library");
+            }}
+          >
+            Библиотека слайдов
+          </button>
         </div>
 
         <div className="topics-header">

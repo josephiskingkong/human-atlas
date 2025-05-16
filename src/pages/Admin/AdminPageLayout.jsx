@@ -14,14 +14,14 @@ export default function AdminPageLayout({ title, children }) {
       try {
         const user = JSON.parse(userCookie);
         if (!user.isAdmin) {
-          navigate("/human-atlas/"); 
+          navigate("/human-atlas/admin/home");
         }
       } catch (error) {
         console.error("Ошибка парсинга куки с пользователем:", error);
-        navigate("/human-atlas/"); 
+        navigate("/human-atlas/admin/home");
       }
     } else {
-      navigate("/human-atlas/"); 
+      navigate("/human-atlas/admin/home");
     }
   }, [navigate]);
 

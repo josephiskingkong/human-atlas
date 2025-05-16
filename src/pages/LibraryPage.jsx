@@ -4,118 +4,62 @@ import Navbar from "../components/MainPage/Navbar";
 import SearchBar from "../components/MainPage/SearchBar";
 
 import "../styles/layout/library-page.css";
+import { getOrgansByCategoryId, getOrgansDone } from "../hooks/organs/getOrgan";
+import CategoryFilter from "../components/MainPage/CategoryFilter";
+import { getMainCategories } from "../hooks/categories";
+import { useNavigate } from "react-router-dom";
 
 const HistologySlideLibrary = () => {
   const [slides, setSlides] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSlides, setFilteredSlides] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Имитация загрузки данных с сервера
-  useEffect(() => {
-    const fetchSlides = () => {
-      setIsLoading(true);
-      setTimeout(() => {
-        const mockSlides = [
-          {
-            id: 1,
-            name: "Кость компактная (поперечный срез)",
-            image:
-              "C8Fexfhxj0Y7NAdTeXMt8klM4JIt92VrAF30vgTDxVUFK4fnBk_GppBxGMQRjvZLnfTTEzZsVC-kekgwTFApGk6SHJO9L8hGPiBMWTVpIeJcAP3ROLV8bwcE-O85_eVxI0X_1nk4vo2MIBWXRJO8CtiS6lF5KGVRsSoaH2s2dUQJ4kHO30b4bR4mQGZqSQbwSQfbtQieYT47UJOoDMjHY.webp",
-            category: "Костная ткань",
-          },
-          {
-            id: 2,
-            name: "Печень (окраска гематоксилин-эозин)",
-            image: "/api/placeholder/150/150",
-            category: "Пищеварительная система",
-          },
-          {
-            id: 3,
-            name: "Эпителий многослойный плоский",
-            image: "/api/placeholder/150/150",
-            category: "Эпителиальная ткань",
-          },
-          {
-            id: 4,
-            name: "Спинной мозг (поперечный срез)",
-            image: "/api/placeholder/150/150",
-            category: "Нервная система",
-          },
-          {
-            id: 5,
-            name: "Лимфатический узел",
-            image: "/api/placeholder/150/150",
-            category: "Иммунная система",
-          },
-          {
-            id: 6,
-            name: "Сердечная мышца",
-            image: "/api/placeholder/150/150",
-            category: "Мышечная ткань",
-          },
-          {
-            id: 7,
-            name: "Артерия эластического типа",
-            image: "/api/placeholder/150/150",
-            category: "Сердечно-сосудистая система",
-          },
-          {
-            id: 8,
-            name: "Щитовидная железа",
-            image: "/api/placeholder/150/150",
-            category: "Эндокринная система",
-          },
-          {
-            id: 9,
-            name: "Красный костный мозг",
-            image: "/api/placeholder/150/150",
-            category: "Кроветворная система",
-          },
-          {
-            id: 10,
-            name: "Тонкий кишечник (ворсинки)",
-            image: "/api/placeholder/150/150",
-            category: "Пищеварительная система",
-          },
-          {
-            id: 11,
-            name: "Гиалиновый хрящ",
-            image: "/api/placeholder/150/150",
-            category: "Хрящевая ткань",
-          },
-          {
-            id: 12,
-            name: "Поджелудочная железа",
-            image: "/api/placeholder/150/150",
-            category: "Пищеварительная система",
-          },
-        ];
+  const navigate = useNavigate();
 
-        setSlides(mockSlides);
-        setFilteredSlides(mockSlides);
-        setIsLoading(false);
-      }, 800);
+  useEffect(() => {
+    const fetchSlides = async () => {
+      setIsLoading(true);
+
+      const mockSlides = await getOrgansDone();
+      const mockCategories = await getMainCategories();
+      console.log(mockSlides);
+      setSlides(mockSlides);
+      setCategories(mockCategories);
+      setFilteredSlides(mockSlides);
+      setIsLoading(false);
     };
 
     fetchSlides();
   }, []);
 
   useEffect(() => {
+    let filtered = [...slides];
+
+    if (currentFilter !== "all") {
+      filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
+    }
+
     if (searchQuery.trim() === "") {
-      setFilteredSlides(slides);
+      setFilteredSlides(filtered);
       return;
     }
 
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filtered = slides.filter(
+    filtered = filtered.filter(
       (slide) =>
         slide.name.toLowerCase().includes(lowerCaseQuery) ||
-        slide.category.toLowerCase().includes(lowerCaseQuery)
+        slide.categoryid.toLowerCase().includes(lowerCaseQuery)
     );
 
     setFilteredSlides(filtered);
-  }, [searchQuery, slides]);
+  }, [searchQuery, slides, currentFilter]);
+
+  const handleCategoryChange = (category) => {
+    setCurrentFilter(category);
+  };
 
   return (
     <div className="histology-page">
@@ -124,6 +68,11 @@ const HistologySlideLibrary = () => {
       <main className="main">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
+        <CategoryFilter
+          categories={categories}
+          handleCategoryChange={handleCategoryChange}
+          currentFilter={currentFilter}
+        />
         {isLoading ? (
           <div className="loader">
             <div className="loader__spinner"></div>
@@ -140,7 +89,13 @@ const HistologySlideLibrary = () => {
 
             <div className="slides-grid">
               {filteredSlides.map((slide) => (
-                <div key={slide.id} className="slide-card">
+                <div
+                  key={slide.id}
+                  className="slide-card"
+                  onClick={() => {
+                    navigate(`/human-atlas/slide/${slide.id}`);
+                  }}
+                >
                   <div className="slide-card__image-container">
                     <img
                       src={slide.image}

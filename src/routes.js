@@ -16,7 +16,7 @@ const TestsPage = lazy(() => import("./pages/TestsPage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
 
 const routes = [
-  { path: "/human-atlas/", element: <MainPage /> },
+  { path: "/human-atlas/", element: <HomePage /> },
   {
     path: "/human-atlas/slide/:id",
     element: (
@@ -33,6 +33,7 @@ const routes = [
       </Provider>
     ),
   },
+  { path: "/human-atlas/admin/home", element: <MainPage /> },
   { path: "/human-atlas/admin/", element: <AdminMenu /> },
   { path: "/human-atlas/admin/in-dev/", element: <InDevPage /> },
   { path: "/human-atlas/admin/categories/", element: <CategoriesPage /> },

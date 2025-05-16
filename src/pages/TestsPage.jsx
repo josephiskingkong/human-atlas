@@ -5,6 +5,7 @@ import Navbar from "../components/MainPage/Navbar";
 import Footer from "../components/MainPage/Footer";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
 import { getTests } from "../hooks/tests/getTests";
+import { useNavigate } from "react-router-dom";
 
 const TestList = () => {
   const [tests, setTests] = useState([]);
@@ -15,12 +16,16 @@ const TestList = () => {
   const [activeCardId, setActiveCardId] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     getTests()
       .then((data) => {
         setTests(data);
         setFilteredTests(data);
-        const uniqueCategories = [...new Set(data.map((test) => test.category))];
+        const uniqueCategories = [
+          ...new Set(data.map((test) => test.category)),
+        ];
         const categoriesData = uniqueCategories.map((category) => {
           const categoryObj = data.find((test) => test.category === category);
           return {
@@ -38,7 +43,7 @@ const TestList = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = tests;
+    let filtered = [...tests];
 
     if (currentFilter !== "all") {
       filtered = filtered.filter((test) => test.category === currentFilter);
@@ -82,8 +87,7 @@ const TestList = () => {
       e.stopPropagation();
     }
 
-    alert(`Вы выбрали тест: ${test.title}`);
-    setActiveCardId(null);
+    navigate(`/human-atlas/test/${test.id}`);
   };
 
   return (
@@ -117,11 +121,11 @@ const TestList = () => {
                 <div className="test-category">{test.categoryName}</div>
                 <div className="test-info">
                   <span>
-                    <i className="far fa-clock"></i> {test.duration}
+                    <i className="far fa-clock"></i> {test.duration} минут
                   </span>
                   <span>
-                    <i className="far fa-question-circle"></i> {test.questionCount}{" "}
-                    вопросов
+                    <i className="far fa-question-circle"></i>{" "}
+                    {test.questionCount} вопросов
                   </span>
                 </div>
 
