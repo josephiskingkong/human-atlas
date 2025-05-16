@@ -46,7 +46,7 @@ const routes = [
   { path: "/human-atlas/home", element: <HomePage /> },
   { path: "/human-atlas/library", element: <LibraryPage /> },
   { path: "/human-atlas/tests", element: <TestsPage /> },
-  { path: "/human-atlas/tests/:id", element: <TestPage /> },
+  { path: "/human-atlas/tests/:testId", element: <TestPage /> },
 ];
 
 export default routes;

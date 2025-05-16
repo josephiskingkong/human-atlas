@@ -1,270 +1,98 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { apiRequest } from "../config/apiRequest";
 import "../styles/layout/test-page.css";
 
+// Преобразование типа вопроса из API в локальный
+const mapApiTypeToLocal = (type) => {
+  if (type === "single_choice") return "single";
+  if (type === "multiple_choice") return "multiple";
+  if (type === "text_input") return "text";
+  return type;
+};
+
 const TestPage = () => {
-  const questions = [
-    {
-      id: 1,
-      text: "Какой язык программирования используется в React?",
-      type: "single",
-      options: ["JavaScript", "Python", "Java", "C++"],
-      correctAnswer: "JavaScript",
-    },
-    {
-      id: 2,
-      text: "Выберите все, что относится к хукам в React:",
-      type: "multiple",
-      options: ["useState", "useEffect", "useMemo", "useStyles"],
-      correctAnswer: ["useState", "useEffect", "useMemo"],
-    },
-    {
-      id: 3,
-      text: "Как называется функция, которая возвращает JSX в функциональном компоненте?",
-      type: "text",
-      correctAnswer: "render",
-    },
-    {
-      id: 4,
-      text: "Какой метод жизненного цикла вызывается после рендеринга компонента в DOM?",
-      type: "single",
-      options: [
-        "componentDidMount",
-        "componentWillMount",
-        "componentDidUpdate",
-        "render",
-      ],
-      correctAnswer: "componentDidMount",
-    },
-    {
-      id: 5,
-      text: "Выберите все инструменты для управления состоянием в React:",
-      type: "multiple",
-      options: ["Redux", "MobX", "Context API", "Angular Services"],
-      correctAnswer: ["Redux", "MobX", "Context API"],
-    },
-    {
-      id: 6,
-      text: 'Что такое "props" в React?',
-      type: "single",
-      options: [
-        "Внутреннее состояние компонента",
-        "Свойства, передаваемые от родительского компонента",
-        "Методы класса",
-        "Глобальные переменные",
-      ],
-      correctAnswer: "Свойства, передаваемые от родительского компонента",
-    },
-    {
-      id: 7,
-      text: "Какой хук используется для выполнения побочных эффектов в функциональных компонентах?",
-      type: "text",
-      correctAnswer: "useEffect",
-    },
-    {
-      id: 8,
-      text: "Что такое Virtual DOM в React?",
-      type: "single",
-      options: [
-        "Библиотека для работы с DOM",
-        "Виртуальное представление реального DOM",
-        "Технология для создания 3D интерфейсов",
-        "Формат хранения данных",
-      ],
-      correctAnswer: "Виртуальное представление реального DOM",
-    },
-    {
-      id: 9,
-      text: "Выберите все, что относится к преимуществам использования React:",
-      type: "multiple",
-      options: [
-        "Компонентный подход",
-        "Одностороннее связывание данных",
-        "Виртуальный DOM",
-        "Встроенная база данных",
-      ],
-      correctAnswer: [
-        "Компонентный подход",
-        "Одностороннее связывание данных",
-        "Виртуальный DOM",
-      ],
-    },
-    {
-      id: 10,
-      text: "Какая компания разработала библиотеку React?",
-      type: "text",
-      correctAnswer: "Facebook",
-    },
-    {
-      id: 11,
-      text: "Что такое JSX?",
-      type: "single",
-      options: [
-        "JavaScript XML",
-        "Java Syntax Extension",
-        "JSON XML",
-        "JavaScript Extension",
-      ],
-      correctAnswer: "JavaScript XML",
-    },
-    {
-      id: 12,
-      text: "Какие методы монтирования компонента существуют в классовых компонентах React?",
-      type: "multiple",
-      options: [
-        "constructor",
-        "componentDidMount",
-        "render",
-        "componentShouldUpdate",
-      ],
-      correctAnswer: ["constructor", "componentDidMount", "render"],
-    },
-    {
-      id: 13,
-      text: "Как называется процесс преобразования JSX в JavaScript?",
-      type: "text",
-      correctAnswer: "transpiling",
-    },
-    {
-      id: 14,
-      text: "Что возвращает хук useState?",
-      type: "single",
-      options: [
-        "Только значение состояния",
-        "Только функцию для обновления состояния",
-        "Массив из значения и функции обновления",
-        "Объект с методами",
-      ],
-      correctAnswer: "Массив из значения и функции обновления",
-    },
-    {
-      id: 15,
-      text: "Выберите все верные утверждения о ключах (keys) в списках React:",
-      type: "multiple",
-      options: [
-        "Должны быть уникальными среди списка",
-        "Помогают React отслеживать изменения элементов",
-        "Могут быть индексами массива, но это не рекомендуется",
-        "Всегда должны быть числами",
-      ],
-      correctAnswer: [
-        "Должны быть уникальными среди списка",
-        "Помогают React отслеживать изменения элементов",
-        "Могут быть индексами массива, но это не рекомендуется",
-      ],
-    },
-    {
-      id: 16,
-      text: "Какой метод используется для обработки HTTP запросов в React?",
-      type: "text",
-      correctAnswer: "fetch",
-    },
-    {
-      id: 17,
-      text: "Каким образом можно передать параметры в URL в React Router?",
-      type: "single",
-      options: [
-        "Через params",
-        "Через query parameters",
-        "Через state",
-        "Все вышеперечисленные",
-      ],
-      correctAnswer: "Все вышеперечисленные",
-    },
-    {
-      id: 18,
-      text: "Выберите все правильные способы условного рендеринга в React:",
-      type: "multiple",
-      options: [
-        "Тернарный оператор",
-        "Оператор &&",
-        "If-else внутри JSX",
-        "Отдельная функция рендеринга",
-      ],
-      correctAnswer: [
-        "Тернарный оператор",
-        "Оператор &&",
-        "Отдельная функция рендеринга",
-      ],
-    },
-    {
-      id: 19,
-      text: "Как называется инструмент для создания проекта React с настроенной конфигурацией?",
-      type: "text",
-      correctAnswer: "Create React App",
-    },
-    {
-      id: 20,
-      text: "Какой хук используется для мемоизации вычисляемых значений?",
-      type: "single",
-      options: ["useState", "useEffect", "useMemo", "useCallback"],
-      correctAnswer: "useMemo",
-    },
-  ];
-
+  const { testId } = useParams();
+  const [testInfo, setTestInfo] = useState(null);
+  const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
+  const [answers, setAnswers] = useState([]);
   const [textAnswer, setTextAnswer] = useState("");
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 минут в секундах
+  const [timeLeft, setTimeLeft] = useState(30 * 60); // 30 минут
   const [testStarted, setTestStarted] = useState(false);
-  const [testId, setTestId] = useState("");
   const [showResults, setShowResults] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const generateTestId = () => {
-    return Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
-  };
-
+  // Получение теста и вопросов
   useEffect(() => {
-    try {
-      const savedTest = localStorage.getItem("reactTest");
+    const fetchTest = async () => {
+      setLoading(true);
+      try {
+        const test = await apiRequest(`/v1/tests/${testId}`);
+        setTestInfo(test);
 
-      if (savedTest) {
-        const testData = JSON.parse(savedTest);
+        const questionsApi = await apiRequest(`/v1/tests/${testId}/questions`, {
+          method: "GET",
+        });
 
-        const currentTime = new Date().getTime();
-        const endTime = testData.startTime + testData.initialTime * 1000;
+        // Преобразуем вопросы и ответы из API в локальный формат
+        const questionsMapped = questionsApi.map((q) => {
+          const type = mapApiTypeToLocal(q.type);
+          let correctAnswer = null;
+          let options = null;
 
-        if (currentTime < endTime) {
-          setCurrentQuestion(testData.currentQuestion || 0);
-          setAnswers(testData.answers || Array(questions.length).fill(null));
-          setTimeLeft(Math.floor((endTime - currentTime) / 1000));
-          setTestStarted(true);
-          setTestId(testData.testId || generateTestId());
-        } else {
-          alert(
-            "Отведенное на тест время истекло. Вы не можете продолжить этот тест."
-          );
-          localStorage.removeItem("reactTest");
-          setTestId(generateTestId());
-          setTestStarted(true);
-        }
-      } else {
-        setTestId(generateTestId());
+          if (type === "single") {
+            options = q.answers.map((a) => a.text);
+            const correct = q.answers.find((a) => a.isCorrect);
+            correctAnswer = correct ? correct.text : null;
+          } else if (type === "multiple") {
+            options = q.answers.map((a) => a.text);
+            correctAnswer = q.answers.filter((a) => a.isCorrect).map((a) => a.text);
+          } else if (type === "text") {
+            correctAnswer = q.answers.map((a) => a.text)[0] || "";
+          }
+
+          return {
+            id: q.id,
+            text: q.text,
+            type,
+            options,
+            correctAnswer,
+          };
+        });
+
+        setQuestions(questionsMapped);
+        setAnswers(Array(questionsMapped.length).fill(null));
         setTestStarted(true);
+      } catch (e) {
+        setTestInfo(null);
+        setQuestions([]);
       }
-    } catch (e) {
-      console.error("Ошибка при загрузке данных теста:", e);
-      setTestId(generateTestId());
-      setTestStarted(true);
-    }
-  }, []);
+      setLoading(false);
+    };
 
+    if (testId) fetchTest();
+  }, [testId]);
+
+  // Локальное сохранение прогресса (можно убрать если не нужно)
   useEffect(() => {
-    if (testStarted && testId) {
+    if (testStarted && questions.length > 0) {
       try {
         const testData = {
           testId,
           currentQuestion,
           answers,
           startTime: new Date().getTime() - (30 * 60 - timeLeft) * 1000,
-          initialTime: 30 * 60, // 30 минут в секундах
+          initialTime: 30 * 60,
         };
         localStorage.setItem("reactTest", JSON.stringify(testData));
       } catch (e) {
-        console.error("Ошибка при сохранении данных теста:", e);
+        // ignore
       }
     }
-  }, [testStarted, testId, currentQuestion, answers, timeLeft]);
+  }, [testStarted, testId, currentQuestion, answers, timeLeft, questions.length]);
 
+  // Таймер
   useEffect(() => {
     if (testStarted && timeLeft > 0) {
       const timer = setInterval(() => {
@@ -329,7 +157,7 @@ const TestPage = () => {
     if (currentQ && currentQ.type === "text") {
       setTextAnswer(answers[currentQuestion] || "");
     }
-  }, [currentQuestion, answers]);
+  }, [currentQuestion, answers, questions]);
 
   const formatTime = (seconds) => {
     if (typeof seconds !== "number" || isNaN(seconds)) {
@@ -379,7 +207,9 @@ const TestPage = () => {
       incorrect: incorrectAnswers,
       unanswered: unanswered,
       total: questions.length,
-      percentage: Math.round((correctAnswers / questions.length) * 100),
+      percentage: questions.length
+        ? Math.round((correctAnswers / questions.length) * 100)
+        : 0,
     };
   };
 
@@ -459,14 +289,11 @@ const TestPage = () => {
     return (
       <div className="results-container">
         <h1 className="results-title">Результаты теста</h1>
-
-        {/* Обзор результатов */}
         <div className="results-summary">
           <div className="summary-header">
             <h2 className="summary-title">Итоговый результат</h2>
             <div className="summary-percentage">{results.percentage}%</div>
           </div>
-
           <div className="summary-stats">
             <div className="stat-item correct">
               <div className="stat-label">Правильных ответов</div>
@@ -481,7 +308,6 @@ const TestPage = () => {
               <div className="stat-value unanswered">{results.unanswered}</div>
             </div>
           </div>
-
           <div className="progress-bar-container">
             <div
               className="progress-bar"
@@ -492,7 +318,6 @@ const TestPage = () => {
             {results.correct} из {results.total}
           </div>
         </div>
-
         <div className="retake-button-container">
           <button className="retake-button" onClick={onRetake}>
             Пройти тест заново
@@ -502,20 +327,24 @@ const TestPage = () => {
     );
   };
 
+  if (loading) {
+    return <div>Загрузка теста...</div>;
+  }
+
+  if (!testInfo || questions.length === 0) {
+    return <div>Тест не найден или не содержит вопросов</div>;
+  }
+
   return (
     <>
       {!showResults ? (
         <div className="test-container">
-          <h1 className="test-title">Тест по React</h1>
-
-          {/* Таймер */}
+          <h1 className="test-title">{testInfo.title || "Тест"}</h1>
           <div className="timer-container">
             <div className={`timer ${timeLeft < 300 ? "warning" : ""}`}>
               {formatTime(timeLeft)}
             </div>
           </div>
-
-          {/* Навигация по вопросам */}
           <div className="questions-nav">
             {questions.map((question, index) => (
               <button
@@ -529,11 +358,7 @@ const TestPage = () => {
               </button>
             ))}
           </div>
-
-          {/* Текущий вопрос */}
           {renderQuestion()}
-
-          {/* Навигационные кнопки */}
           <div className="nav-buttons">
             <button
               className={`button-prev ${
@@ -548,7 +373,6 @@ const TestPage = () => {
             >
               Предыдущий
             </button>
-
             {currentQuestion < questions.length - 1 ? (
               <button
                 className="button-next"
@@ -569,8 +393,6 @@ const TestPage = () => {
               </button>
             )}
           </div>
-
-          {/* Статистика прогресса */}
           <div className="progress-container">
             <div className="progress-text">
               Отвечено на {answers.filter((answer) => answer !== null).length}{" "}
