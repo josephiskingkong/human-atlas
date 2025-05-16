@@ -100,6 +100,7 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
     try {
       const response = await userLogin(loginUsername, loginPassword);
       if (!response || response.error) {
+        if (response.error === "INVALID_CREDENTIALS") return showNotification("Неверный логин или пароль", "error");
         showNotification(
           response?.error_message || "Произошла ошибка при входе",
           "error"
@@ -107,14 +108,13 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
         return;
       }
 
-      const { user, accessToken } = response;
+      const { message, user, accessToken } = response;
       onLoginSuccess(user, accessToken);
 
       showNotification("Вы успешно вошли", "success");
       onClose();
     } catch (error) {
-      if (error.message === "INVALID_CREDENTIALS")
-        return showNotification("Неверный логин или пароль", "error");
+      
       showNotification("Произошла ошибка при входе. Попробуйте снова", "error");
     }
   };

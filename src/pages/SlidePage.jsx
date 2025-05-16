@@ -8,12 +8,16 @@ import { getPointsByOrganId } from "../hooks/points/getPoint";
 import "../styles/components/atlas-viewer.css";
 import TogglePointsCheckbox from "../components/Atlas/TogglePointsCheckbox";
 import arrow from "../assets/images/arrow.svg";
-
+import ruler from "../assets/images/ruler.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
+<<<<<<< HEAD
+import { Provider } from "react-redux";
+=======
 import { setCurrMenu } from "../redux/atlas/atlas-slice";
 import { Provider, useDispatch } from "react-redux";
+>>>>>>> 1ed55b6f7d89185c4dbe397e58dba8833356bf36
 import Menu from "../components/Atlas/menu/Menu";
 
 const SlidePage = () => {
@@ -25,32 +29,23 @@ const SlidePage = () => {
   const [loadingData, setLoadingData] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
   const navigate = useNavigate();
+  const [measureActive, setMeasureActive] = useState(false);
 
   useEffect(() => {
     const fetchSlideData = async () => {
       try {
         const points = await getPointsByOrganId(id);
         const organ = await getOrganByOrganId(id);
-
         if (!points || !organ) {
-          console.error("Error fetching points or organ data");
           return;
         }
-
         const dziPath = `${TILES_URL}/${id}/${id}.dzi`;
-
-        setSlideData({
-          points,
-          dziPath,
-          organ,
-        });
+        setSlideData({ points, dziPath, organ });
       } catch (error) {
-        console.error("Error fetching slide data:", error);
       } finally {
         setLoadingData(false);
       }
     };
-
     fetchSlideData();
   }, [id]);
 
@@ -65,10 +60,58 @@ const SlidePage = () => {
   };
 
   const handleGoBack = () => {
+    if (!slideData) return;
     navigate(`/human-atlas/admin/categories/${slideData.organ.categoryid}`)
   }
 
+  const handleRulerClick = () => {
+    setMeasureActive(!measureActive);
+  }
+
   return (
+<<<<<<< HEAD
+    <Provider store={ atlasStore }>
+      <div className="slide-page-container">
+        {slideData && (
+          <>
+            <button className="go-back-button" onClick={handleGoBack}>
+              <img src={arrow} alt="arrow" />
+            </button>
+            <button
+              className="ruler-button"
+              onClick={handleRulerClick}
+              style={{
+                background: measureActive ? '#3754ed' : '#fff',
+                boxShadow: measureActive ? '0px 0px 5px 1px rgba(55, 84, 237, 0.25)' : '0px 0px 5px 1px rgba(55, 84, 237, 0.1)'
+              }}
+            >
+              <img src={ruler} alt="ruler" style={{ filter: measureActive ? 'invert(1) brightness(100)' : 'none' }}/>
+            </button>
+            <AtlasViewer
+              ref={viewerRef}
+              slideData={slideData}
+              onViewerReady={handleViewerReady}
+              className="atlas-viewer"
+              measureActive={measureActive}
+            />
+            <TogglePointsCheckbox
+              togglePointsVisibility={togglePointsVisibility}
+            />
+            <Zoombar />
+            <div className="overlay-menu-grid">
+              <div className="toolbar-layout">
+                <ToolBar />
+              </div>
+              <div className="point-menu-layout">
+                <Menu slideData={ slideData } />
+              </div>
+            </div>
+          </>
+        )}
+        {(loadingData || !viewerReady) && <LoadingSpinner />}
+      </div>
+    </Provider>
+=======
     <div className="slide-page-container">
       {slideData && (
         <>
@@ -100,6 +143,7 @@ const SlidePage = () => {
 
       {(loadingData || !viewerReady) && <LoadingSpinner />}
     </div>
+>>>>>>> 1ed55b6f7d89185c4dbe397e58dba8833356bf36
   );
 };
 
