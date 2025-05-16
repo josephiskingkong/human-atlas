@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../components/MainPage/Footer";
-import Navbar from "../components/MainPage/Navbar";
+import Navbar from "../components/Common/NavBar";
 import SearchBar from "../components/MainPage/SearchBar";
 
 import "../styles/layout/library-page.css";
@@ -36,26 +36,32 @@ const HistologySlideLibrary = () => {
   }, []);
 
   useEffect(() => {
-    let filtered = [...slides];
+  if (!slides || slides.length === 0) {
+    setFilteredSlides([]);
+    return;
+  }
 
-    if (currentFilter !== "all") {
-      filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
-    }
+  let filtered = [...slides];
 
-    if (searchQuery.trim() === "") {
-      setFilteredSlides(filtered);
-      return;
-    }
+  if (currentFilter !== "all") {
+    filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
+  }
 
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    filtered = filtered.filter(
-      (slide) =>
-        slide.name.toLowerCase().includes(lowerCaseQuery) ||
-        slide.categoryid.toLowerCase().includes(lowerCaseQuery)
-    );
-
+  if (searchQuery.trim() === "") {
     setFilteredSlides(filtered);
-  }, [searchQuery, slides, currentFilter]);
+    return;
+  }
+
+  const lowerCaseQuery = searchQuery.toLowerCase();
+  filtered = filtered.filter(
+    (slide) =>
+      (slide.name && slide.name.toLowerCase().includes(lowerCaseQuery)) ||
+      (slide.categoryid !== undefined &&
+        String(slide.categoryid).toLowerCase().includes(lowerCaseQuery))
+  );
+
+  setFilteredSlides(filtered);
+}, [searchQuery, slides, currentFilter]);
 
   const handleCategoryChange = (category) => {
     setCurrentFilter(category);

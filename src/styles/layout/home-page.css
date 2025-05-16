@@ -36,8 +36,8 @@
   cursor: pointer;
 }
 .home-wrapper .header-home .go-to-library:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
+  transform: scale(1.02);
+  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.276);
 }
 .home-wrapper .description-project {
   text-align: center;
@@ -82,6 +82,6 @@
   font-size: 32px;
 }
 .home-wrapper .topics .topic:hover {
-  transform: scale(1.05); /* Немного увеличивается */
-  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.6); /* Эффект свечения */
+  transform: scale(1.02); /* Немного увеличивается */
+  box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.117); /* Эффект свечения */
 }/*# sourceMappingURL=home-page.css.map */

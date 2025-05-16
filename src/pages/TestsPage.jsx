@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "../styles/layout/tests-page.css";
 import SearchBar from "../components/MainPage/SearchBar";
-import Navbar from "../components/MainPage/Navbar";
+import Navbar from "../components/Common/NavBar";
 import Footer from "../components/MainPage/Footer";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
 import { getTests } from "../hooks/tests/getTests";

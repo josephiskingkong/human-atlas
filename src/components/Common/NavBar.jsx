@@ -102,9 +102,15 @@ export default function NavBar() {
       <div className="navbar-container">
         <div className="navbar-logo" onClick={handleGoToMainPage}>Гисто Атлас</div>
         <ul className="navbar-buttons">
+          <div className="sections">
+                    <p onClick={() => navigate("/human-atlas/library")}>Атлас</p>
+                    <p onClick={() => navigate("/human-atlas/tests")}>Тестирование</p>
+                    <p onClick={() => navigate("/human-atlas/about")}>О проекте</p>
+                  </div>
           {user ? (
             <div className="profile-info" ref={dropdownRef}>
               <span onClick={toggleDropdown} className="profile-name">
+                { user.isAdmin ? <span className="admin-logo">A</span> : '' }
                 {user.firstName}
               </span>
               {isDropdownOpen && (
@@ -115,6 +121,14 @@ export default function NavBar() {
                   >
                     <img src={profileIcon} alt="profile" /> Профиль
                   </button>
+                  {user.isAdmin && (
+                    <button 
+                    className="dropdown-item"
+                    onClick={() => navigate("/human-atlas/admin")}
+                    >
+                    <span className="admin-logo">A</span> Админ-панель
+                    </button>
+                  )}
                   <button
                     className="dropdown-item red-text"
                     onClick={confirmLogout}
