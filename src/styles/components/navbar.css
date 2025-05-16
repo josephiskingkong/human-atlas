@@ -1,0 +1,55 @@
+.float-menu-button {
+  border-radius: 12px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  background: #fff;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+  cursor: pointer;
+}
+
+.navbar-wrapper {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 80px;
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+  background-color: #fff;
+}
+.navbar-wrapper .navbar-container {
+  grid-column: 2;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.navbar-wrapper .navbar-container .navbar-logo {
+  color: #3754ed;
+  font-size: 24px;
+  font-weight: 900;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  cursor: pointer;
+}
+
+.login-button {
+  border: solid 0.2px #3754ed;
+  padding: 8px 12px;
+  border-radius: 12px;
+  color: #3754ed;
+  font-size: 16px;
+  background-color: #fff;
+  font-weight: 600;
+  transition: box-shadow 0.2s ease-in;
+  cursor: pointer;
+}
+.login-button:hover {
+  box-shadow: inset 0px 0px 3px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease-out;
+}
+
+.profile-info {
+  position: relative;
+  cursor: pointer;
+}/*# sourceMappingURL=navbar.css.map */

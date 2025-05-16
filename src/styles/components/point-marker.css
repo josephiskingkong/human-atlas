@@ -1,0 +1,24 @@
+.float-menu-button {
+  border-radius: 12px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  background: #fff;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+  cursor: pointer;
+}
+
+.point-container {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.point-container .marker {
+  width: 12px;
+  height: 12px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 5px solid #3754ed;
+}
+.point-container .marker-select {
+  background-color: #3754ed;
+  border: 5px solid #fff;
+}/*# sourceMappingURL=point-marker.css.map */
