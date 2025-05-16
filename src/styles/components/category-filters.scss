@@ -1,0 +1,32 @@
+$card-background: #fff;
+$border-color: #e0e0e0;
+$primary-color: #4a90e2;
+
+@mixin transition($property: all, $duration: 0.3s) {
+    transition: $property $duration ease;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 12px;
+    margin-bottom: 25px;
+    
+    .category-filter {
+      padding: 8px 16px;
+      background-color: $card-background;
+      border: 1px solid $border-color;
+      border-radius: 20px;
+      cursor: pointer;
+      @include transition;
+      font-size: 14px;
+      
+      &:hover, &.active {
+        background-color: $primary-color;
+        color: white;
+        border-color: $primary-color;
+        box-shadow: 0 2px 5px rgba($primary-color, 0.3);
+      }
+    }
+  }

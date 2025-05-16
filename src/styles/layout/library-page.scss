@@ -1,0 +1,181 @@
+$primary-color: #4338ca; // indigo-700
+$text-dark: #111827; // gray-900
+$text-medium: #4b5563; // gray-600
+$text-light: #9ca3af; // gray-400
+$border-light: #e5e7eb; // gray-200
+$background-light: #f9fafb; // gray-50
+$white: #ffffff;
+$shadow-glow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
+
+// Основные стили для страницы
+.histology-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $background-light;
+  width: 100%;
+}
+
+
+// Стили для основного контента
+.main {
+  flex-grow: 1;
+  max-width: 72rem;
+  margin: 0 auto;
+  width: 100%;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+// Стили для индикатора загрузки
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16rem;
+  width: 100%;
+
+  &__spinner {
+    animation: spin 1s linear infinite;
+    border-radius: 50%;
+    height: 3rem;
+    width: 3rem;
+    border-top: 2px solid $primary-color;
+    border-bottom: 2px solid $primary-color;
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// Стили для результатов поиска
+.results {
+  margin-bottom: 1rem;
+  width: 100%;
+
+  &__count {
+    color: $text-medium;
+  }
+}
+
+// Стили для сетки слайдов
+.slides-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  width: 100%;
+  
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+// Стили для карточки слайда
+.slide-card {
+  background-color: $white;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border: 1px solid $border-light;
+  transition: box-shadow 0.3s ease;
+  width: 100%;
+  cursor: pointer;
+  
+  &:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  &__image-container {
+    position: relative;
+    padding-bottom: 100%;
+    width: 100%;
+  }
+
+  &__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__content {
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  &__title {
+    font-weight: 500;
+    font-size: 1.125rem;
+    color: $text-dark;
+    margin-bottom: 0.25rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+
+  &__category {
+    font-size: 0.875rem;
+    color: $primary-color;
+    margin-bottom: 0.5rem;
+  }
+
+  &__description {
+    font-size: 0.875rem;
+    color: $text-medium;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: break-word;
+  }
+}
+
+// Стили для сообщения об отсутствии результатов
+.no-results {
+  background-color: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+
+  &__title {
+    font-size: 1.125rem;
+    color: $text-medium;
+    margin-bottom: 0.5rem;
+  }
+
+  &__message {
+    color: $text-light;
+  }
+}
+
+// Стили для футера
+.footer {
+  background-color: $white;
+  color: $text-medium;
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.875rem;
+  border-top: 1px solid $border-light;
+  width: 100%;
+  box-sizing: border-box;
+}
