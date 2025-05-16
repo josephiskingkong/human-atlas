@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import { ENDPOINT } from "./constants";
-import { TooLargeError } from "./errors";
 
 let showSessionExpiredModal = null;
 
@@ -19,48 +18,43 @@ const handleSessionExpired = () => {
 };
 
 export const apiRequest = async (url, options = {}) => {
-  const csrfToken = localStorage.getItem("csrfToken");
-  const accessToken = Cookies.get("accessToken"); 
+  const accessToken = Cookies.get("accessToken");
 
   const headers = {
-    "X-XSRF-TOKEN": csrfToken,
     ...options.headers,
   };
 
-  const credentials = {
-    credentials: "include", 
-  };
-
   if (accessToken) {
-    headers["Cookie"] = `accessToken=${accessToken}`; 
+    headers["Authorization"] = `Bearer ${accessToken}`;
   }
 
   try {
     const response = await fetch(`${ENDPOINT}${url}`, {
       ...options,
-      ...credentials,
       headers,
+      credentials: "include",
     });
 
     if (response.status === 401) {
       handleSessionExpired();
-      return;
     }
 
-    if (response.status === 413) {
-      throw new TooLargeError();
+    let responseData = null;
+
+    try {
+      responseData = await response.json();
+    } catch (parseError) {
+      console.error("Failed to parse JSON:", parseError);
     }
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error);
+      const errorMessage = responseData?.message || response.statusText || "Unknown error";
+      throw new Error(`Request failed: ${errorMessage}`);
     }
 
-    return await response.json();
+    return responseData;
   } catch (error) {
-    console.error("Ошибка API:", error);
-    if (!error.message?.includes("SyntaxError: Unexpected token")) {
-      throw error;
-    }
+    console.error("API request error:", error);
+    throw error;
   }
 };

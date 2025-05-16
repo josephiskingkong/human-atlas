@@ -56,6 +56,10 @@ export default function NavBar() {
     setShowLoginModal(false);
   };
 
+  const handleProfileClick = () => {
+    navigate("/human-atlas/profile");
+  }
+
   const handleLogout = () => {
     Cookies.remove("user");
     Cookies.remove("accessToken");
@@ -65,8 +69,8 @@ export default function NavBar() {
   };
 
   const handleLoginSuccess = (userData, accessToken) => {
-    Cookies.set("user", JSON.stringify(userData), { secure: true });
-    Cookies.set("accessToken", accessToken, { secure: true });
+    Cookies.set("user", JSON.stringify(userData), { secure: true, sameSite: 'None', path: '/', });
+    Cookies.set("accessToken", accessToken, { secure: true, sameSite: 'None', path: '/', });
     setUser(userData);
     setShowLoginModal(false);
     window.location.reload();
@@ -105,7 +109,10 @@ export default function NavBar() {
               </span>
               {isDropdownOpen && (
                 <div className="dropdown-menu">
-                  <button className="dropdown-item">
+                  <button 
+                  className="dropdown-item"
+                  onClick={handleProfileClick}
+                  >
                     <img src={profileIcon} alt="profile" /> Профиль
                   </button>
                   <button
