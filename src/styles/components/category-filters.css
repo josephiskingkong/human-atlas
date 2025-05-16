@@ -1,0 +1,22 @@
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+.category-filters .category-filter {
+  padding: 8px 16px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+}
+.category-filters .category-filter:hover, .category-filters .category-filter.active {
+  background-color: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+  box-shadow: 0 2px 5px rgba(74, 144, 226, 0.3);
+}/*# sourceMappingURL=category-filters.css.map */

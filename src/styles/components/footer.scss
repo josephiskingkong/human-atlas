@@ -1,0 +1,31 @@
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+
+    height: fit-content;
+    margin-top: 64px;
+    background-color: white;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+
+    .footer-content {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 32px;
+        padding-left: 12%;
+        gap: 16px;
+
+        .icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 32px;
+
+            img {
+                width: fit-content;
+                height: 50px;
+            }
+        }
+    }
+
+}
