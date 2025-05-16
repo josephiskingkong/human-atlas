@@ -87,7 +87,7 @@ const TestList = () => {
       e.stopPropagation();
     }
 
-    navigate(`/human-atlas/test/${test.id}`);
+    navigate(`/human-atlas/tests/${test.id}`);
   };
 
   return (
