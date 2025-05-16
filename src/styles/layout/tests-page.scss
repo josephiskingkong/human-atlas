@@ -1,0 +1,205 @@
+// Основные переменные
+$background-color: #f7f9fc;
+$text-color: #333;
+$primary-color: #4a90e2;
+$primary-hover-color: #3a7bc8;
+$card-background: #fff;
+$border-color: #e0e0e0;
+$shadow-color: rgba(0, 0, 0, 0.08);
+$hover-shadow-color: rgba(0, 0, 0, 0.12);
+$secondary-text-color: #6c757d;
+$title-color: #2c3e50;
+
+// Цвет категории
+$category-bg: #e3f7fc;
+$category-color: #1565c0;
+
+// Основные миксины
+@mixin box-shadow($strength: 'light') {
+  @if $strength == 'light' {
+    box-shadow: 0 3px 10px $shadow-color;
+  } @else if $strength == 'medium' {
+    box-shadow: 0 8px 20px $hover-shadow-color;
+  }
+}
+
+@mixin transition($property: all, $duration: 0.3s) {
+  transition: $property $duration ease;
+}
+
+// Базовые стили
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.6;
+}
+
+.test-list-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+// Список тестов
+.test-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  
+  .no-results {
+    text-align: center;
+    padding: 50px 20px;
+    font-size: 18px;
+    color: $secondary-text-color;
+    grid-column: 1 / -1;
+    background-color: $card-background;
+    border-radius: 10px;
+    @include box-shadow('light');
+  }
+  
+  .test-card {
+    background-color: $card-background;
+    border-radius: 10px;
+    padding: 20px;
+    @include box-shadow('light');
+    @include transition(transform);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    
+    &:hover {
+      transform: translateY(-5px);
+      @include box-shadow('medium');
+      
+      .test-action {
+        opacity: 1;
+      }
+    }
+    
+    .test-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: $title-color;
+      margin-bottom: 12px;
+    }
+    
+    .test-category {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-bottom: 12px;
+      font-weight: 500;
+      background-color: $category-bg;
+      color: $category-color;
+    }
+    
+    .test-info {
+      display: flex;
+      justify-content: space-between;
+      color: $secondary-text-color;
+      font-size: 14px;
+      margin-top: 15px;
+      
+      span {
+        display: flex;
+        align-items: center;
+        
+        i {
+          margin-right: 5px;
+          font-size: 16px;
+        }
+      }
+    }
+    
+    .test-action {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(255,255,255,0.95), rgba(255,255,255,0.7));
+      padding: 15px;
+      text-align: center;
+      opacity: 0;
+      @include transition(opacity);
+      
+      .start-btn {
+        background-color: $primary-color;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 500;
+        @include transition(background-color);
+        
+        &:hover {
+          background-color: $primary-hover-color;
+        }
+      }
+      
+      &.visible {
+        opacity: 1;
+      }
+    }
+    
+    &.active {
+      transform: translateY(-5px);
+      @include box-shadow('medium');
+    }
+  }
+}
+
+// Медиа-запросы для адаптивности
+@media screen and (max-width: 768px) {
+  .test-list-container {
+    padding: 15px;
+  }
+  
+  .search-container {
+    width: 100%;
+    
+    input {
+      width: 100%;
+      box-sizing: border-box;
+    }
+  }
+  
+  .category-filters {
+    justify-content: center;
+  }
+  
+  .test-list {
+    .test-card {
+      // На мобильных отменяем эффекты при наведении
+      &:hover {
+        transform: none;
+        box-shadow: 0 3px 10px $shadow-color;
+        
+        .test-action {
+          opacity: 0; // Не показываем кнопку при наведении на мобильных
+        }
+      }
+      
+      // Активация происходит только при клике на мобильных
+      &.active {
+        transform: translateY(-5px);
+        @include box-shadow('medium');
+      }
+      
+      // Делаем кнопку видимой только при активном состоянии
+      .test-action {
+        &.visible {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
