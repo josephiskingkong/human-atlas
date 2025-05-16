@@ -62,23 +62,58 @@
   padding-left: 4px;
 }
 .info-bar-container .info-container .organ-title {
+  display: -webkit-box;
   font-size: 32px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 .info-bar-container .info-container .organ-category {
+  display: -webkit-box;
   font-size: 20px;
   font-weight: 400;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .point-menu {
   position: relative;
   width: 100%;
-  max-width: 550px;
+  display: flex;
+  height: 100%;
+  -webkit-user-select: all;
+     -moz-user-select: all;
+          user-select: all;
+}
+.point-menu .close-button-container {
+  display: flex;
+  height: 100%;
+}
+.point-menu .close-button-container .close-button {
+  margin-top: 14px;
+  height: 50px;
+  margin-right: 10px;
+  background: url("/src/assets/images/close.svg") center no-repeat;
+  width: 40px;
+  background-color: #131B62;
+  border-radius: 6px;
+  border-style: none;
+  cursor: pointer;
+}
+.point-menu .close-button-container .close-button-open {
+  transform: rotate(180deg);
+}
+.point-menu .menu-content {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
-.point-menu .hint-menu {
+.point-menu .menu-content .hint-menu {
   position: fixed;
   right: 38%;
   top: 30vh;
@@ -89,32 +124,18 @@
   line-height: 26px;
   z-index: 15;
 }
-.point-menu .hint-menu .span-comb {
+.point-menu .menu-content .hint-menu .span-comb {
   color: #3754ED;
   font-size: 20px;
   font-weight: 700;
   word-wrap: break-word;
 }
-.point-menu .hint-menu .span-other {
+.point-menu .menu-content .hint-menu .span-other {
   color: #3754ED;
   font-weight: 600;
   word-wrap: break-word;
 }
-.point-menu .close-button {
-  position: absolute;
-  left: -60px;
-  height: 50px;
-  background: url("/src/assets/images/close.svg") center no-repeat;
-  width: 40px;
-  background-color: #131B62;
-  border-radius: 6px;
-  border-style: none;
-  cursor: pointer;
-}
-.point-menu .close-button-open {
-  transform: rotate(180deg);
-}
-.point-menu .menu-container {
+.point-menu .menu-content .menu-container {
   width: 100%;
   flex: 1;
   position: relative;
@@ -127,4 +148,9 @@
   overflow-y: auto;
   border: 0.2px #C5CACE solid;
   background: #EEF3F7;
+}
+
+.point-menu-close {
+  height: -moz-fit-content;
+  height: fit-content;
 }/*# sourceMappingURL=menu.css.map */

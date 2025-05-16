@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import atlasStore from '../redux/atlas/atlas-store'
 import AtlasViewer from "../components/Atlas/AtlasViewer";
 import LoadingSpinner from "../components/Common/LoadingSpinner";
 import { TILES_URL } from "../config/constants";
@@ -13,10 +12,17 @@ import ruler from "../assets/images/ruler.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
+<<<<<<< HEAD
 import { Provider } from "react-redux";
+=======
+import { setCurrMenu } from "../redux/atlas/atlas-slice";
+import { Provider, useDispatch } from "react-redux";
+>>>>>>> 1ed55b6f7d89185c4dbe397e58dba8833356bf36
 import Menu from "../components/Atlas/menu/Menu";
 
 const SlidePage = () => {
+  const dispatch = useDispatch();
+
   const { id } = useParams();
   const viewerRef = useRef(null);
   const [slideData, setSlideData] = useState(null);
@@ -63,6 +69,7 @@ const SlidePage = () => {
   }
 
   return (
+<<<<<<< HEAD
     <Provider store={ atlasStore }>
       <div className="slide-page-container">
         {slideData && (
@@ -104,6 +111,39 @@ const SlidePage = () => {
         {(loadingData || !viewerReady) && <LoadingSpinner />}
       </div>
     </Provider>
+=======
+    <div className="slide-page-container">
+      {slideData && (
+        <>
+          <button className="go-back-button" onClick={() => { dispatch(setCurrMenu('close')); handleGoBack(); }}>
+            <img src={arrow} alt="arrow" />
+          </button>
+
+          <AtlasViewer
+            ref={viewerRef}
+            slideData={slideData}
+            onViewerReady={handleViewerReady}
+            className="atlas-viewer"
+          />
+          <TogglePointsCheckbox
+            togglePointsVisibility={togglePointsVisibility}
+          />
+          <Zoombar />
+
+          <div className="overlay-menu-grid">
+            <div className="toolbar-layout">
+              <ToolBar />
+            </div>
+            <div className="point-menu-layout">
+              <Menu slideData={ slideData } />
+            </div>
+          </div>
+        </>
+      )}
+
+      {(loadingData || !viewerReady) && <LoadingSpinner />}
+    </div>
+>>>>>>> 1ed55b6f7d89185c4dbe397e58dba8833356bf36
   );
 };
 

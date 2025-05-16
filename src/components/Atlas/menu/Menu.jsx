@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import PointInfo from "./PointInfo";
 import PointMenu from "./point-menu/PointMenu";
 import { useEffect, useState } from "react";
-import { setCurrMenu, setIsInfoOpen, setIsMenuOpen } from "../../../redux/atlas/atlas-slice";
+import { setCurrMenu } from "../../../redux/atlas/atlas-slice";
 import PointSearch from "./point-search/PointSearch";
 
 export default function Menu({ slideData }) {
@@ -51,24 +51,27 @@ export default function Menu({ slideData }) {
     }
 
     return (
-        <div className="point-menu">
-            <InfoBar title={slideData.organ.name} category="TODO" points={ slideData.points } currMenu={ currMenu } closeButton={<CloseMenuButton currMenu={ currMenu } closeHandler={ closeMenuHandler }/> } />
+        <div className={currMenu !== 'close' ? "point-menu" : "point-menu point-menu-close"}>
+            <div className="close-button-container">
+                <CloseMenuButton currMenu={ currMenu } closeHandler={ closeMenuHandler }/>
+            </div>
 
-            { (currMenu !== 'close') &&
-                <div className="menu-container">
-                    { currMenu === 'info' &&
-                        <PointInfo/>
-                    }
-
-                    { currMenu === 'menu' &&
-                        <PointMenu/>
-                    }
-
-                    { currMenu ==='search' &&
-                        <PointSearch points={ slideData.points }/>
-                    }
-                </div>
-            }
+            <div className="menu-content">
+                <InfoBar title={slideData.organ.name} category="TODO" points={ slideData.points } currMenu={ currMenu } />
+                { (currMenu !== 'close') &&
+                    <div className="menu-container">
+                        { currMenu === 'info' &&
+                            <PointInfo/>
+                        }
+                        { currMenu === 'menu' &&
+                            <PointMenu/>
+                        }
+                        { currMenu ==='search' &&
+                            <PointSearch points={ slideData.points }/>
+                        }
+                    </div>
+                }
+            </div>
         </div>
     )
 }
