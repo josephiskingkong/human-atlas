@@ -104,7 +104,7 @@ const HistologySlideLibrary = () => {
                 >
                   <div className="slide-card__image-container">
                     <img
-                      src={slide.image}
+                      src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
                       alt={slide.name}
                       className="slide-card__image"
                     />
