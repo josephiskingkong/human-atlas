@@ -1,13 +1,15 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import QuestionsList from "../../components/Testing/QuestionsList";
 import NewQuestion from "../../components/Testing/NewQuestion";
 import { useNotification } from "../../context/NotificationContext";
 import { apiRequest } from "../../config/apiRequest";
 import "../../styles/layout/test-page-admin.css";
+import { getTests } from "../../hooks/tests/getTests";
 
 const TestPageAdmin = () => {
   const [testTitle, setTestTitle] = useState("");
   const [categoryId, setCategoryId] = useState(""); // ID категории
+  const [categories, setCategories] = useState([]);
   const [duration, setDuration] = useState(""); // Время теста
   const [questions, setQuestions] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -24,85 +26,111 @@ const TestPageAdmin = () => {
   const dragNode = useRef(null);
   const { showNotification } = useNotification();
 
-const mapType = (type) => {
-  if (type === "single") return "single_choice";
-  if (type === "multiple") return "multiple_choice";
-  if (type === "text") return "text_input";
-  return type;
-};
+  useEffect(() => {
+    getTests().then((data) => {
+      const uniqueCategories = [
+        ...new Set(data.map((test) => test.categoryId)),
+      ];
 
-const handleSaveTest = async () => {
-  if (!testTitle.trim() || !categoryId.trim() || !duration.trim() || questions.length === 0) {
-    showNotification("Заполните все поля и добавьте хотя бы один вопрос", "info");
-    return;
-  }
-
-  try {
-    // 1. Добавляем тест
-    const testData = await apiRequest("/v1/tests/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        title: testTitle,
-        categoryId,
-        duration,
-      }),
-    });
-    const testId = testData.test_id;
-
-    // 2. Добавляем вопросы
-    for (let i = 0; i < questions.length; i++) {
-      const q = questions[i];
-      let answers = [];
-
-      if (q.type === "single") {
-        answers = q.options.map((text, idx) => ({
-          text,
-          isCorrect: idx === q.correctOptionIndex,
-          position: idx,
-        }));
-      } else if (q.type === "multiple") {
-        answers = q.options.map((text, idx) => ({
-          text,
-          isCorrect: q.correctOptionIndexes.includes(idx),
-          position: idx,
-        }));
-      } else if (q.type === "text") {
-        answers = q.textAnswers.map((text, idx) => ({
-          text,
-          isCorrect: true,
-          position: idx,
-        }));
-      }
-
-      await apiRequest(`/v1/tests/${testId}/questions/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          text: q.text,
-          type: mapType(q.type),
-          position: i,
-          answers,
-        }),
+      const categoriesData = uniqueCategories.map((category) => {
+        const categoryObj = data.find((test) => test.categoryId === category);
+        return {
+          id: category,
+          name: categoryObj.categoryName,
+        };
       });
+
+      if (categoriesData.length > 0) {
+        setCategories(categoriesData);
+      }
+    });
+  }, []);
+
+  const mapType = (type) => {
+    if (type === "single") return "single_choice";
+    if (type === "multiple") return "multiple_choice";
+    if (type === "text") return "text_input";
+    return type;
+  };
+
+  const handleSaveTest = async () => {
+    if (
+      !testTitle.trim() ||
+      !categoryId.trim() ||
+      !duration.trim() ||
+      questions.length === 0
+    ) {
+      showNotification(
+        "Заполните все поля и добавьте хотя бы один вопрос",
+        "info"
+      );
+      return;
     }
 
-    showNotification("Тест успешно сохранён!", "success");
-    setTestTitle("");
-    setCategoryId("");
-    setDuration("");
-    setQuestions([]);
-    resetForm();
-  } catch (e) {
-    showNotification(e.message, "error");
-  }
-};
+    try {
+      const testData = await apiRequest("/v1/tests/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: testTitle,
+          categoryId,
+          duration,
+        }),
+      });
+      const testId = testData.test_id;
 
-  // --- Остальной код управления вопросами и формой ---
+      // 2. Добавляем вопросы
+      for (let i = 0; i < questions.length; i++) {
+        const q = questions[i];
+        let answers = [];
+
+        if (q.type === "single") {
+          answers = q.options.map((text, idx) => ({
+            text,
+            isCorrect: idx === q.correctOptionIndex,
+            position: idx,
+          }));
+        } else if (q.type === "multiple") {
+          answers = q.options.map((text, idx) => ({
+            text,
+            isCorrect: q.correctOptionIndexes.includes(idx),
+            position: idx,
+          }));
+        } else if (q.type === "text") {
+          answers = q.textAnswers.map((text, idx) => ({
+            text,
+            isCorrect: true,
+            position: idx,
+          }));
+        }
+
+        await apiRequest(`/v1/tests/${testId}/questions/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text: q.text,
+            type: mapType(q.type),
+            position: i,
+            answers,
+          }),
+        });
+      }
+
+      showNotification("Тест успешно сохранён!", "success");
+      setTestTitle("");
+      setCategoryId("");
+      setDuration("");
+      setQuestions([]);
+      resetForm();
+    } catch (e) {
+      showNotification(e.message, "error");
+    }
+  };
+
   const handleTitleChange = (e) => setTestTitle(e.target.value);
   const handleCategoryChange = (e) => setCategoryId(e.target.value);
   const handleDurationChange = (e) => setDuration(e.target.value);
@@ -134,14 +162,19 @@ const handleSaveTest = async () => {
     if (newQuestion.options.length <= 2) return;
     const updatedOptions = newQuestion.options.filter((_, i) => i !== index);
     let correctOptionIndex = newQuestion.correctOptionIndex;
-    if (index === correctOptionIndex || correctOptionIndex >= updatedOptions.length) {
+    if (
+      index === correctOptionIndex ||
+      correctOptionIndex >= updatedOptions.length
+    ) {
       correctOptionIndex = 0;
     }
     let correctOptionIndexes = [...newQuestion.correctOptionIndexes];
     if (correctOptionIndexes.includes(index)) {
       correctOptionIndexes = correctOptionIndexes.filter((i) => i !== index);
     }
-    correctOptionIndexes = correctOptionIndexes.map((i) => (i > index ? i - 1 : i));
+    correctOptionIndexes = correctOptionIndexes.map((i) =>
+      i > index ? i - 1 : i
+    );
     setNewQuestion({
       ...newQuestion,
       options: updatedOptions,
@@ -186,7 +219,9 @@ const handleSaveTest = async () => {
 
   const removeTextAnswer = (index) => {
     if (newQuestion.textAnswers.length <= 1) return;
-    const updatedAnswers = newQuestion.textAnswers.filter((_, i) => i !== index);
+    const updatedAnswers = newQuestion.textAnswers.filter(
+      (_, i) => i !== index
+    );
     setNewQuestion({
       ...newQuestion,
       textAnswers: updatedAnswers,
@@ -212,15 +247,24 @@ const handleSaveTest = async () => {
         showNotification("Пожалуйста, заполните все варианты ответов", "info");
         return;
       }
-      if (newQuestion.type === "multiple" && newQuestion.correctOptionIndexes.length === 0) {
-        showNotification("Пожалуйста, выберите хотя бы один правильный вариант ответа", "info");
+      if (
+        newQuestion.type === "multiple" &&
+        newQuestion.correctOptionIndexes.length === 0
+      ) {
+        showNotification(
+          "Пожалуйста, выберите хотя бы один правильный вариант ответа",
+          "info"
+        );
         return;
       }
     } else if (
       newQuestion.type === "text" &&
       newQuestion.textAnswers.every((answer) => !answer.trim())
     ) {
-      showNotification("Пожалуйста, укажите хотя бы один правильный текстовый ответ", "info");
+      showNotification(
+        "Пожалуйста, укажите хотя бы один правильный текстовый ответ",
+        "info"
+      );
       return;
     }
     if (editingIndex !== null) {
@@ -336,7 +380,19 @@ const handleSaveTest = async () => {
     <div className="test-wrapper">
       <button className="button-back">Назад</button>
       <h1>Создание теста</h1>
-      <label className="category">Категория (ID)</label>
+      <label className="category">Категория</label>
+      <select
+        className="input-category"
+        value={categoryId}
+        onChange={handleCategoryChange}
+      >
+        <option value="">Выберите категорию</option>
+        {categories.map((cat) => (
+          <option key={cat.id} value={cat.id}>
+            {cat.name}
+          </option>
+        ))}
+      </select>
       <div className="test">
         <div className="title-test-wrapper">
           <input
@@ -346,20 +402,16 @@ const handleSaveTest = async () => {
             onChange={handleTitleChange}
             placeholder="Введите название теста"
           />
-          <input
-            className="input-category"
-            type="text"
-            value={categoryId}
-            onChange={handleCategoryChange}
-            placeholder="ID категории"
-          />
-          <input
-            type="text"
-            className="input-duration"
-            value={duration}
-            onChange={handleDurationChange}
-            placeholder="Время (например, 30 минут)"
-          />
+          <div>
+            <p>Длительность в минутах</p>
+            <input
+              type="text"
+              className="input-duration"
+              value={duration}
+              onChange={handleDurationChange}
+              placeholder="Время (в минутах)"
+            />
+          </div>
         </div>
         <QuestionsList
           questions={questions}
@@ -393,7 +445,9 @@ const handleSaveTest = async () => {
         />
         <button
           className="button-save"
-          disabled={!testTitle || !categoryId || !duration || questions.length === 0}
+          disabled={
+            !testTitle || !categoryId || !duration || questions.length === 0
+          }
           onClick={handleSaveTest}
         >
           Сохранить тест

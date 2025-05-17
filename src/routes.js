@@ -6,6 +6,9 @@ const SlidePage = lazy(() => import("./pages/SlidePage"));
 const AdminMenu = lazy(() => import("./pages/Admin/AdminMenu"));
 const InDevPage = lazy(() => import("./pages/Admin/InDevPage"));
 const CategoriesPage = lazy(() => import("./pages/Admin/CategoriesPage"));
+const TestCategoriesPage = lazy(() =>
+  import("./pages/Admin/TestCategoriesPage")
+);
 const SlidesListPage = lazy(() => import("./pages/Admin/SlidesListPage"));
 const MainPage = lazy(() => import("./pages/MainPage"));
 const TestsListPage = lazy(() => import("./pages/Admin/TestsListPage"));
@@ -41,7 +44,7 @@ const routes = [
     path: "/human-atlas/admin/categories/:categoryid",
     element: <SlidesListPage />,
   },
-  { path: "/human-atlas/admin/tests", element: <CategoriesPage /> },
+  { path: "/human-atlas/admin/tests", element: <TestCategoriesPage /> },
   { path: "/human-atlas/admin/tests/:categoryid", element: <TestsListPage /> },
   { path: "/human-atlas/admin/test/:id", element: <TestPageAdmin /> },
   { path: "/human-atlas/home", element: <HomePage /> },

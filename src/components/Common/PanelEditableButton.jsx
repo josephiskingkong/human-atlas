@@ -45,8 +45,14 @@ export default function PanelNavigateEditableButton({ title, icon, path }) {
 
           {menuVisible && (
             <div className="dropdown-menu" ref={menuRef}>
-              <button className="dropdown-item"><img src={edit} alt="edit" />Редактировать</button>
-              <button className="dropdown-item" style={{ color: "#F02B2B" }}><img src={trash} alt="trash" />Удалить</button>
+              <button className="dropdown-item">
+                <img src={edit} alt="edit" />
+                Редактировать
+              </button>
+              <button className="dropdown-item" style={{ color: "#F02B2B" }}>
+                <img src={trash} alt="trash" />
+                Удалить
+              </button>
             </div>
           )}
         </button>
