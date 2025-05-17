@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { apiRequest } from "../config/apiRequest";
 import "../styles/layout/test-page.css";
 
@@ -22,6 +22,9 @@ const TestPage = () => {
   const [testStarted, setTestStarted] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  // Создаем уникальный ключ для localStorage для каждого теста
+  const localStorageKey = `reactTest_${testId}`;
 
   useEffect(() => {
     setLoading(true);
@@ -77,8 +80,9 @@ const TestPage = () => {
   }, [testId]);
 
   useEffect(() => {
-    const savedTest = localStorage.getItem("reactTest");
-    console.log(savedTest);
+    // Используем уникальный ключ для получения данных из localStorage
+    const savedTest = localStorage.getItem(localStorageKey);
+    console.log("Loading from localStorage:", localStorageKey, savedTest);
 
     if (savedTest && testStarted === true) {
       const testData = JSON.parse(savedTest);
@@ -96,16 +100,17 @@ const TestPage = () => {
         setTimeLeft(Math.floor((endTime - currentTime) / 1000));
         setTestStarted(true);
       } else {
-        localStorage.removeItem("reactTest");
+        // Используем уникальный ключ для удаления данных
+        localStorage.removeItem(localStorageKey);
         setTestStarted(false);
       }
 
       setLoading(false);
     }
-  }, [testStarted]);
+  }, [testStarted, localStorageKey]);
 
   useEffect(() => {
-    if (testStarted && questions.length > 0) {
+    if (testStarted && questions.length > 0 && testInfo) {
       try {
         const testData = {
           testId,
@@ -116,9 +121,11 @@ const TestPage = () => {
           initialTime: testInfo.duration * 60,
           questionCount: questions.length,
         };
-        localStorage.setItem("reactTest", JSON.stringify(testData));
+        // Используем уникальный ключ для сохранения данных
+        localStorage.setItem(localStorageKey, JSON.stringify(testData));
+        console.log("Saving to localStorage:", localStorageKey, testData);
       } catch (e) {
-        // ignore
+        console.error("Error saving to localStorage:", e);
       }
     }
   }, [
@@ -129,6 +136,7 @@ const TestPage = () => {
     timeLeft,
     questions.length,
     testInfo,
+    localStorageKey,
   ]);
 
   // Таймер
@@ -138,7 +146,8 @@ const TestPage = () => {
         setTimeLeft((prevTime) => {
           if (prevTime <= 1) {
             clearInterval(timer);
-            localStorage.removeItem("reactTest");
+            // Используем уникальный ключ для удаления данных
+            localStorage.removeItem(localStorageKey);
             return 0;
           }
           return prevTime - 1;
@@ -147,7 +156,7 @@ const TestPage = () => {
 
       return () => clearInterval(timer);
     }
-  }, [testStarted, timeLeft]);
+  }, [testStarted, timeLeft, localStorageKey]);
 
   const handleSingleOptionSelect = (option) => {
     const newAnswers = [...answers];
@@ -324,6 +333,8 @@ const TestPage = () => {
   };
 
   const TestResults = ({ results, questions, answers, onRetake }) => {
+    const navigate = useNavigate();
+
     return (
       <div className="results-container">
         <h1 className="results-title">Результаты теста</h1>
@@ -357,6 +368,12 @@ const TestPage = () => {
           </div>
         </div>
         <div className="retake-button-container">
+          <button
+            className="retake-button"
+            onClick={() => navigate("/human-atlas/tests")}
+          >
+            Вернуться к списку тестов
+          </button>
           <button className="retake-button" onClick={onRetake}>
             Пройти тест заново
           </button>
@@ -422,7 +439,8 @@ const TestPage = () => {
               <button
                 className="button-finish"
                 onClick={() => {
-                  localStorage.removeItem("reactTest");
+                  // Используем уникальный ключ для удаления данных
+                  localStorage.removeItem(localStorageKey);
                   setTimeLeft(0);
                   setShowResults(true);
                 }}
@@ -446,8 +464,9 @@ const TestPage = () => {
           onRetake={() => {
             setAnswers(Array(questions.length).fill(null));
             setCurrentQuestion(0);
-            setTimeLeft(30 * 60);
+            setTimeLeft(testInfo.duration * 60); // Используем длительность из testInfo
             setShowResults(false);
+            localStorage.removeItem(localStorageKey);
           }}
         />
       )}
