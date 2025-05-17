@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 .test-wrapper .category {
-  color: #bdbdbd;
+  color: #000;
   font-size: 18px;
 }
 .test-wrapper .test {
@@ -53,7 +53,6 @@
 }
 .test-wrapper .test .title-test-wrapper .input-duration {
   height: 28px;
-  border: none;
   border-radius: 4px;
   padding: 0px 8px 0px 8px;
   font-size: 16px;
