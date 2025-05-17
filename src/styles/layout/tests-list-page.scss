@@ -1,0 +1,52 @@
+.tests-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 32px;
+}
+
+.test-card {
+  background: #f7f8fd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(55, 84, 237, 0.06);
+  padding: 24px 32px;
+  min-width: 240px;
+  max-width: 320px;
+  flex: 1 1 240px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border: 1px solid #e6eaff;
+}
+
+.test-card:hover {
+  box-shadow: 0 4px 16px rgba(55, 84, 237, 0.13);
+  transform: translateY(-2px) scale(1.02);
+  border-color: #3754ed;
+}
+
+.test-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #3754ed;
+  margin-bottom: 8px;
+  word-break: break-word;
+}
+
+.test-card-info {
+  display: flex;
+  gap: 16px;
+  font-size: 15px;
+  color: #444;
+  opacity: 0.8;
+}
+
+.tests-list-empty,
+.tests-list-loader {
+  margin: 40px 0;
+  font-size: 18px;
+  color: #888;
+  text-align: center;
+}
