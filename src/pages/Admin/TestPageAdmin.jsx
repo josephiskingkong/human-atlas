@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import QuestionsList from "../../components/Testing/QuestionsList";
 import NewQuestion from "../../components/Testing/NewQuestion";
 import { useNotification } from "../../context/NotificationContext";
@@ -7,6 +8,8 @@ import "../../styles/layout/test-page-admin.css";
 import { getTests } from "../../hooks/tests/getTests";
 
 const TestPageAdmin = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const [testTitle, setTestTitle] = useState("");
   const [categoryId, setCategoryId] = useState(""); // ID категории
   const [categories, setCategories] = useState([]);
@@ -26,12 +29,12 @@ const TestPageAdmin = () => {
   const dragNode = useRef(null);
   const { showNotification } = useNotification();
 
+  // Загрузка категорий
   useEffect(() => {
     getTests().then((data) => {
       const uniqueCategories = [
         ...new Set(data.map((test) => test.categoryId)),
       ];
-
       const categoriesData = uniqueCategories.map((category) => {
         const categoryObj = data.find((test) => test.categoryId === category);
         return {
@@ -39,12 +42,59 @@ const TestPageAdmin = () => {
           name: categoryObj.categoryName,
         };
       });
-
       if (categoriesData.length > 0) {
         setCategories(categoriesData);
       }
     });
   }, []);
+
+  // Загрузка теста для редактирования
+  useEffect(() => {
+    if (!id) return;
+    (async () => {
+      try {
+        const test = await apiRequest(`/v1/tests/${id}`);
+        setTestTitle(test.title || "");
+        setCategoryId(test.categoryId || "");
+        setDuration(test.duration || "");
+        // Получаем вопросы
+        const questionsApi = await apiRequest(`/v1/tests/${id}/questions`);
+        const questionsMapped = questionsApi.map((q) => {
+          let options = [];
+          let correctOptionIndex = 0;
+          let correctOptionIndexes = [];
+          let textAnswers = [];
+          if (q.type === "single_choice") {
+            options = q.answers.map((a) => a.text);
+            correctOptionIndex = q.answers.findIndex((a) => a.isCorrect);
+          } else if (q.type === "multiple_choice") {
+            options = q.answers.map((a) => a.text);
+            correctOptionIndexes = q.answers
+              .map((a, idx) => (a.isCorrect ? idx : null))
+              .filter((idx) => idx !== null);
+          } else if (q.type === "text_input") {
+            textAnswers = q.answers.map((a) => a.text);
+          }
+          return {
+            text: q.text,
+            type:
+              q.type === "single_choice"
+                ? "single"
+                : q.type === "multiple_choice"
+                ? "multiple"
+                : "text",
+            options: options.length ? options : ["", ""],
+            correctOptionIndex,
+            correctOptionIndexes,
+            textAnswers: textAnswers.length ? textAnswers : [""],
+          };
+        });
+        setQuestions(questionsMapped);
+      } catch (e) {
+        showNotification("Ошибка загрузки теста", "error");
+      }
+    })();
+  }, [id, showNotification]);
 
   const mapType = (type) => {
     if (type === "single") return "single_choice";
@@ -53,6 +103,7 @@ const TestPageAdmin = () => {
     return type;
   };
 
+  // Сохранение (создание или редактирование)
   const handleSaveTest = async () => {
     if (
       !testTitle.trim() ||
@@ -68,24 +119,47 @@ const TestPageAdmin = () => {
     }
 
     try {
-      const testData = await apiRequest("/v1/tests/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          title: testTitle,
-          categoryId,
-          duration,
-        }),
-      });
-      const testId = testData.test_id;
+      let testId = id;
+      if (!id) {
+        // Создание нового теста
+        const testData = await apiRequest("/v1/tests/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: testTitle,
+            categoryId,
+            duration,
+          }),
+        });
+        testId = testData.test_id;
+      } else {
+        // Редактирование теста
+        await apiRequest(`/v1/tests/${id}/edit`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: testTitle,
+            categoryId,
+            duration,
+          }),
+        });
+        // Можно добавить удаление старых вопросов, если API требует
+      }
 
-      // 2. Добавляем вопросы
+      // Сохраняем вопросы (удаляем старые и добавляем новые, если нужно)
+      if (id) {
+        await apiRequest(`/v1/tests/${id}/questions/clear`, {
+          method: "POST",
+        });
+      }
+
       for (let i = 0; i < questions.length; i++) {
         const q = questions[i];
         let answers = [];
-
         if (q.type === "single") {
           answers = q.options.map((text, idx) => ({
             text,
@@ -105,7 +179,6 @@ const TestPageAdmin = () => {
             position: idx,
           }));
         }
-
         await apiRequest(`/v1/tests/${testId}/questions/add`, {
           method: "POST",
           headers: {
@@ -120,12 +193,15 @@ const TestPageAdmin = () => {
         });
       }
 
-      showNotification("Тест успешно сохранён!", "success");
-      setTestTitle("");
-      setCategoryId("");
-      setDuration("");
-      setQuestions([]);
-      resetForm();
+      showNotification(id ? "Тест успешно обновлён!" : "Тест успешно сохранён!", "success");
+      if (!id) {
+        setTestTitle("");
+        setCategoryId("");
+        setDuration("");
+        setQuestions([]);
+        resetForm();
+      }
+      // Можно сделать navigate назад или на список тестов
     } catch (e) {
       showNotification(e.message, "error");
     }
@@ -378,8 +454,8 @@ const TestPageAdmin = () => {
 
   return (
     <div className="test-wrapper">
-      <button className="button-back">Назад</button>
-      <h1>Создание теста</h1>
+      <button className="button-back" onClick={() => navigate(-1)}>Назад</button>
+      <h1>{id ? "Редактирование теста" : "Создание теста"}</h1>
       <label className="category">Категория</label>
       <select
         className="input-category"
@@ -450,7 +526,7 @@ const TestPageAdmin = () => {
           }
           onClick={handleSaveTest}
         >
-          Сохранить тест
+          {id ? "Сохранить изменения" : "Сохранить тест"}
         </button>
       </div>
     </div>
