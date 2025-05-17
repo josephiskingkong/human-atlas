@@ -22,11 +22,9 @@ const HistologySlideLibrary = () => {
 
   useEffect(() => {
     const fetchSlides = async () => {
-      setIsLoading(true);
-
       const mockSlides = await getOrgansDone();
       const mockCategories = await getMainCategories();
-      console.log(mockSlides);
+
       setSlides(mockSlides);
       setCategories(mockCategories);
       setFilteredSlides(mockSlides);
@@ -37,25 +35,25 @@ const HistologySlideLibrary = () => {
   }, []);
 
   useEffect(() => {
-  if (!slides || slides.length === 0) {
-    setFilteredSlides([]);
-    return;
-  }
+    if (!slides || slides.length === 0) {
+      setFilteredSlides([]);
+      return;
+    }
 
-  let filtered = [...slides];
+    let filtered = [...slides];
 
-  if (currentFilter !== "all") {
-    filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
-  }
+    if (currentFilter !== "all") {
+      filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
+    }
 
-  if (searchQuery.trim() === "") {
-    setFilteredSlides(filtered);
-    return;
-  }
+    if (searchQuery.trim() === "") {
+      setFilteredSlides(filtered);
+      return;
+    }
 
-  const fuseResults = fuseSearch(filtered, searchQuery);
-  setFilteredSlides(fuseResults);
-}, [searchQuery, slides, currentFilter]);
+    const fuseResults = fuseSearch(filtered, searchQuery);
+    setFilteredSlides(fuseResults);
+  }, [searchQuery, slides, currentFilter]);
 
   const handleCategoryChange = (category) => {
     setCurrentFilter(category);
