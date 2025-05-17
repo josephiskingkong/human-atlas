@@ -9,7 +9,7 @@
   display: grid;
   grid-template-columns: 1fr 8fr 1fr;
   background-color: #fff;
-  z-index: 10000;
+  z-index: 1000;
 
   .navbar-container {
     grid-column: 2;

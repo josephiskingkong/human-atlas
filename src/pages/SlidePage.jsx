@@ -76,10 +76,6 @@ const SlidePage = () => {
   }
 };
 
-  const handleRulerClick = () => {
-    setMeasureActive(!measureActive);
-  }
-
   return (
     <div className="slide-page-container">
       {slideData && (
@@ -100,11 +96,13 @@ const SlidePage = () => {
           <Zoombar />
 
           <div className="overlay-menu-grid">
-            {user.isAdmin && (
+            
               <div className="toolbar-layout">
+                {user && user.isAdmin && (
                 <ToolBar />
+                )}
               </div>
-            )}
+            
             <div className="point-menu-layout">
               <Menu slideData={slideData} />
             </div>

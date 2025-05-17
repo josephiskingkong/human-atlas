@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Footer from "../components/MainPage/Footer";
 import Navbar from "../components/Common/NavBar";
 import SearchBar from "../components/MainPage/SearchBar";
+import { search as fuseSearch } from "../service/fuse/search";
 
 import "../styles/layout/library-page.css";
-import { getOrgansByCategoryId, getOrgansDone } from "../hooks/organs/getOrgan";
+import { getOrgansDone } from "../hooks/organs/getOrgan";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
 import { getMainCategories } from "../hooks/categories";
 import { useNavigate } from "react-router-dom";
@@ -52,15 +53,8 @@ const HistologySlideLibrary = () => {
     return;
   }
 
-  const lowerCaseQuery = searchQuery.toLowerCase();
-  filtered = filtered.filter(
-    (slide) =>
-      (slide.name && slide.name.toLowerCase().includes(lowerCaseQuery)) ||
-      (slide.categoryid !== undefined &&
-        String(slide.categoryid).toLowerCase().includes(lowerCaseQuery))
-  );
-
-  setFilteredSlides(filtered);
+  const fuseResults = fuseSearch(filtered, searchQuery);
+  setFilteredSlides(fuseResults);
 }, [searchQuery, slides, currentFilter]);
 
   const handleCategoryChange = (category) => {
