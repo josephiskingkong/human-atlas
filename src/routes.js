@@ -19,9 +19,9 @@ const TestsPage = lazy(() => import("./pages/TestsPage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
 
 const routes = [
-  { path: "/human-atlas/", element: <HomePage /> },
+  { path: "/", element: <HomePage /> },
   {
-    path: "/human-atlas/slide/:id",
+    path: "/slide/:id",
     element: (
       <Provider store={atlasStore}>
         <SlidePage />
@@ -29,29 +29,28 @@ const routes = [
     ),
   },
   {
-    path: "/human-atlas/admin/slide/:id",
+    path: "/admin/slide/:id",
     element: (
       <Provider store={atlasStore}>
         <SlidePage />
       </Provider>
     ),
   },
-  { path: "/human-atlas/admin/home", element: <MainPage /> },
-  { path: "/human-atlas/admin/", element: <AdminMenu /> },
-  { path: "/human-atlas/admin/in-dev/", element: <InDevPage /> },
-  { path: "/human-atlas/admin/categories/", element: <CategoriesPage /> },
+  { path: "/admin/home", element: <MainPage /> },
+  { path: "/admin/", element: <AdminMenu /> },
+  { path: "/admin/in-dev/", element: <InDevPage /> },
+  { path: "/admin/categories/", element: <CategoriesPage /> },
   {
-    path: "/human-atlas/admin/categories/:categoryid",
+    path: "/admin/categories/:categoryid",
     element: <SlidesListPage />,
   },
-  { path: "/human-atlas/admin/tests", element: <TestCategoriesPage /> },
-  { path: "/human-atlas/admin/tests/:categoryId", element: <TestsListPage /> },
-  { path: "/human-atlas/admin/test/:id", element: <TestPageAdmin /> },
-  { path: "/human-atlas/admin/test/add", element: <TestPageAdmin /> },
-  { path: "/human-atlas/home", element: <HomePage /> },
-  { path: "/human-atlas/library", element: <LibraryPage /> },
-  { path: "/human-atlas/tests", element: <TestsPage /> },
-  { path: "/human-atlas/tests/:testId", element: <TestPage /> },
+  { path: "/admin/tests", element: <TestCategoriesPage /> },
+  { path: "/admin/tests/:categoryId", element: <TestsListPage /> },
+  { path: "/admin/test/:id", element: <TestPageAdmin /> },
+  { path: "/admin/test/add", element: <TestPageAdmin /> },
+  { path: "/library", element: <LibraryPage /> },
+  { path: "/tests", element: <TestsPage /> },
+  { path: "/tests/:testId", element: <TestPage /> },
 ];
 
 export default routes;
