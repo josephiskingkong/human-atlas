@@ -92,7 +92,7 @@ export default function SlidesPage() {
                 title={slide.name}
                 status={slide.status}
                 img={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
-                path={`/human-atlas/admin/slide/${slide.id}`}
+                path={`/admin/slide/${slide.id}`}
                 onDelete={handleDeleteSlide}
               />
             ))}

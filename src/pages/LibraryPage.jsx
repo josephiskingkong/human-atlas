@@ -91,7 +91,7 @@ const HistologySlideLibrary = () => {
                   key={slide.id}
                   className="slide-card"
                   onClick={() => {
-                    navigate(`/human-atlas/slide/${slide.id}`);
+                    navigate(`/slide/${slide.id}`);
                   }}
                 >
                   <div className="slide-card__image-container">

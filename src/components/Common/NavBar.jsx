@@ -58,7 +58,7 @@ export default function NavBar() {
   };
 
   const handleProfileClick = () => {
-    navigate("/human-atlas/profile");
+    navigate("/profile");
   }
 
   const handleLogout = () => {
@@ -95,7 +95,7 @@ export default function NavBar() {
   };
 
   const handleGoToMainPage = () => {
-    navigate("/human-atlas/")
+    navigate("/")
   }
 
   // --- Новый код для мобильного меню ---
@@ -114,9 +114,9 @@ export default function NavBar() {
         <div className="navbar-logo" onClick={handleGoToMainPage}>Гисто Атлас</div>
         <ul className="navbar-buttons">
           <div className="sections">
-            <p onClick={() => navigate("/human-atlas/library")}>Атлас</p>
-            <p onClick={() => navigate("/human-atlas/tests")}>Тестирование</p>
-            <p onClick={() => navigate("/human-atlas/about")}>О проекте</p>
+            <p onClick={() => navigate("/library")}>Атлас</p>
+            <p onClick={() => navigate("/tests")}>Тестирование</p>
+            <p onClick={() => navigate("/about")}>О проекте</p>
           </div>
           <button
   className="navbar-mobile-toggle"
@@ -142,7 +142,7 @@ export default function NavBar() {
                   {user.isAdmin && (
                     <button 
                     className="dropdown-item"
-                    onClick={() => navigate("/human-atlas/admin")}
+                    onClick={() => navigate("/admin")}
                     >
                     <span className="admin-logo">A</span> Админ-панель
                     </button>
@@ -170,14 +170,14 @@ export default function NavBar() {
       {mobileMenuOpen && (
         <div className="navbar-mobile-menu">
           <div className="sections">
-            <p onClick={() => handleMobileNavigate("/human-atlas/library")}>Атлас</p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/tests")}>Тестирование</p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/about")}>О проекте</p>
+            <p onClick={() => handleMobileNavigate("/library")}>Атлас</p>
+            <p onClick={() => handleMobileNavigate("/tests")}>Тестирование</p>
+            <p onClick={() => handleMobileNavigate("/about")}>О проекте</p>
             {user ? (
               <>
-                <p onClick={() => handleMobileNavigate("/human-atlas/profile")}>Профиль</p>
+                <p onClick={() => handleMobileNavigate("/profile")}>Профиль</p>
                 {user.isAdmin && (
-                  <p onClick={() => handleMobileNavigate("/human-atlas/admin")}>Админ-панель</p>
+                  <p onClick={() => handleMobileNavigate("/admin")}>Админ-панель</p>
                 )}
                 <p className="red-text" onClick={confirmLogout}>Выйти</p>
               </>

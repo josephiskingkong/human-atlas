@@ -45,7 +45,7 @@ export default function HomePage() {
           <button
             className="go-to-library"
             onClick={() => {
-              navigate("/human-atlas/library");
+              navigate("/library");
             }}
           >
             Библиотека слайдов
