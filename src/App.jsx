@@ -1,17 +1,29 @@
-import React from 'react';
-import OpenSeadragonViewer from './components/OpenSeadragonViewer';
-import { BrowserRouter as Router, Route, Switch, Routes } from 'react-router-dom';
-import ListOrgans from './components/ListOrgans';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Suspense, useEffect } from "react";
+import routes from "./routes";
+import "./styles/base/reset.css";
+import useCsrfToken from "./hooks/user/useCsrf";
+import { useSession } from "./context/SessionContext";
+import { setSessionExpiredHandler } from "./config/apiRequest";
 
 function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route exact path='/human-atlas' Component={ ListOrgans } />
-                <Route exact path='/human-atlas/:id' Component={ OpenSeadragonViewer } />
-            </Routes>
-        </Router>
-    );
+  useCsrfToken();
+  const { handleSessionExpired } = useSession();
+
+  useEffect(() => {
+    setSessionExpiredHandler(handleSessionExpired);
+  }, [handleSessionExpired]);
+  return (
+    <Router>
+      <Suspense fallback={<div aria-busy="true" aria-label="Loading"></div>}>
+        <Routes>
+          {routes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+          ))}
+        </Routes>
+      </Suspense>
+    </Router>
+  );
 }
 
 export default App;

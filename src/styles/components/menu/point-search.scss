@@ -1,0 +1,42 @@
+.point-search-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 14px;
+    overflow-y: auto;
+
+    h3 {
+        color: #C5CACE;
+    }
+
+    span {
+        color: #393939;
+        font-weight: 500;
+    }
+
+    .search-item {
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        box-sizing: border-box;
+        border-radius: 20px;
+        border: 0.20px #C5CACE solid;
+        background-color: white;
+        height: 120px;
+        width: 100%;
+        overflow: hidden;
+        cursor: pointer;
+        user-select: none;
+
+        .item-title {
+
+        }
+
+        .item-description {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 400px;
+        }
+    }
+}

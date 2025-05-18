@@ -1,0 +1,117 @@
+@import '../base/variables.scss';
+
+.slide-item {
+  width: 100%;
+  aspect-ratio: 2 / 1.2;
+  border-radius: 16px;
+  background-color: #e1e1e1;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+
+  .slide-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.2);
+    filter: brightness(50%) blur(5px) saturate(50%);
+    transition: filter 0.3s ease;
+  }
+
+  &:hover .slide-background {
+    filter: brightness(30%) blur(5px) saturate(50%);
+  }
+
+  .slide-container {
+    padding: 16px;
+    flex: 1;
+
+    .slide-content {
+      position: relative;
+      z-index: 1;
+
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      .slide-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .slide-status {
+          display: flex;
+          flex-direction: row;
+          background-color: #fff;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 8px;
+          border-radius: 8px;
+          color: #edb337;
+          font-weight: 700;
+
+          &.slide-error {
+            color: $red-color
+          }
+        }
+
+        .slide-delete-button {
+          display: flex;
+          background-color: #fff;
+          align-items: center;
+          gap: 4px;
+          font-size: 16px;
+          padding: 4px 8px;
+          border-radius: 8px;
+          color: $red-color;
+          font-weight: 700;
+          border: none;
+          cursor: pointer;
+        }
+      }
+
+      .slide-info {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+
+        .slide-title {
+          color: #fff;
+          font-size: 20px;
+          font-weight: 600;
+          text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4);
+        }
+
+        .slide-edit-button {
+          border-radius: 8px;
+          background: #fff;
+          height: 40px;
+          box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+          font-size: 16px;
+          color: $primary-color;
+          font-weight: 600;
+          border: none;
+          position: relative;
+          z-index: 2;
+          cursor: pointer;
+          transition: all .2s ease-out;
+
+          &:hover {
+            box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.3);
+            transition: all .2s ease-in;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover .slide-edit-button:hover ~ .slide-background {
+    filter: brightness(30%) blur(5px) saturate(50%);
+  }
+}

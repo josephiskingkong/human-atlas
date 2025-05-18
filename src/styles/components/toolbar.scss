@@ -1,0 +1,131 @@
+@import "../base/variables.scss";
+
+.toolbar-wrapper {
+  display: flex;
+
+  flex: 0;
+
+  margin-left: 20%;
+
+  z-index: 2;
+
+  width: fit-content;
+
+  border-radius: 11px;
+  border: 0.2px solid #c5cace;
+  background: #eef3f7;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+
+  user-select: none;
+
+  .toolbar-container {
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+
+    .saveAndExit {
+        background-color: $primary-color;
+        color: #fff;
+        font-weight: 700;
+        font-size: 16px;
+        border-radius: 6px;
+        box-shadow: 0px 0px 5px 1px rgba(55, 84, 237, 0.10);
+        padding: 0px 16px;
+        border: none;
+        white-space: nowrap;
+        cursor: pointer;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      border: $main-border;
+      background: #eef3f7;
+      color: $primary-dark-color;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 4px;
+      white-space: nowrap;
+      box-shadow: $interface-shadow;
+      pointer-events: none;
+      text-align: center;
+      z-index: 1;
+
+      animation: slide-up-fade 0.3s ease-out forwards;
+
+      span {
+        font-weight: bold;
+        color: $primary-color;
+      }
+    }
+
+    .buttons-container {
+      display: flex;
+      align-items: center;
+
+      position: relative;
+
+      gap: 8px;
+
+      .tool-button {
+        width: 53px;
+        height: 53px;
+        flex-shrink: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 6px;
+        border: 0.2px solid var(--default-stroke, #c5cace);
+        background: #f2f5f8;
+
+        transition: background-color 0.2s;
+
+        cursor: pointer;
+
+        img {
+          filter: invert(100%) invert(22%) sepia(32%) saturate(7471%)
+            hue-rotate(230deg) brightness(101%) contrast(86%);
+        }
+      }
+
+      .active-tool {
+        background-color: $primary-color;
+        border: none;
+        box-shadow: 0px 0px 5px 1px rgba(55, 84, 237, 0.25);
+
+        transition: background-color 0.2s;
+
+        img {
+          filter: none;
+        }
+      }
+
+      .tool-button:hover:not(.active-tool) {
+        box-shadow: $interface-shadow;
+        background: #fafcff;
+        transition: background-color 0.2s;
+      }
+    }
+  }
+}
+
+@keyframes slide-up-fade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 20%);
+    top: 0;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0%);
+    top: -50px;
+  }
+}

@@ -1,0 +1,151 @@
+.float-menu-button {
+  border-radius: 12px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  background: #fff;
+  box-shadow: 0px 0px 25px 0px rgba(55, 84, 237, 0.05);
+  cursor: pointer;
+}
+
+.page-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 8fr 1fr;
+}
+
+.page-container {
+  grid-column: 2;
+}
+
+.profile-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 32px;
+}
+
+.profile-page-container {
+  background: #fff;
+  border-radius: 16px;
+  border: 0.2px solid var(--default-stroke, #c5cace);
+  padding: 20px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+.profile-page-container h1 {
+  margin-bottom: 10px;
+}
+.profile-page-container .profile-sidebard {
+  padding-right: 32px;
+}
+.profile-page-container .profile-sidebard .profile-menu-list .profile-menu-item-list {
+  background-color: rgba(55, 84, 237, 0.0705882353);
+  color: #3754ed;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile-label {
+  font-weight: bold;
+}
+
+.profile-value {
+  color: #3754ed;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.profile-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.profile-form .form-group label {
+  font-size: 14px;
+  font-weight: bold;
+}
+.profile-form .form-group input,
+.profile-form .form-group select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+.profile-form .form-group .user-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+  gap: 16px;
+}
+.profile-form .form-group .user-info .user-photo {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.profile-form .form-group .user-info .user-photo img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  transition: opacity 0.3s ease;
+}
+.profile-form .form-group .user-info .user-photo .overlay {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 600;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 50%;
+}
+.profile-form .form-group .user-info .user-photo:hover img {
+  opacity: 0.3;
+}
+.profile-form .form-group .user-info .user-photo:hover .overlay {
+  opacity: 1;
+}
+.profile-form .form-group .user-info .user-names {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.save-button {
+  margin-top: 8px;
+  cursor: pointer;
+  border: none;
+  background-color: #3754ed;
+  font-size: 16px;
+  color: #fff;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.react-datepicker__input-container input {
+  width: 100%;
+}/*# sourceMappingURL=profile-page.css.map */

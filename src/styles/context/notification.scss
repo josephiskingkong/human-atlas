@@ -1,0 +1,49 @@
+@import '../base/variables.scss';
+
+.notification {
+  position: fixed;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 16px;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  font-size: 14px;
+  transition: top 0.5s ease, opacity 0.5s ease;
+}
+
+.notification.notification-visible {
+  top: 20px;
+  opacity: 1;
+}
+
+.notification.notification-hidden {
+  top: -50px;
+  opacity: 0;
+}
+
+.notification-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.notification-info {
+  background-color: #fff;
+  color: $primary-color;
+}
+
+.notification-error {
+  background-color: $red-color;
+  color: white;
+}
+
+.notification-success {
+  background-color: #2fbc00;
+  color: white;
+}

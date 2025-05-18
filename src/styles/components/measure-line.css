@@ -1,0 +1,41 @@
+.measure-line-overlay {
+  position: absolute;
+  pointer-events: none;
+}
+
+.measure-line-segment {
+  position: absolute;
+  height: 2px;
+  background: #ff5050;
+  transform-origin: left center;
+}
+
+.measure-point {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff5050;
+  border: 2px solid #fff;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+  transform: translate(-50%, -50%);
+}
+
+.measure-point-start {
+  left: 0;
+}
+
+.measure-point-end {
+  right: 0;
+}
+
+.measure-distance {
+  position: absolute;
+  transform: translateX(-50%);
+  background: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}/*# sourceMappingURL=measure-line.css.map */
