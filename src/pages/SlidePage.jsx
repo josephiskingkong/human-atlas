@@ -18,6 +18,7 @@ import Cookies from "js-cookie";
 
 const SlidePage = () => {
   const dispatch = useDispatch();
+  const atlasViewerRef = useRef();
 
   const { id } = useParams();
   const viewerRef = useRef(null);

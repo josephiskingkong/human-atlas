@@ -8,12 +8,12 @@ import { TooLargeError } from "../../config/errors";
 
 export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
   const [loading, setLoading] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState("Выберите файл .svs");
+  const [selectedFileName, setSelectedFileName] = useState("Выберите файл слайда");
   const { showNotification } = useNotification();
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
-    setSelectedFileName(file ? file.name : "Выберите файл .svs");
+    setSelectedFileName(file ? file.name : "Выберите файл слайда");
   };
 
   const handleSubmit = async (e) => {
@@ -26,8 +26,8 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
       return;
     }
 
-    if (file.name.split(".").pop().toLowerCase() !== "svs") {
-      showNotification("Введите файл с расширением .svs", "error");
+    if (!['jpeg', 'png', 'jpg', 'svs'].includes(file.name.split(".").pop().toLowerCase())) {
+      showNotification("Введите файл с расширением .svs, .png, .jpeg или .jpg", "error");
       return;
     }
 
@@ -68,7 +68,7 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
             <input
               id="fileInput"
               type="file"
-              accept=".svs"
+              accept=".svs,.png,.jpg,.jpeg"
               className="hidden-file-input"
               onChange={handleFileChange}
             />
