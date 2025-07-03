@@ -59,7 +59,7 @@ export default function NavBar() {
 
   const handleProfileClick = () => {
     navigate("/human-atlas/profile");
-  }
+  };
 
   const handleLogout = () => {
     Cookies.remove("user");
@@ -70,8 +70,16 @@ export default function NavBar() {
   };
 
   const handleLoginSuccess = (userData, accessToken) => {
-    Cookies.set("user", JSON.stringify(userData), { secure: true, sameSite: 'None', path: '/', });
-    Cookies.set("accessToken", accessToken, { secure: true, sameSite: 'None', path: '/', });
+    Cookies.set("user", JSON.stringify(userData), {
+      secure: true,
+      sameSite: "None",
+      path: "/",
+    });
+    Cookies.set("accessToken", accessToken, {
+      secure: true,
+      sameSite: "None",
+      path: "/",
+    });
     setUser(userData);
     setShowLoginModal(false);
     window.location.reload();
@@ -95,8 +103,8 @@ export default function NavBar() {
   };
 
   const handleGoToMainPage = () => {
-    navigate("/human-atlas/")
-  }
+    navigate("/human-atlas/");
+  };
 
   // --- Новый код для мобильного меню ---
   const handleMobileMenuToggle = () => {
@@ -111,7 +119,9 @@ export default function NavBar() {
   return (
     <div className="navbar-wrapper">
       <div className="navbar-container">
-        <div className="navbar-logo" onClick={handleGoToMainPage}>Гисто Атлас</div>
+        <div className="navbar-logo" onClick={handleGoToMainPage}>
+          Гистологический Атлас
+        </div>
         <ul className="navbar-buttons">
           <div className="sections">
             <p onClick={() => navigate("/human-atlas/library")}>Атлас</p>
@@ -119,32 +129,32 @@ export default function NavBar() {
             <p onClick={() => navigate("/human-atlas/about")}>О проекте</p>
           </div>
           <button
-  className="navbar-mobile-toggle"
-  onClick={handleMobileMenuToggle}
-  aria-label="Открыть меню"
->
-  ☰
-</button>
+            className="navbar-mobile-toggle"
+            onClick={handleMobileMenuToggle}
+            aria-label="Открыть меню"
+          >
+            ☰
+          </button>
           {user ? (
             <div className="profile-info" ref={dropdownRef}>
               <span onClick={toggleDropdown} className="profile-name">
-                { user.isAdmin ? <span className="admin-logo">A</span> : '' }
+                {user.isAdmin ? <span className="admin-logo">A</span> : ""}
                 {user.firstName}
               </span>
               {isDropdownOpen && (
                 <div className="dropdown-menu">
-                  <button 
-                  className="dropdown-item"
-                  onClick={handleProfileClick}
+                  <button
+                    className="dropdown-item"
+                    onClick={handleProfileClick}
                   >
                     <img src={profileIcon} alt="profile" /> Профиль
                   </button>
                   {user.isAdmin && (
-                    <button 
-                    className="dropdown-item"
-                    onClick={() => navigate("/human-atlas/admin")}
+                    <button
+                      className="dropdown-item"
+                      onClick={() => navigate("/human-atlas/admin")}
                     >
-                    <span className="admin-logo">A</span> Админ-панель
+                      <span className="admin-logo">A</span> Админ-панель
                     </button>
                   )}
                   <button
@@ -170,19 +180,38 @@ export default function NavBar() {
       {mobileMenuOpen && (
         <div className="navbar-mobile-menu">
           <div className="sections">
-            <p onClick={() => handleMobileNavigate("/human-atlas/library")}>Атлас</p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/tests")}>Тестирование</p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/about")}>О проекте</p>
+            <p onClick={() => handleMobileNavigate("/human-atlas/library")}>
+              Атлас
+            </p>
+            <p onClick={() => handleMobileNavigate("/human-atlas/tests")}>
+              Тестирование
+            </p>
+            <p onClick={() => handleMobileNavigate("/human-atlas/about")}>
+              О проекте
+            </p>
             {user ? (
               <>
-                <p onClick={() => handleMobileNavigate("/human-atlas/profile")}>Профиль</p>
+                <p onClick={() => handleMobileNavigate("/human-atlas/profile")}>
+                  Профиль
+                </p>
                 {user.isAdmin && (
-                  <p onClick={() => handleMobileNavigate("/human-atlas/admin")}>Админ-панель</p>
+                  <p onClick={() => handleMobileNavigate("/human-atlas/admin")}>
+                    Админ-панель
+                  </p>
                 )}
-                <p className="red-text" onClick={confirmLogout}>Выйти</p>
+                <p className="red-text" onClick={confirmLogout}>
+                  Выйти
+                </p>
               </>
             ) : (
-              <p onClick={() => { setShowLoginModal(true); setMobileMenuOpen(false); }}>Войти</p>
+              <p
+                onClick={() => {
+                  setShowLoginModal(true);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                Войти
+              </p>
             )}
           </div>
         </div>
