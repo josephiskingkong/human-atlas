@@ -18,13 +18,41 @@
 
         h1 {
             text-align: center;
+
+            @media (max-width: 705px) {
+                text-align: left;
+            }
+
+            @media (max-width: 405px) {
+                font-size: 26px;
+            }
         }
+
+        .description-project {
+            text-align: center;
+            margin-top: 8px;
+            font-size: 22px;
+
+            width: 80%;
+            overflow-wrap: break-word;
+            word-break: break-word;
+
+            @media (max-width: 705px) {
+                text-align: left;
+                width: auto;
+            }
+            // @media (max-width: 705px) {
+            //     width: 400px;
+            // }
+        }
+
+        
 
         .go-to-library {
             margin-top: 16px;
 
             height: 60px;
-            width: 50%;
+            width: 400px;
 
             font-size: 22px;
 
@@ -42,16 +70,11 @@
                 transform: scale(1.02);
                 box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.276);
             }
+
+            @media (max-width: 450px) {
+                width: 300px;
+            }
         }
-    }
-
-
-    .description-project {
-        text-align: center;
-        margin-top: 8px;
-        font-size: 22px;
-
-        width: 700px;
     }
 
     h1 {
@@ -104,6 +127,10 @@
             &:hover {
                 transform: scale(1.02); /* Немного увеличивается */
                 box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.117); /* Эффект свечения */
+            }
+
+            @media (max-width: 405px) {
+                width: 250px;
             }
         } 
     }
