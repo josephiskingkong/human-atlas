@@ -17,6 +17,7 @@ const HomePage = lazy(() => import("./pages/HomePage"));
 const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const TestsPage = lazy(() => import("./pages/TestsPage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
+const AboutProject = lazy(() => import("./pages/AboutProject"));
 
 const routes = [
   { path: "/", element: <HomePage /> },
@@ -51,6 +52,7 @@ const routes = [
   { path: "/library", element: <LibraryPage /> },
   { path: "/tests", element: <TestsPage /> },
   { path: "/tests/:testId", element: <TestPage /> },
+  { path: "/about", element: <AboutProject /> },
 ];
 
 export default routes;

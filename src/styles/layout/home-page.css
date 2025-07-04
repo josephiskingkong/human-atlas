@@ -23,10 +23,34 @@
 .home-wrapper .header-home h1 {
   text-align: center;
 }
+@media (max-width: 705px) {
+  .home-wrapper .header-home h1 {
+    text-align: left;
+  }
+}
+@media (max-width: 405px) {
+  .home-wrapper .header-home h1 {
+    font-size: 26px;
+  }
+}
+.home-wrapper .header-home .description-project {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 22px;
+  width: 80%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+@media (max-width: 705px) {
+  .home-wrapper .header-home .description-project {
+    text-align: left;
+    width: auto;
+  }
+}
 .home-wrapper .header-home .go-to-library {
   margin-top: 16px;
   height: 60px;
-  width: 50%;
+  width: 400px;
   font-size: 22px;
   color: white;
   background-color: #3754ed;
@@ -39,11 +63,10 @@
   transform: scale(1.02);
   box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.276);
 }
-.home-wrapper .description-project {
-  text-align: center;
-  margin-top: 8px;
-  font-size: 22px;
-  width: 700px;
+@media (max-width: 450px) {
+  .home-wrapper .header-home .go-to-library {
+    width: 300px;
+  }
 }
 .home-wrapper h1 {
   margin-top: 32px;
@@ -59,15 +82,29 @@
   justify-content: center;
   box-sizing: border-box;
 }
+.home-wrapper .topics a {
+  text-decoration: none;
+  color: black;
+}
+.home-wrapper .topics a:visited {
+  color: black;
+}
+.home-wrapper .topics a:hover {
+  color: black;
+}
+.home-wrapper .topics a:active {
+  color: black;
+}
 .home-wrapper .topics .topic {
   display: flex;
   flex-direction: column;
-  border: 0.5px solid rgba(204, 204, 204, 0.631372549); /* Серый цвет обводки */
-  border-radius: 32px; /* Закругление углов */
+  border: 0.5px solid rgba(204, 204, 204, 0.631372549);
+  border-radius: 32px;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
   justify-content: center;
   align-items: center;
   max-width: 300px;
+  height: 300px;
   gap: 16px;
   padding: 32px;
   cursor: pointer;
@@ -84,4 +121,9 @@
 .home-wrapper .topics .topic:hover {
   transform: scale(1.02); /* Немного увеличивается */
   box-shadow: 0 0 15px 5px rgba(0, 123, 255, 0.117); /* Эффект свечения */
+}
+@media (max-width: 405px) {
+  .home-wrapper .topics .topic {
+    width: 250px;
+  }
 }/*# sourceMappingURL=home-page.css.map */
