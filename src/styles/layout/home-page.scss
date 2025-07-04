@@ -94,19 +94,37 @@
         justify-content: center;
 
         box-sizing: border-box;
-    
+        
+        a {
+            text-decoration: none;
+            color: black;
+
+            &:visited {
+                color: black;
+            }
+
+            &:hover {
+                color: black;
+            }
+
+            &:active {
+                color: black;
+            }
+        }
+
         .topic {
             display: flex;
             flex-direction: column;
 
-            border: 0.5px solid #cccccca1; /* Серый цвет обводки */
-            border-radius: 32px; /* Закругление углов */
+            border: 0.5px solid #cccccca1;
+            border-radius: 32px;
             transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
             justify-content: center;
             align-items: center;
 
             max-width: 300px;
+            height: 300px;
             gap: 16px;
             padding: 32px;
 
