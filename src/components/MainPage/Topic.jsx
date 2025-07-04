@@ -1,6 +1,6 @@
 export default function Topic({ icon, title, description }) {
   return (
-    <a href="human-atlas/library">
+    <a href="library">
       <div className="topic">
         <div>
           <p className="topic-icon">{icon}</p>
