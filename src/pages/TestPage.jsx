@@ -370,7 +370,7 @@ const TestPage = () => {
         <div className="retake-button-container">
           <button
             className="retake-button"
-            onClick={() => navigate("/human-atlas/tests")}
+            onClick={() => navigate("/tests")}
           >
             Вернуться к списку тестов
           </button>

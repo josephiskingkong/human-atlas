@@ -43,7 +43,7 @@ export default function TestsListPage() {
       <div className="admin-content">
         <button
           className="admin-add-button"
-          onClick={() => navigate(`/human-atlas/admin/test/add`)}
+          onClick={() => navigate(`/admin/test/add`)}
         >
           + Добавить тест
         </button>
@@ -57,7 +57,7 @@ export default function TestsListPage() {
               <div
                 key={test.id}
                 className="test-card"
-                onClick={() => navigate(`/human-atlas/admin/test/${test.id}`)}
+                onClick={() => navigate(`/admin/test/${test.id}`)}
               >
                 <div className="test-card-title">{test.title}</div>
                 <div className="test-card-info">

@@ -58,8 +58,8 @@ export default function NavBar() {
   };
 
   const handleProfileClick = () => {
-    navigate("/human-atlas/profile");
-  };
+    navigate("/profile");
+  }
 
   const handleLogout = () => {
     Cookies.remove("user");
@@ -103,8 +103,8 @@ export default function NavBar() {
   };
 
   const handleGoToMainPage = () => {
-    navigate("/human-atlas/");
-  };
+    navigate("/")
+  }
 
   // --- Новый код для мобильного меню ---
   const handleMobileMenuToggle = () => {
@@ -124,9 +124,9 @@ export default function NavBar() {
         </div>
         <ul className="navbar-buttons">
           <div className="sections">
-            <p onClick={() => navigate("/human-atlas/library")}>Атлас</p>
-            <p onClick={() => navigate("/human-atlas/tests")}>Тестирование</p>
-            <p onClick={() => navigate("/human-atlas/about")}>О проекте</p>
+            <p onClick={() => navigate("/library")}>Атлас</p>
+            <p onClick={() => navigate("/tests")}>Тестирование</p>
+            <p onClick={() => navigate("/about")}>О проекте</p>
           </div>
           <button
             className="navbar-mobile-toggle"
@@ -150,9 +150,9 @@ export default function NavBar() {
                     <img src={profileIcon} alt="profile" /> Профиль
                   </button>
                   {user.isAdmin && (
-                    <button
-                      className="dropdown-item"
-                      onClick={() => navigate("/human-atlas/admin")}
+                    <button 
+                    className="dropdown-item"
+                    onClick={() => navigate("/admin")}
                     >
                       <span className="admin-logo">A</span> Админ-панель
                     </button>
