@@ -14,7 +14,7 @@ export const SessionProvider = ({ children }) => {
 
   const closeSessionModal = () => {
     setIsSessionExpired(false);
-    window.location.href = "/human-atlas/";
+    window.location.href = "/";
   };
 
   return (

@@ -73,7 +73,7 @@ const SlidePage = () => {
   if (window.history.length > 1) {
     navigate(-1);
   } else {
-    navigate("/human-atlas/");
+    navigate("/");
   }
 };
 
