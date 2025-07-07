@@ -59,7 +59,7 @@ export default function NavBar() {
 
   const handleProfileClick = () => {
     navigate("/profile");
-  }
+  };
 
   const handleLogout = () => {
     Cookies.remove("user");
@@ -103,8 +103,8 @@ export default function NavBar() {
   };
 
   const handleGoToMainPage = () => {
-    navigate("/")
-  }
+    navigate("/");
+  };
 
   // --- Новый код для мобильного меню ---
   const handleMobileMenuToggle = () => {
@@ -150,9 +150,9 @@ export default function NavBar() {
                     <img src={profileIcon} alt="profile" /> Профиль
                   </button>
                   {user.isAdmin && (
-                    <button 
-                    className="dropdown-item"
-                    onClick={() => navigate("/admin")}
+                    <button
+                      className="dropdown-item"
+                      onClick={() => navigate("/admin")}
                     >
                       <span className="admin-logo">A</span> Админ-панель
                     </button>
@@ -180,22 +180,14 @@ export default function NavBar() {
       {mobileMenuOpen && (
         <div className="navbar-mobile-menu">
           <div className="sections">
-            <p onClick={() => handleMobileNavigate("/human-atlas/library")}>
-              Атлас
-            </p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/tests")}>
-              Тестирование
-            </p>
-            <p onClick={() => handleMobileNavigate("/human-atlas/about")}>
-              О проекте
-            </p>
+            <p onClick={() => handleMobileNavigate("/library")}>Атлас</p>
+            <p onClick={() => handleMobileNavigate("/tests")}>Тестирование</p>
+            <p onClick={() => handleMobileNavigate("/about")}>О проекте</p>
             {user ? (
               <>
-                <p onClick={() => handleMobileNavigate("/human-atlas/profile")}>
-                  Профиль
-                </p>
+                <p onClick={() => handleMobileNavigate("/profile")}>Профиль</p>
                 {user.isAdmin && (
-                  <p onClick={() => handleMobileNavigate("/human-atlas/admin")}>
+                  <p onClick={() => handleMobileNavigate("/admin")}>
                     Админ-панель
                   </p>
                 )}
