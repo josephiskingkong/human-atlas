@@ -35,7 +35,7 @@ const HistologySlideLibrary = () => {
   }, []);
 
   useEffect(() => {
-    if (!slides || slides.length === 0) {
+    if (!slides || slides === undefined || slides.length === 0) {
       setFilteredSlides([]);
       return;
     }
@@ -79,46 +79,53 @@ const HistologySlideLibrary = () => {
           <>
             <div className="results">
               <p className="results__count">
-                {filteredSlides.length === 0
-                  ? "Слайды не найдены"
-                  : `Найдено слайдов: ${filteredSlides.length}`}
+                {filteredSlides === undefined || filteredSlides.length === 0 ? (
+                  <></>
+                ) : (
+                  `Найдено слайдов: ${filteredSlides.length}`
+                )}
               </p>
             </div>
 
             <div className="slides-grid">
-              {filteredSlides.map((slide) => (
-                <div
-                  key={slide.id}
-                  className="slide-card"
-                  onClick={() => {
-                    navigate(`/slide/${slide.id}`);
-                  }}
-                >
-                  <div className="slide-card__image-container">
-                    <img
-                      src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
-                      alt={slide.name}
-                      className="slide-card__image"
-                    />
+              {filteredSlides ? (
+                filteredSlides.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className="slide-card"
+                    onClick={() => {
+                      navigate(`/slide/${slide.id}`);
+                    }}
+                  >
+                    <div className="slide-card__image-container">
+                      <img
+                        src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
+                        alt={slide.name}
+                        className="slide-card__image"
+                      />
+                    </div>
+                    <div className="slide-card__content">
+                      <h3 className="slide-card__title">{slide.name}</h3>
+                      <p className="slide-card__category">{slide.category}</p>
+                    </div>
                   </div>
-                  <div className="slide-card__content">
-                    <h3 className="slide-card__title">{slide.name}</h3>
-                    <p className="slide-card__category">{slide.category}</p>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <></>
+              )}
             </div>
 
-            {filteredSlides.length === 0 && !isLoading && (
-              <div className="no-results">
-                <p className="no-results__title">
-                  По вашему запросу ничего не найдено
-                </p>
-                <p className="no-results__message">
-                  Попробуйте изменить запрос или очистить поиск
-                </p>
-              </div>
-            )}
+            {!filteredSlides ||
+              (filteredSlides.length === 0 && !isLoading && (
+                <div className="no-results">
+                  <p className="no-results__title">
+                    По вашему запросу ничего не найдено
+                  </p>
+                  <p className="no-results__message">
+                    Попробуйте изменить запрос или очистить поиск
+                  </p>
+                </div>
+              ))}
           </>
         )}
       </main>
