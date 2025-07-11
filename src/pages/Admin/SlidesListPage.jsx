@@ -6,23 +6,43 @@ import { useEffect, useState, useCallback } from "react";
 import { getOrgansByCategoryId } from "../../hooks/organs/getOrgan";
 import SkeletonSlidesLoader from "../../components/Common/SkeletonSlidesLoader";
 import AddSlideModal from "../../components/Modals/AddSlideModal";
+import AddCategoryModal from "../../components/Modals/AddCategoryModal";
+import PanelNavigateEditableButton from "../../components/Common/PanelEditableButton";
+import { getCategoriesByParentId } from "../../hooks/categories";
 
 export default function SlidesPage() {
   const { categoryid } = useParams();
+  const [categories, setCategories] = useState([]);
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [notFound, setNotFound] = useState(null);
+  const [showModalSlide, setShowModalSlide] = useState(false);
+  const [showModalCategory, setShowModalCategory] = useState(false);
+  const [notFoundSlides, setNotFoundSlides] = useState(null);
+  const [notFoundCategories, setNotFoundCategorites] = useState(null);
 
   const fetchSlides = useCallback(async () => {
     try {
       const data = await getOrgansByCategoryId(categoryid);
       if (data.length > 0) {
         setSlides(data);
-        setNotFound(null);
+        setNotFoundSlides(null);
       } else {
-        setNotFound("Ничего не найдено :(");
+        setNotFoundSlides("Ничего не найдено :(");
+      }
+    } catch (err) {
+      setError(err.message || "Unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  }, [categoryid]);
+
+  const fetchCategories = useCallback(async () => {
+    try {
+      const data = await getCategoriesByParentId(categoryid);
+      if (data.length > 0) {
+        setCategories(data);
+        setNotFoundCategorites(null);
       }
     } catch (err) {
       setError(err.message || "Unexpected error occurred.");
@@ -33,7 +53,8 @@ export default function SlidesPage() {
 
   useEffect(() => {
     fetchSlides();
-  }, [fetchSlides]);
+    fetchCategories();
+  }, [fetchSlides, fetchCategories]);
 
   useEffect(() => {
     const hasProcessingSlides = slides.some(
@@ -75,14 +96,52 @@ export default function SlidesPage() {
     );
   }
 
+  const handleAddCategory = (newCategory) => {
+    setCategories((prevCategories) => {
+      const updatedCategories = [...prevCategories, newCategory];
+      return updatedCategories.sort((a, b) => a.name.localeCompare(b.name));
+    });
+    setNotFoundSlides(null);
+  };
+
+  const handleDeleteCategory = (id) => {
+    setCategories((prevCategories) =>
+      prevCategories.filter((category) => category.id !== id)
+    );
+  };
+
   return (
     <AdminPageLayout title="Слайды">
       <div className="admin-content">
-        <button className="admin-add-button" onClick={() => setShowModal(true)}>
+        <button
+          className="admin-add-button"
+          onClick={() => setShowModalCategory(true)}
+        >
+          + Добавить раздел
+        </button>
+        <button
+          className="admin-add-button"
+          onClick={() => setShowModalSlide(true)}
+        >
           + Добавить слайд
         </button>
-        {notFound ? (
-          <div className="error">{notFound}</div>
+        {notFoundCategories ? (
+          <div className="error">{notFoundSlides}</div>
+        ) : (
+          <ul className="categories-list">
+            {categories.map((category, index) => (
+              <li key={category.id} className="category-item">
+                <PanelNavigateEditableButton
+                  title={category.name}
+                  path={`${category.id}`}
+                  onDelete={handleDeleteCategory}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+        {notFoundSlides ? (
+          <div className="error">{notFoundSlides}</div>
         ) : (
           <div className="slides-grid">
             {slides.map((slide) => (
@@ -99,10 +158,17 @@ export default function SlidesPage() {
           </div>
         )}
       </div>
-      {showModal && (
+      {showModalSlide && (
         <AddSlideModal
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowModalSlide(false)}
           onAddSlide={handleAddSlide}
+          categoryId={categoryid}
+        />
+      )}
+      {showModalCategory && (
+        <AddCategoryModal
+          onClose={() => setShowModalCategory(false)}
+          onAddCategory={handleAddCategory}
           categoryId={categoryid}
         />
       )}

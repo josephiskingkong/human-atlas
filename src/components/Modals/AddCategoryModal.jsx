@@ -5,7 +5,11 @@ import { addCategory } from "../../hooks/categories";
 import { MoonLoader } from "react-spinners";
 import { useNotification } from "../../context/NotificationContext";
 
-export default function AddCategoryModal({ onClose, onAddCategory }) {
+export default function AddCategoryModal({
+  onClose,
+  onAddCategory,
+  categoryId,
+}) {
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
 
@@ -18,13 +22,19 @@ export default function AddCategoryModal({ onClose, onAddCategory }) {
     }
 
     setLoading(true);
+
     try {
-      const newCategory = await addCategory(categoryName);
+      console.log("CATEGORY: ", categoryId);
+      const newCategory = await addCategory(categoryName, categoryId);
+
       if (newCategory) {
         onAddCategory({ name: categoryName, id: newCategory.categoryid });
         onClose();
       } else {
-        showNotification("Категория не была добавлена. Проверьте данные.", "error");
+        showNotification(
+          "Категория не была добавлена. Проверьте данные.",
+          "error"
+        );
       }
     } catch (err) {
       showNotification("Ошибка при добавлении категории", "error");
@@ -38,11 +48,7 @@ export default function AddCategoryModal({ onClose, onAddCategory }) {
       <form onSubmit={handleSubmit} className="modal-form">
         <div className="form-group">
           <label htmlFor="categoryName">Название раздела</label>
-          <input
-            id="categoryName"
-            type="text"
-            placeholder="Введите название"
-          />
+          <input id="categoryName" type="text" placeholder="Введите название" />
         </div>
         <div className="form-group">
           <button type="submit" className="submit-button" disabled={loading}>
