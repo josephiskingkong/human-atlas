@@ -31,15 +31,18 @@ const HistologySlideLibrary = () => {
       const mockCategories = [];
       const category = searchParams.get("category");
 
-      // const mockSlides = await getOrgansDone();
       mockCategories.push(await getMainCategories());
 
       if (category) {
-        mockSlides = await getOrgansByCategoryId(category);
-        setCurrentFilter([category, "all"]);
-
         subCategories = await getCategoriesByParentId(category);
-        mockCategories.push(subCategories);
+        const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
+
+        mockSlides = await getOrgansByCategoryId(category);
+
+        if (hasSub) {
+          setCurrentFilter([category, "all"]);
+          mockCategories.push(subCategories);
+        } else setCurrentFilter([category]);
       } else {
         mockSlides = await getOrgansDone();
       }
