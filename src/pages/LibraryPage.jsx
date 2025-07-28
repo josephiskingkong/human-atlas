@@ -5,34 +5,53 @@ import SearchBar from "../components/MainPage/SearchBar";
 import { search as fuseSearch } from "../service/fuse/search";
 
 import "../styles/layout/library-page.css";
-import { getOrgansDone } from "../hooks/organs/getOrgan";
+import { getOrgansByCategoryId, getOrgansDone } from "../hooks/organs/getOrgan";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
-import { getMainCategories } from "../hooks/categories";
-import { useNavigate } from "react-router-dom";
+import {
+  getCategoriesByParentId,
+  getMainCategories,
+} from "../hooks/categories";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HistologySlideLibrary = () => {
   const [slides, setSlides] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState("all");
+  const [categoriesMatrix, setCategoriesMatrix] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState(["all"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSlides, setFilteredSlides] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSlides = async () => {
-      const mockSlides = await getOrgansDone();
-      const mockCategories = await getMainCategories();
+      let mockSlides;
+      let subCategories;
+      const mockCategories = [];
+      const category = searchParams.get("category");
+
+      // const mockSlides = await getOrgansDone();
+      mockCategories.push(await getMainCategories());
+
+      if (category) {
+        mockSlides = await getOrgansByCategoryId(category);
+        setCurrentFilter([category, "all"]);
+
+        subCategories = await getCategoriesByParentId(category);
+        mockCategories.push(subCategories);
+      } else {
+        mockSlides = await getOrgansDone();
+      }
 
       setSlides(mockSlides);
-      setCategories(mockCategories);
+      setCategoriesMatrix(mockCategories);
       setFilteredSlides(mockSlides);
       setIsLoading(false);
     };
 
     fetchSlides();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!slides || slides === undefined || slides.length === 0) {
@@ -55,9 +74,35 @@ const HistologySlideLibrary = () => {
     setFilteredSlides(fuseResults);
   }, [searchQuery, slides, currentFilter]);
 
-  const handleCategoryChange = (category) => {
-    setCurrentFilter(category);
+  const handleCategoryChange = async (category, level) => {
+    const isNotLastLevel = level < currentFilter.length - 1;
+    const subCategories = await getCategoriesByParentId(category);
+    const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
+
+    setCategoriesMatrix((prev) => {
+      let newMatrix = [...prev.slice(0, level + 1)];
+
+      if (hasSub && !(category === "all" && isNotLastLevel))
+        newMatrix = [...newMatrix, subCategories];
+
+      return newMatrix;
+    });
+
+    setCurrentFilter((prev) => {
+      let newFilter = [...prev.slice(0, level + 1)];
+      newFilter[level] = category;
+
+      if (hasSub && !(category === "all" && isNotLastLevel))
+        newFilter = [...newFilter, "all"];
+
+      return newFilter;
+    });
   };
+
+  useEffect(() => {
+    console.log(categoriesMatrix);
+    console.log(currentFilter);
+  }, [categoriesMatrix, currentFilter]);
 
   return (
     <div className="histology-page">
@@ -66,11 +111,16 @@ const HistologySlideLibrary = () => {
       <main className="main">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <CategoryFilter
-          categories={categories}
-          handleCategoryChange={handleCategoryChange}
-          currentFilter={currentFilter}
-        />
+        {categoriesMatrix.map((categoriesLevel, index) => (
+          <CategoryFilter
+            key={index}
+            categories={categoriesLevel}
+            handleCategoryChange={handleCategoryChange}
+            currentFilter={currentFilter[index]}
+            level={index}
+          />
+        ))}
+
         {isLoading ? (
           <div className="loader">
             <div className="loader__spinner"></div>

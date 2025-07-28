@@ -61,6 +61,7 @@ export default function HomePage() {
         <div className="topics">
           {topics.map((topic) => (
             <Topic
+              id={topic.id}
               key={topic.id}
               icon={topic.icon}
               title={topic.title}
