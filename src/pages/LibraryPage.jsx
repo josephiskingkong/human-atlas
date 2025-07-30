@@ -44,6 +44,7 @@ const HistologySlideLibrary = () => {
           mockCategories.push(subCategories);
         } else setCurrentFilter([category]);
       } else {
+        console.log("нету категории");
         mockSlides = await getOrgansDone();
       }
 
@@ -141,7 +142,7 @@ const HistologySlideLibrary = () => {
             </div>
 
             <div className="slides-grid">
-              {filteredSlides ? (
+              {Array.isArray(filteredSlides) && filteredSlides.length > 0 ? (
                 filteredSlides.map((slide) => (
                   <div
                     key={slide.id}
