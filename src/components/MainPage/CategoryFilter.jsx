@@ -4,12 +4,13 @@ export default function CategoryFilter({
   currentFilter,
   handleCategoryChange,
   categories,
+  level,
 }) {
   return (
     <div className="category-filters">
       <button
         className={`category-filter ${currentFilter === "all" ? "active" : ""}`}
-        onClick={() => handleCategoryChange("all")}
+        onClick={() => handleCategoryChange("all", level)}
       >
         Все категории
       </button>
@@ -20,7 +21,7 @@ export default function CategoryFilter({
           className={`category-filter ${
             currentFilter === category.id ? "active" : ""
           }`}
-          onClick={() => handleCategoryChange(category.id)}
+          onClick={() => handleCategoryChange(category.id, level)}
         >
           {category.name}
         </button>

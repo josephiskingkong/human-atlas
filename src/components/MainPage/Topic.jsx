@@ -1,6 +1,6 @@
-export default function Topic({ icon, title, description }) {
+export default function Topic({ id, icon, title, description }) {
   return (
-    <a href="library">
+    <a href={`library?category=${id}`}>
       <div className="topic">
         <div>
           <p className="topic-icon">{icon}</p>

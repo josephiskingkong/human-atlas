@@ -207,6 +207,8 @@
         display: flex;
         align-items: flex-start;
         gap: 1rem;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       &__image {
@@ -232,30 +234,40 @@
 
       &__info {
         flex-grow: 1;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       &__name {
         font-weight: 600;
         color: #1f2937;
         margin-bottom: 0.25rem;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       &__type {
         font-size: 0.875rem;
         color: #2563eb;
         margin-bottom: 0.5rem;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       &__location {
         font-size: 0.875rem;
         color: #4b5563;
         margin-bottom: 0.5rem;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
 
       &__full-name {
         font-size: 0.75rem;
         color: #6b7280;
         line-height: 1.6;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
     }
   }
@@ -320,6 +332,11 @@
       svg {
         width: 1.25rem;
         height: 1.25rem;
+      }
+
+      @media (max-width: 380px) {
+        padding: 0.75rem 0.5rem;
+        font-size: 14px;
       }
     }
   }

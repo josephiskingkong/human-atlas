@@ -5,37 +5,60 @@ import SearchBar from "../components/MainPage/SearchBar";
 import { search as fuseSearch } from "../service/fuse/search";
 
 import "../styles/layout/library-page.css";
-import { getOrgansDone } from "../hooks/organs/getOrgan";
+import { getOrgansByCategoryId, getOrgansDone } from "../hooks/organs/getOrgan";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
-import { getMainCategories } from "../hooks/categories";
-import { useNavigate } from "react-router-dom";
+import {
+  getCategoriesByParentId,
+  getMainCategories,
+} from "../hooks/categories";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const HistologySlideLibrary = () => {
   const [slides, setSlides] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [currentFilter, setCurrentFilter] = useState("all");
+  const [categoriesMatrix, setCategoriesMatrix] = useState([]);
+  const [currentFilter, setCurrentFilter] = useState(["all"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSlides, setFilteredSlides] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSlides = async () => {
-      const mockSlides = await getOrgansDone();
-      const mockCategories = await getMainCategories();
+      let mockSlides;
+      let subCategories;
+      const mockCategories = [];
+      const category = searchParams.get("category");
+
+      mockCategories.push(await getMainCategories());
+
+      if (category) {
+        subCategories = await getCategoriesByParentId(category);
+        const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
+
+        mockSlides = await getOrgansByCategoryId(category);
+
+        if (hasSub) {
+          setCurrentFilter([category, "all"]);
+          mockCategories.push(subCategories);
+        } else setCurrentFilter([category]);
+      } else {
+        console.log("нету категории");
+        mockSlides = await getOrgansDone();
+      }
 
       setSlides(mockSlides);
-      setCategories(mockCategories);
+      setCategoriesMatrix(mockCategories);
       setFilteredSlides(mockSlides);
       setIsLoading(false);
     };
 
     fetchSlides();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
-    if (!slides || slides.length === 0) {
+    if (!slides || slides === undefined || slides.length === 0) {
       setFilteredSlides([]);
       return;
     }
@@ -55,9 +78,35 @@ const HistologySlideLibrary = () => {
     setFilteredSlides(fuseResults);
   }, [searchQuery, slides, currentFilter]);
 
-  const handleCategoryChange = (category) => {
-    setCurrentFilter(category);
+  const handleCategoryChange = async (category, level) => {
+    const isNotLastLevel = level < currentFilter.length - 1;
+    const subCategories = await getCategoriesByParentId(category);
+    const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
+
+    setCategoriesMatrix((prev) => {
+      let newMatrix = [...prev.slice(0, level + 1)];
+
+      if (hasSub && !(category === "all" && isNotLastLevel))
+        newMatrix = [...newMatrix, subCategories];
+
+      return newMatrix;
+    });
+
+    setCurrentFilter((prev) => {
+      let newFilter = [...prev.slice(0, level + 1)];
+      newFilter[level] = category;
+
+      if (hasSub && !(category === "all" && isNotLastLevel))
+        newFilter = [...newFilter, "all"];
+
+      return newFilter;
+    });
   };
+
+  useEffect(() => {
+    console.log(categoriesMatrix);
+    console.log(currentFilter);
+  }, [categoriesMatrix, currentFilter]);
 
   return (
     <div className="histology-page">
@@ -66,11 +115,16 @@ const HistologySlideLibrary = () => {
       <main className="main">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <CategoryFilter
-          categories={categories}
-          handleCategoryChange={handleCategoryChange}
-          currentFilter={currentFilter}
-        />
+        {categoriesMatrix.map((categoriesLevel, index) => (
+          <CategoryFilter
+            key={index}
+            categories={categoriesLevel}
+            handleCategoryChange={handleCategoryChange}
+            currentFilter={currentFilter[index]}
+            level={index}
+          />
+        ))}
+
         {isLoading ? (
           <div className="loader">
             <div className="loader__spinner"></div>
@@ -79,46 +133,53 @@ const HistologySlideLibrary = () => {
           <>
             <div className="results">
               <p className="results__count">
-                {filteredSlides.length === 0
-                  ? "Слайды не найдены"
-                  : `Найдено слайдов: ${filteredSlides.length}`}
+                {filteredSlides === undefined || filteredSlides.length === 0 ? (
+                  <></>
+                ) : (
+                  `Найдено слайдов: ${filteredSlides.length}`
+                )}
               </p>
             </div>
 
             <div className="slides-grid">
-              {filteredSlides.map((slide) => (
-                <div
-                  key={slide.id}
-                  className="slide-card"
-                  onClick={() => {
-                    navigate(`/slide/${slide.id}`);
-                  }}
-                >
-                  <div className="slide-card__image-container">
-                    <img
-                      src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
-                      alt={slide.name}
-                      className="slide-card__image"
-                    />
+              {Array.isArray(filteredSlides) && filteredSlides.length > 0 ? (
+                filteredSlides.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className="slide-card"
+                    onClick={() => {
+                      navigate(`/slide/${slide.id}`);
+                    }}
+                  >
+                    <div className="slide-card__image-container">
+                      <img
+                        src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
+                        alt={slide.name}
+                        className="slide-card__image"
+                      />
+                    </div>
+                    <div className="slide-card__content">
+                      <h3 className="slide-card__title">{slide.name}</h3>
+                      <p className="slide-card__category">{slide.category}</p>
+                    </div>
                   </div>
-                  <div className="slide-card__content">
-                    <h3 className="slide-card__title">{slide.name}</h3>
-                    <p className="slide-card__category">{slide.category}</p>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <></>
+              )}
             </div>
 
-            {filteredSlides.length === 0 && !isLoading && (
-              <div className="no-results">
-                <p className="no-results__title">
-                  По вашему запросу ничего не найдено
-                </p>
-                <p className="no-results__message">
-                  Попробуйте изменить запрос или очистить поиск
-                </p>
-              </div>
-            )}
+            {!filteredSlides ||
+              (filteredSlides.length === 0 && !isLoading && (
+                <div className="no-results">
+                  <p className="no-results__title">
+                    По вашему запросу ничего не найдено
+                  </p>
+                  <p className="no-results__message">
+                    Попробуйте изменить запрос или очистить поиск
+                  </p>
+                </div>
+              ))}
           </>
         )}
       </main>

@@ -5,7 +5,12 @@ import dots from "../../assets/images/dots.svg";
 import trash from "../../assets/images/trash.svg";
 import edit from "../../assets/images/edit.svg";
 
-export default function PanelNavigateEditableButton({ title, icon, path }) {
+export default function PanelNavigateEditableButton({
+  title,
+  icon,
+  path,
+  onDelete,
+}) {
   const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
@@ -23,6 +28,11 @@ export default function PanelNavigateEditableButton({ title, icon, path }) {
     if (menuRef.current && !menuRef.current.contains(event.target)) {
       setMenuVisible(false);
     }
+  };
+
+  const handleOnDelete = async () => {
+    try {
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -49,7 +59,11 @@ export default function PanelNavigateEditableButton({ title, icon, path }) {
                 <img src={edit} alt="edit" />
                 Редактировать
               </button>
-              <button className="dropdown-item" style={{ color: "#F02B2B" }}>
+              <button
+                className="dropdown-item"
+                style={{ color: "#F02B2B" }}
+                onClick={handleOnDelete}
+              >
                 <img src={trash} alt="trash" />
                 Удалить
               </button>
