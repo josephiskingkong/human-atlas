@@ -83,7 +83,7 @@
   justify-content: center;
 }
 .modal-form .submit-button:hover {
-  background-color: #2040eb;
+  background-color: rgb(31.6055045872, 63.997706422, 234.8944954128);
 }
 
 .login-form, .registration-form {
