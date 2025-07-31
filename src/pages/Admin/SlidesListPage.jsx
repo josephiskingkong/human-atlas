@@ -159,7 +159,7 @@ export default function SlidesPage() {
               <li key={category.id} className="category-item">
                 <PanelNavigateEditableButton
                   title={category.name}
-                  path={`${category.id}`}
+                  path={`/admin/categories/${category.id}`}
                   onDelete={handleDeleteCategory}
                 />
               </li>
