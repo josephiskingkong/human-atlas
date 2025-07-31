@@ -3,9 +3,9 @@ async function getMainCategories() {
   try {
     const response = await apiRequest(`/v1/categories/get-mains/`);
 
-    response.categories.sort((a, b) => a.name.localeCompare(b.name));
+    response.sort((a, b) => a.name.localeCompare(b.name));
 
-    return response.categories;
+    return response;
   } catch (error) {
     console.error("Error fetching categories:", error.message);
     return [];
@@ -14,6 +14,8 @@ async function getMainCategories() {
 
 async function getCategoriesByParentId(categoryid) {
   try {
+    console.log("CATEGORY_ID", categoryid);
+
     const response = await apiRequest(
       `/v1/categories/get-by-categoryid/${categoryid}`
     );

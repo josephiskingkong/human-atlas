@@ -33,6 +33,8 @@ const HistologySlideLibrary = () => {
 
       mockCategories.push(await getMainCategories());
 
+      console.log("Категории", mockCategories);
+
       if (category) {
         subCategories = await getCategoriesByParentId(category);
         const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
@@ -47,6 +49,8 @@ const HistologySlideLibrary = () => {
         console.log("нету категории");
         mockSlides = await getOrgansDone();
       }
+
+      console.log("slideeeee", mockSlides);
 
       setSlides(mockSlides);
       setCategoriesMatrix(mockCategories);
@@ -65,8 +69,10 @@ const HistologySlideLibrary = () => {
 
     let filtered = [...slides];
 
-    if (currentFilter !== "all") {
-      filtered = filtered.filter((slide) => slide.categoryid === currentFilter);
+    if (currentFilter[currentFilter.length - 1] !== "all") {
+      filtered = filtered.filter((slide) =>
+        currentFilter.includes(slide.categoryid)
+      );
     }
 
     if (searchQuery.trim() === "") {
@@ -107,6 +113,11 @@ const HistologySlideLibrary = () => {
     console.log(categoriesMatrix);
     console.log(currentFilter);
   }, [categoriesMatrix, currentFilter]);
+
+  useEffect(() => {
+    console.log("Slides data:", slides);
+    console.log("Filtered slides:", filteredSlides);
+  }, [slides, filteredSlides]);
 
   return (
     <div className="histology-page">
@@ -169,17 +180,16 @@ const HistologySlideLibrary = () => {
               )}
             </div>
 
-            {!filteredSlides ||
-              (filteredSlides.length === 0 && !isLoading && (
-                <div className="no-results">
-                  <p className="no-results__title">
-                    По вашему запросу ничего не найдено
-                  </p>
-                  <p className="no-results__message">
-                    Попробуйте изменить запрос или очистить поиск
-                  </p>
-                </div>
-              ))}
+            {!filteredSlides || (filteredSlides.length === 0 && !isLoading) ? (
+              <div className="no-results">
+                <p className="no-results__title">
+                  По вашему запросу ничего не найдено
+                </p>
+                <p className="no-results__message">
+                  Попробуйте изменить запрос или очистить поиск
+                </p>
+              </div>
+            ) : null}
           </>
         )}
       </main>
