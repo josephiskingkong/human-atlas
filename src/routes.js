@@ -42,7 +42,7 @@ const routes = [
   { path: "/admin/in-dev/", element: <InDevPage /> },
   { path: "/admin/categories/", element: <CategoriesPage /> },
   {
-    path: "/admin/categories/:categoryid",
+    path: "/admin/categories/:categoryid/*",
     element: <SlidesListPage />,
   },
   { path: "/admin/tests", element: <TestCategoriesPage /> },

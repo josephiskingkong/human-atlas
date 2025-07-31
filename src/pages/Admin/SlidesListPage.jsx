@@ -8,7 +8,11 @@ import SkeletonSlidesLoader from "../../components/Common/SkeletonSlidesLoader";
 import AddSlideModal from "../../components/Modals/AddSlideModal";
 import AddCategoryModal from "../../components/Modals/AddCategoryModal";
 import PanelNavigateEditableButton from "../../components/Common/PanelEditableButton";
-import { getCategoriesByParentId } from "../../hooks/categories";
+import {
+  deleteCategoryById,
+  getCategoriesByParentId,
+} from "../../hooks/categories";
+import { useNotification } from "../../context/NotificationContext";
 
 export default function SlidesPage() {
   const { categoryid } = useParams();
@@ -20,6 +24,7 @@ export default function SlidesPage() {
   const [showModalCategory, setShowModalCategory] = useState(false);
   const [notFoundSlides, setNotFoundSlides] = useState(null);
   const [notFoundCategories, setNotFoundCategorites] = useState(null);
+  const { showNotification } = useNotification();
 
   const fetchSlides = useCallback(async () => {
     try {
@@ -104,10 +109,31 @@ export default function SlidesPage() {
     setNotFoundSlides(null);
   };
 
-  const handleDeleteCategory = (id) => {
-    setCategories((prevCategories) =>
-      prevCategories.filter((category) => category.id !== id)
-    );
+  const handleDeleteCategory = async (id) => {
+    try {
+      console.log("Пытаюсь удалить категорию с ID:", id);
+      const result = await deleteCategoryById(id);
+      console.log("Результат удаления:", result);
+
+      if (result) {
+        console.log("Категории до удаления:", categories);
+        setCategories((prevCategories) => {
+          const updated = prevCategories.filter(
+            (category) => Number(category.id) !== Number(id) // Явное приведение типов
+          );
+          console.log("Категории после удаления (внутри setState):", updated);
+          return updated; // Убрали лишний spread
+        });
+      } else {
+        showNotification("Не удалось удалить категорию!", "error");
+      }
+    } catch (error) {
+      console.error("Ошибка при удалении:", error);
+      showNotification(
+        "Произошла ошибка во время удаления категории! Попробуйте позже.",
+        "error"
+      );
+    }
   };
 
   return (

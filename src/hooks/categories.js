@@ -46,6 +46,8 @@ async function addCategory(name, categoryid = null) {
     categoryid,
   };
 
+  console.log("ZAPROS", categoryid);
+
   const filteredBody = Object.fromEntries(
     Object.entries(body).filter(([_, value]) => value !== null)
   );
@@ -66,9 +68,30 @@ async function addCategory(name, categoryid = null) {
   }
 }
 
+async function deleteCategoryById(id) {
+  try {
+    const response = await apiRequest(`/v1/categories/delete`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    });
+
+    if (response.error) {
+      throw new Error("Failed to delete category");
+    }
+
+    return response.message === "success";
+  } catch (error) {
+    throw new Error("Error deleting category:", error.message);
+  }
+}
+
 export {
   getCategoriesByParentId,
   getMainCategories,
   addCategory,
+  deleteCategoryById,
   getCategoryById,
 };

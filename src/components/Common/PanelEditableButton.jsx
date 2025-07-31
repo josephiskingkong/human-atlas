@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import dots from "../../assets/images/dots.svg";
 import trash from "../../assets/images/trash.svg";
 import edit from "../../assets/images/edit.svg";
+import ConfirmationModal from "../Modals/ConfirmationModal";
 
 export default function PanelNavigateEditableButton({
   title,
@@ -14,6 +15,7 @@ export default function PanelNavigateEditableButton({
   const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleClick = () => {
     navigate(path);
@@ -30,17 +32,16 @@ export default function PanelNavigateEditableButton({
     }
   };
 
-  const handleOnDelete = async () => {
-    try {
-    } catch (error) {}
-  };
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleOnDelete = () => {
+    setShowConfirmModal(true);
+  };
 
   return (
     <div className="panel-navigate-editable">
@@ -71,6 +72,17 @@ export default function PanelNavigateEditableButton({
           )}
         </button>
       </button>
+      <ConfirmationModal
+        isOpen={showConfirmModal}
+        onClose={() => setShowConfirmModal(false)}
+        onConfirm={() => {
+          onDelete(path);
+        }}
+        title="Подтвердите удаление"
+        actionName="Удалить"
+        actionColor="red"
+        message={`Вы точно уверены, что хотите удалить категорию и ВСЕ СЛАЙДЫ внутри неё?`}
+      />
     </div>
   );
 }
