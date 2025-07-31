@@ -15,7 +15,7 @@ import {
 import { useNotification } from "../../context/NotificationContext";
 
 export default function SlidesPage() {
-  const { categoryid } = useParams();
+  const { categoryid, subcategoryid } = useParams();
   const [categories, setCategories] = useState([]);
   const [slides, setSlides] = useState([]);
   const [loading, setLoading] = useState(true);

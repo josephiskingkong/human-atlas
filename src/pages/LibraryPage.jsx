@@ -69,9 +69,20 @@ const HistologySlideLibrary = () => {
 
     let filtered = [...slides];
 
-    if (currentFilter[currentFilter.length - 1] !== "all") {
-      filtered = filtered.filter((slide) =>
-        currentFilter.includes(slide.categoryid)
+    if (currentFilter[currentFilter.length - 1] === "all") {
+      if (currentFilter.length > 1) {
+        filtered = filtered.filter((slide) => {
+          return (
+            currentFilter[currentFilter.length - 2] === slide.categoryid ||
+            categoriesMatrix[currentFilter.length - 1].some(
+              (category) => category.id === slide.categoryid
+            )
+          );
+        });
+      }
+    } else {
+      filtered = filtered.filter(
+        (slide) => currentFilter[currentFilter.length - 1] === slide.categoryid
       );
     }
 
@@ -82,7 +93,7 @@ const HistologySlideLibrary = () => {
 
     const fuseResults = fuseSearch(filtered, searchQuery);
     setFilteredSlides(fuseResults);
-  }, [searchQuery, slides, currentFilter]);
+  }, [searchQuery, slides, currentFilter, categoriesMatrix]);
 
   const handleCategoryChange = async (category, level) => {
     const isNotLastLevel = level < currentFilter.length - 1;
