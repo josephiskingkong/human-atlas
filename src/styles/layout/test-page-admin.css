@@ -235,7 +235,13 @@
 .test-wrapper .test .newquestion-wrapper .buttons-manage .button-cancel {
   background-color: rgb(233, 74, 74);
 }
-.test-wrapper .test .button-save {
+.test-wrapper .test .buttons-test {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.test-wrapper .test .buttons-test .button-save {
   display: flex;
   align-items: center;
   height: 60px;
@@ -249,7 +255,25 @@
   transition: all 0.2s ease-out;
   cursor: pointer;
 }
-.test-wrapper .test .button-save:hover {
+.test-wrapper .test .buttons-test .button-save:hover {
+  box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.0901960784);
+  transition: all 0.1s ease-in;
+}
+.test-wrapper .test .buttons-test .button-delete {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  border: none;
+  border-radius: 12px;
+  background-color: rgb(233, 74, 74);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 700;
+  padding: 0px 12px 0px 12px;
+  transition: all 0.2s ease-out;
+  cursor: pointer;
+}
+.test-wrapper .test .buttons-test .button-delete:hover {
   box-shadow: inset 0px 0px 20px rgba(0, 0, 0, 0.0901960784);
   transition: all 0.1s ease-in;
 }/*# sourceMappingURL=test-page-admin.css.map */
