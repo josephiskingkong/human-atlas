@@ -27,11 +27,14 @@ export default function SlidesPage() {
   const { showNotification } = useNotification();
 
   const fetchSlides = useCallback(async () => {
+    setLoading(true);
+    setSlides([]);
+    setNotFoundSlides(null);
+
     try {
       const data = await getOrgansByCategoryId(categoryid);
       if (data.length > 0) {
         setSlides(data);
-        setNotFoundSlides(null);
       } else {
         setNotFoundSlides("Ничего не найдено :(");
       }
@@ -43,16 +46,18 @@ export default function SlidesPage() {
   }, [categoryid]);
 
   const fetchCategories = useCallback(async () => {
+    setCategories([]);
+    setNotFoundCategorites(null);
+
     try {
       const data = await getCategoriesByParentId(categoryid);
       if (data.length > 0) {
         setCategories(data);
-        setNotFoundCategorites(null);
+      } else {
+        setNotFoundCategorites("Нет подкатегорий.");
       }
     } catch (err) {
       setError(err.message || "Unexpected error occurred.");
-    } finally {
-      setLoading(false);
     }
   }, [categoryid]);
 
@@ -152,7 +157,7 @@ export default function SlidesPage() {
           + Добавить слайд
         </button>
         {notFoundCategories ? (
-          <div className="error">{notFoundSlides}</div>
+          <></>
         ) : (
           <ul className="categories-list">
             {categories.map((category, index) => (

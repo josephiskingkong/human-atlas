@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import QuestionsList from "../../components/Testing/QuestionsList";
 import NewQuestion from "../../components/Testing/NewQuestion";
@@ -6,14 +6,16 @@ import { useNotification } from "../../context/NotificationContext";
 import { apiRequest } from "../../config/apiRequest";
 import "../../styles/layout/test-page-admin.css";
 import { getTests } from "../../hooks/tests/getTests";
+import { deleteTestById } from "../../hooks/tests/deleteTest";
+import ConfirmationModal from "../../components/Modals/ConfirmationModal";
 
 const TestPageAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [testTitle, setTestTitle] = useState("");
-  const [categoryId, setCategoryId] = useState(""); // ID категории
+  const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [duration, setDuration] = useState(""); // Время теста
+  const [duration, setDuration] = useState("");
   const [questions, setQuestions] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
   const [newQuestion, setNewQuestion] = useState({
@@ -28,6 +30,7 @@ const TestPageAdmin = () => {
   const [draggedIndex, setDraggedIndex] = useState(null);
   const dragNode = useRef(null);
   const { showNotification } = useNotification();
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Загрузка категорий
   useEffect(() => {
@@ -48,7 +51,6 @@ const TestPageAdmin = () => {
     });
   }, []);
 
-  // Загрузка теста для редактирования
   useEffect(() => {
     if (!id) return;
     (async () => {
@@ -103,12 +105,11 @@ const TestPageAdmin = () => {
     return type;
   };
 
-  // Сохранение (создание или редактирование)
   const handleSaveTest = async () => {
     if (
       !testTitle.trim() ||
-      !categoryId.trim() ||
-      !duration.trim() ||
+      !String(categoryId).trim() ||
+      !String(duration).trim() ||
       questions.length === 0
     ) {
       showNotification(
@@ -121,7 +122,6 @@ const TestPageAdmin = () => {
     try {
       let testId = id;
       if (!id) {
-        // Создание нового теста
         const testData = await apiRequest("/v1/tests/add", {
           method: "POST",
           headers: {
@@ -135,22 +135,20 @@ const TestPageAdmin = () => {
         });
         testId = testData.test_id;
       } else {
-        // Редактирование теста
-        await apiRequest(`/v1/tests/${id}/edit`, {
+        await apiRequest(`/v1/tests/edit`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
+            id: id,
             title: testTitle,
             categoryId,
             duration,
           }),
         });
-        // Можно добавить удаление старых вопросов, если API требует
       }
 
-      // Сохраняем вопросы (удаляем старые и добавляем новые, если нужно)
       if (id) {
         await apiRequest(`/v1/tests/${id}/questions/clear`, {
           method: "POST",
@@ -193,7 +191,11 @@ const TestPageAdmin = () => {
         });
       }
 
-      showNotification(id ? "Тест успешно обновлён!" : "Тест успешно сохранён!", "success");
+      showNotification(
+        id ? "Тест успешно обновлён!" : "Тест успешно сохранён!",
+        "success"
+      );
+
       if (!id) {
         setTestTitle("");
         setCategoryId("");
@@ -201,9 +203,26 @@ const TestPageAdmin = () => {
         setQuestions([]);
         resetForm();
       }
-      // Можно сделать navigate назад или на список тестов
     } catch (e) {
       showNotification(e.message, "error");
+    }
+  };
+
+  const handleDeleteTest = async () => {
+    if (!id) return;
+
+    try {
+      console.log("удаление", id);
+
+      const success = await deleteTestById(id);
+      if (success) {
+        showNotification("Тест успешно удалён", "success");
+        navigate(-1);
+      } else {
+        showNotification("Не удалось удалить тест", "error");
+      }
+    } catch (error) {
+      showNotification(error.message || "Ошибка при удалении теста", "error");
     }
   };
 
@@ -454,7 +473,9 @@ const TestPageAdmin = () => {
 
   return (
     <div className="test-wrapper">
-      <button className="button-back" onClick={() => navigate(-1)}>Назад</button>
+      <button className="button-back" onClick={() => navigate(-1)}>
+        Назад
+      </button>
       <h1>{id ? "Редактирование теста" : "Создание теста"}</h1>
       <label className="category">Категория</label>
       <select
@@ -519,15 +540,36 @@ const TestPageAdmin = () => {
           onSubmit={addQuestion}
           onCancel={cancelEditing}
         />
-        <button
-          className="button-save"
-          disabled={
-            !testTitle || !categoryId || !duration || questions.length === 0
-          }
-          onClick={handleSaveTest}
-        >
-          {id ? "Сохранить изменения" : "Сохранить тест"}
-        </button>
+        <div className="buttons-test">
+          <button
+            className="button-save"
+            disabled={
+              !testTitle || !categoryId || !duration || questions.length === 0
+            }
+            onClick={handleSaveTest}
+          >
+            {id ? "Сохранить изменения" : "Сохранить тест"}
+          </button>
+          <button
+            className="button-delete"
+            disabled={!testTitle || !categoryId || !duration}
+            onClick={() => {
+              setShowConfirmModal(true);
+            }}
+          >
+            Удалить тест
+          </button>
+        </div>
+
+        <ConfirmationModal
+          isOpen={showConfirmModal}
+          onClose={() => setShowConfirmModal(false)}
+          onConfirm={handleDeleteTest}
+          title="Подтвердите удаление"
+          actionName="Удалить"
+          actionColor="red"
+          message={`Вы точно уверены, что хотите удалить тест? (Это действие нельзя отменить)`}
+        />
       </div>
     </div>
   );

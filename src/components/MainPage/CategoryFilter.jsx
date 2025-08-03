@@ -9,7 +9,9 @@ export default function CategoryFilter({
   return (
     <div className="category-filters">
       <button
-        className={`category-filter ${currentFilter === "all" ? "active" : ""}`}
+        className={`category-filter ${
+          String(currentFilter) === "all" ? "active" : ""
+        }`}
         onClick={() => handleCategoryChange("all", level)}
       >
         Все категории
@@ -19,7 +21,7 @@ export default function CategoryFilter({
         <button
           key={category.id}
           className={`category-filter ${
-            currentFilter === category.id ? "active" : ""
+            String(currentFilter) === String(category.id) ? "active" : ""
           }`}
           onClick={() => handleCategoryChange(category.id, level)}
         >

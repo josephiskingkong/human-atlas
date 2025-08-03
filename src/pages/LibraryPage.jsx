@@ -5,7 +5,7 @@ import SearchBar from "../components/MainPage/SearchBar";
 import { search as fuseSearch } from "../service/fuse/search";
 
 import "../styles/layout/library-page.css";
-import { getOrgansByCategoryId, getOrgansDone } from "../hooks/organs/getOrgan";
+import { getOrgansDone } from "../hooks/organs/getOrgan";
 import CategoryFilter from "../components/MainPage/CategoryFilter";
 import {
   getCategoriesByParentId,
@@ -32,22 +32,23 @@ const HistologySlideLibrary = () => {
       const category = searchParams.get("category");
 
       mockCategories.push(await getMainCategories());
-
+      mockSlides = await getOrgansDone();
       console.log("Категории", mockCategories);
 
       if (category) {
         subCategories = await getCategoriesByParentId(category);
         const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
 
-        mockSlides = await getOrgansByCategoryId(category);
+        mockSlides.filter((slide) => slide.id === category);
 
         if (hasSub) {
           setCurrentFilter([category, "all"]);
           mockCategories.push(subCategories);
-        } else setCurrentFilter([category]);
+        } else {
+          setCurrentFilter([category]);
+        }
       } else {
         console.log("нету категории");
-        mockSlides = await getOrgansDone();
       }
 
       console.log("slideeeee", mockSlides);

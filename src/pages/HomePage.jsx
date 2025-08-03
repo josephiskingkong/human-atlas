@@ -4,32 +4,59 @@ import Navbar from "../components/Common/NavBar";
 import Topic from "../components/MainPage/Topic";
 
 import "../styles/layout/home-page.css";
+import { useEffect, useState } from "react";
+import { getMainCategories } from "../hooks/categories";
+import { useNotification } from "../context/NotificationContext";
 
 export default function HomePage() {
   const navigate = useNavigate();
-  const topics = [
+  const { showNotification } = useNotification();
+
+  const [topics, setTopics] = useState([
     {
       id: 1,
-      title: "Нормальная гистология",
+      name: "Нормальная гистология",
       description:
         "Изучение микроскопического строения нормальных тканей и органов.",
       icon: "🔬",
     },
     {
       id: 2,
-      title: "Патологическая гистология",
+      name: "Патологическая гистология",
       description:
         "Исследование структурных изменений в органах и тканях при различных заболеваниях.",
       icon: "🧫",
     },
     {
       id: 3,
-      title: "Онкологические заболевания",
+      name: "Онкологические заболевания",
       description:
         "Изучение особенностей строения и развития онкологических процессов.",
       icon: "🧬",
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const mainCategories = await getMainCategories();
+
+        setTopics((prevTopics) => {
+          return prevTopics.map((topic) => {
+            const match = mainCategories.find((cat) => cat.name === topic.name);
+            return match ? { ...topic, id: match.id } : topic;
+          });
+        });
+      } catch (error) {
+        showNotification(
+          "Произошла ошибка во время получения категорий!",
+          "error"
+        );
+      }
+    }
+
+    fetchCategories();
+  }, [showNotification, topics]);
 
   return (
     <div>
@@ -64,7 +91,7 @@ export default function HomePage() {
               id={topic.id}
               key={topic.id}
               icon={topic.icon}
-              title={topic.title}
+              title={topic.name}
               description={topic.description}
             ></Topic>
           ))}

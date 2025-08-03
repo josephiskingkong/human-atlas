@@ -294,25 +294,55 @@
             }
         }
 
-        .button-save {
+        .buttons-test {
             display: flex;
-            align-items: center;
-            height: 60px;
-            border: none;
-            border-radius: 12px;
-            background-color: $primary-color;
-            color: #fff;
-            font-size: 24px;
-            font-weight: 700;
-            padding: 0px 12px 0px 12px;
+            flex-direction: row;
+            flex-wrap: wrap;
 
-            transition: all .2s ease-out;
+            gap: 24px;
 
-            cursor: pointer;
+            .button-save {
+                display: flex;
+                align-items: center;
+                height: 60px;
+                border: none;
+                border-radius: 12px;
+                background-color: $primary-color;
+                color: #fff;
+                font-size: 24px;
+                font-weight: 700;
+                padding: 0px 12px 0px 12px;
 
-            &:hover {
-                box-shadow: inset 0px 0px 20px #00000017;
-                transition: all .1s ease-in;
+                transition: all .2s ease-out;
+
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: inset 0px 0px 20px #00000017;
+                    transition: all .1s ease-in;
+                }
+            }
+
+            .button-delete {
+                display: flex;
+                align-items: center;
+                height: 60px;
+                border: none;
+                border-radius: 12px;
+                background-color: rgb(233 74 74);
+                color: #fff;
+                font-size: 24px;
+                font-weight: 700;
+                padding: 0px 12px 0px 12px;
+
+                transition: all .2s ease-out;
+
+                cursor: pointer;
+
+                &:hover {
+                    box-shadow: inset 0px 0px 20px #00000017;
+                    transition: all .1s ease-in;
+                }
             }
         }
     }
