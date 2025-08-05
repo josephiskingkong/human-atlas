@@ -167,11 +167,12 @@ export default function NavBar() {
               )}
             </div>
           ) : (
-            <div className="profile-button">
-              <button className="login-button" onClick={handleLoginClick}>
-                Войти
-              </button>
-            </div>
+            <></>
+            // <div className="profile-button">
+            //   <button className="login-button" onClick={handleLoginClick}>
+            //     Войти
+            //   </button>
+            // </div>
           )}
         </ul>
       </div>

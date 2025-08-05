@@ -100,7 +100,8 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
     try {
       const response = await userLogin(loginUsername, loginPassword);
       if (!response || response.error) {
-        if (response.error === "INVALID_CREDENTIALS") return showNotification("Неверный логин или пароль", "error");
+        if (response.error === "INVALID_CREDENTIALS")
+          return showNotification("Неверный логин или пароль", "error");
         showNotification(
           response?.error_message || "Произошла ошибка при входе",
           "error"
@@ -114,7 +115,6 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
       showNotification("Вы успешно вошли", "success");
       onClose();
     } catch (error) {
-      
       showNotification("Произошла ошибка при входе. Попробуйте снова", "error");
     }
   };
@@ -158,7 +158,7 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
         title={isRegistering ? "Регистрация" : "Вход"}
         onClose={onClose}
       >
-        {isRegistering ? (
+        {/* {isRegistering ? (
           <form className="registration-form" onSubmit={handleRegisterSubmit}>
             <div className={`form-group ${errors.registerName ? "error" : ""}`}>
               <label htmlFor="name">Имя и фамилия</label>
@@ -223,46 +223,42 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
               </button>
             </p>
           </form>
-        ) : (
-          <form className="login-form" onSubmit={handleLoginSubmit}>
-            <div
-              className={`form-group ${errors.loginUsername ? "error" : ""}`}
-            >
-              <label htmlFor="username">Имя пользователя</label>
-              <input
-                id="username"
-                type="text"
-                placeholder="Введите имя пользователя"
-                value={loginUsername}
-                onChange={(e) =>
-                  handleInputChange("loginUsername", e.target.value)
-                }
-              />
-              {errors.loginUsername && (
-                <p className="error-text">{errors.loginUsername}</p>
-              )}
-            </div>
-            <div
-              className={`form-group ${errors.loginPassword ? "error" : ""}`}
-            >
-              <label htmlFor="password">Пароль</label>
-              <input
-                id="password"
-                type="password"
-                placeholder="Введите пароль"
-                value={loginPassword}
-                onChange={(e) =>
-                  handleInputChange("loginPassword", e.target.value)
-                }
-              />
-              {errors.loginPassword && (
-                <p className="error-text">{errors.loginPassword}</p>
-              )}
-            </div>
-            <button type="submit" className="submit-button">
-              Войти
-            </button>
-            <p className="switch-form-text">
+        ) : ( */}
+        <form className="login-form" onSubmit={handleLoginSubmit}>
+          <div className={`form-group ${errors.loginUsername ? "error" : ""}`}>
+            <label htmlFor="username">Имя пользователя</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Введите имя пользователя"
+              value={loginUsername}
+              onChange={(e) =>
+                handleInputChange("loginUsername", e.target.value)
+              }
+            />
+            {errors.loginUsername && (
+              <p className="error-text">{errors.loginUsername}</p>
+            )}
+          </div>
+          <div className={`form-group ${errors.loginPassword ? "error" : ""}`}>
+            <label htmlFor="password">Пароль</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Введите пароль"
+              value={loginPassword}
+              onChange={(e) =>
+                handleInputChange("loginPassword", e.target.value)
+              }
+            />
+            {errors.loginPassword && (
+              <p className="error-text">{errors.loginPassword}</p>
+            )}
+          </div>
+          <button type="submit" className="submit-button">
+            Войти
+          </button>
+          {/* <p className="switch-form-text">
               Нету аккаунта?{" "}
               <button
                 type="button"
@@ -271,9 +267,8 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
               >
                 Создать
               </button>
-            </p>
-          </form>
-        )}
+            </p> */}
+        </form>
       </ModalLayout>
     </div>,
     document.getElementById("modal-root")
