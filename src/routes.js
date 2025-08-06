@@ -18,6 +18,7 @@ const LibraryPage = lazy(() => import("./pages/LibraryPage"));
 const TestsPage = lazy(() => import("./pages/TestsPage"));
 const TestPage = lazy(() => import("./pages/TestPage"));
 const AboutProject = lazy(() => import("./pages/AboutProject"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
 
 const routes = [
   { path: "/", element: <HomePage /> },
@@ -29,6 +30,7 @@ const routes = [
       </Provider>
     ),
   },
+  { path: "/admin/auth", element: <LoginPage /> },
   {
     path: "/admin/slide/:id",
     element: (

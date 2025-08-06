@@ -1,26 +1,62 @@
-import React, { useState } from "react";
-import ReactDOM from "react-dom";
-import "../../styles/components/modal.css";
-import ModalLayout from "./ModalLayout";
-import { userLogin } from "../../hooks/user/auth";
-import { useNotification } from "../../context/NotificationContext";
+import { useState } from "react";
+import { userLogin } from "../hooks/user/auth";
+import { useNotification } from "../context/NotificationContext";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
-export default function LoginModal({ onClose, onLoginSuccess }) {
-  const [isRegistering, setIsRegistering] = useState(false);
+import "../styles/components/modal.css";
 
+export default function LoginPage() {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
-
-  // const [registerName, setRegisterName] = useState("");
-  // const [registerUsername, setRegisterUsername] = useState("");
-  // const [registerPassword, setRegisterPassword] = useState("");
-
   const [errors, setErrors] = useState({});
 
   const { showNotification } = useNotification();
+  const navigate = useNavigate();
 
   const usernameRegex = /^[a-z0-9_.]{1,64}$/;
   const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  const handleLoginSuccess = (userData, accessToken) => {
+    Cookies.set("user", JSON.stringify(userData), {
+      secure: true,
+      sameSite: "None",
+      path: "/",
+    });
+    Cookies.set("accessToken", accessToken, {
+      secure: true,
+      sameSite: "None",
+      path: "/",
+    });
+
+    window.location.reload();
+  };
+
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault();
+    if (Object.keys(errors).length > 0) return;
+
+    try {
+      const response = await userLogin(loginUsername, loginPassword);
+      if (!response || response.error) {
+        if (response.error === "INVALID_CREDENTIALS")
+          return showNotification("Неверный логин или пароль", "error");
+        showNotification(
+          response?.error_message || "Произошла ошибка при входе",
+          "error"
+        );
+        return;
+      }
+
+      const { message, user, accessToken } = response;
+      handleLoginSuccess(user, accessToken);
+
+      showNotification("Вы успешно вошли", "success");
+      navigate(-1);
+    } catch (error) {
+      showNotification("Произошла ошибка при входе. Попробуйте снова", "error");
+    }
+  };
 
   const validateField = (field, value) => {
     const newErrors = { ...errors };
@@ -78,87 +114,24 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
       case "loginPassword":
         setLoginPassword(value);
         break;
-      // case "registerName":
-      //   setRegisterName(value);
-      //   break;
-      // case "registerUsername":
-      //   setRegisterUsername(value);
-      //   break;
-      // case "registerPassword":
-      //   setRegisterPassword(value);
-      //   break;
+      //   case "registerName":
+      //     setRegisterName(value);
+      //     break;
+      //   case "registerUsername":
+      //     setRegisterUsername(value);
+      //     break;
+      //   case "registerPassword":
+      //     setRegisterPassword(value);
+      //     break;
       default:
         break;
     }
     validateField(field, value);
   };
 
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    if (Object.keys(errors).length > 0) return;
-
-    try {
-      const response = await userLogin(loginUsername, loginPassword);
-      if (!response || response.error) {
-        if (response.error === "INVALID_CREDENTIALS")
-          return showNotification("Неверный логин или пароль", "error");
-        showNotification(
-          response?.error_message || "Произошла ошибка при входе",
-          "error"
-        );
-        return;
-      }
-
-      const { message, user, accessToken } = response;
-      onLoginSuccess(user, accessToken);
-
-      showNotification("Вы успешно вошли", "success");
-      onClose();
-    } catch (error) {
-      showNotification("Произошла ошибка при входе. Попробуйте снова", "error");
-    }
-  };
-
-  // const handleRegisterSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (Object.keys(errors).length > 0) return;
-
-  //   try {
-  //     const response = await userRegister(
-  //       registerUsername,
-  //       registerPassword,
-  //       registerName
-  //     );
-  //     if (!response || response.error) {
-  //       showNotification(
-  //         response?.error_message || "Произошла ошибка при регистрации",
-  //         "error"
-  //       );
-  //       return;
-  //     }
-
-  //     const { user, accessToken } = response;
-  //     onLoginSuccess(user, accessToken);
-  //     showNotification("Вы успешно зарегистрировались", "success");
-  //     onClose();
-  //   } catch (error) {
-  //     showNotification(
-  //       "Произошла ошибка при регистрации. Попробуйте снова",
-  //       "error"
-  //     );
-  //   }
-  // };
-
-  return ReactDOM.createPortal(
-    <div
-      className="modal-overlay"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
-    >
-      <ModalLayout
-        title={isRegistering ? "Регистрация" : "Вход"}
-        onClose={onClose}
-      >
-        {/* {isRegistering ? (
+  return (
+    <div className="login-form-wrapper">
+      {/* {isRegistering ? (
           <form className="registration-form" onSubmit={handleRegisterSubmit}>
             <div className={`form-group ${errors.registerName ? "error" : ""}`}>
               <label htmlFor="name">Имя и фамилия</label>
@@ -224,41 +197,37 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
             </p>
           </form>
         ) : ( */}
-        <form className="login-form" onSubmit={handleLoginSubmit}>
-          <div className={`form-group ${errors.loginUsername ? "error" : ""}`}>
-            <label htmlFor="username">Имя пользователя</label>
-            <input
-              id="username"
-              type="text"
-              placeholder="Введите имя пользователя"
-              value={loginUsername}
-              onChange={(e) =>
-                handleInputChange("loginUsername", e.target.value)
-              }
-            />
-            {errors.loginUsername && (
-              <p className="error-text">{errors.loginUsername}</p>
-            )}
-          </div>
-          <div className={`form-group ${errors.loginPassword ? "error" : ""}`}>
-            <label htmlFor="password">Пароль</label>
-            <input
-              id="password"
-              type="password"
-              placeholder="Введите пароль"
-              value={loginPassword}
-              onChange={(e) =>
-                handleInputChange("loginPassword", e.target.value)
-              }
-            />
-            {errors.loginPassword && (
-              <p className="error-text">{errors.loginPassword}</p>
-            )}
-          </div>
-          <button type="submit" className="submit-button">
-            Войти
-          </button>
-          {/* <p className="switch-form-text">
+      <form className="login-form" onSubmit={handleLoginSubmit}>
+        <div className={`form-group ${errors.loginUsername ? "error" : ""}`}>
+          <label htmlFor="username">Имя пользователя</label>
+          <input
+            id="username"
+            type="text"
+            placeholder="Введите имя пользователя"
+            value={loginUsername}
+            onChange={(e) => handleInputChange("loginUsername", e.target.value)}
+          />
+          {errors.loginUsername && (
+            <p className="error-text">{errors.loginUsername}</p>
+          )}
+        </div>
+        <div className={`form-group ${errors.loginPassword ? "error" : ""}`}>
+          <label htmlFor="password">Пароль</label>
+          <input
+            id="password"
+            type="password"
+            placeholder="Введите пароль"
+            value={loginPassword}
+            onChange={(e) => handleInputChange("loginPassword", e.target.value)}
+          />
+          {errors.loginPassword && (
+            <p className="error-text">{errors.loginPassword}</p>
+          )}
+        </div>
+        <button type="submit" className="submit-button">
+          Войти
+        </button>
+        {/* <p className="switch-form-text">
               Нету аккаунта?{" "}
               <button
                 type="button"
@@ -268,9 +237,7 @@ export default function LoginModal({ onClose, onLoginSuccess }) {
                 Создать
               </button>
             </p> */}
-        </form>
-      </ModalLayout>
-    </div>,
-    document.getElementById("modal-root")
+      </form>
+    </div>
   );
 }
