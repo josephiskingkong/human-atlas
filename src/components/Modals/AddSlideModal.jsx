@@ -8,7 +8,9 @@ import { TooLargeError } from "../../config/errors";
 
 export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
   const [loading, setLoading] = useState(false);
-  const [selectedFileName, setSelectedFileName] = useState("Выберите файл слайда");
+  const [selectedFileName, setSelectedFileName] = useState(
+    "Выберите файл слайда"
+  );
   const { showNotification } = useNotification();
 
   const handleFileChange = (e) => {
@@ -26,8 +28,15 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
       return;
     }
 
-    if (!['jpeg', 'png', 'jpg', 'svs'].includes(file.name.split(".").pop().toLowerCase())) {
-      showNotification("Введите файл с расширением .svs, .png, .jpeg или .jpg", "error");
+    if (
+      !["jpeg", "png", "jpg", "svs"].includes(
+        file.name.split(".").pop().toLowerCase()
+      )
+    ) {
+      showNotification(
+        "Введите файл с расширением .svs, .png, .jpeg или .jpg",
+        "error"
+      );
       return;
     }
 
@@ -48,7 +57,10 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
       }
     } catch (err) {
       if (err instanceof TooLargeError) {
-        return showNotification("Вес загружаемого файла превышает 4ГБ", "error");
+        return showNotification(
+          "Вес загружаемого файла превышает 4ГБ",
+          "error"
+        );
       }
       return showNotification("Ошибка при добавлении слайда", "error");
     } finally {
@@ -88,6 +100,17 @@ export default function AddSlideModal({ onClose, onAddSlide, categoryId }) {
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? <MoonLoader size={14} color="#fff" /> : "Добавить"}
           </button>
+          {loading ? (
+            <p>
+              Загрузка файлов формата SVS может занимать от 5 до 10 минут. При
+              получении уведомления об ошибке, попробуйте закрыть окно
+              добавления слайда, и перезагрузите страницу. Слайд должен
+              отображаться со статусом "В ПРОЦЕССЕ". (Закрытие этого окна не
+              влияет на процесс загрузки слайда)
+            </p>
+          ) : (
+            <></>
+          )}
         </div>
       </form>
     </ModalLayout>
