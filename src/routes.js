@@ -6,9 +6,6 @@ const SlidePage = lazy(() => import("./pages/SlidePage"));
 const AdminMenu = lazy(() => import("./pages/Admin/AdminMenu"));
 const InDevPage = lazy(() => import("./pages/Admin/InDevPage"));
 const CategoriesPage = lazy(() => import("./pages/Admin/CategoriesPage"));
-const TestCategoriesPage = lazy(() =>
-  import("./pages/Admin/TestCategoriesPage")
-);
 const SlidesListPage = lazy(() => import("./pages/Admin/SlidesListPage"));
 const MainPage = lazy(() => import("./pages/MainPage"));
 const TestsListPage = lazy(() => import("./pages/Admin/TestsListPage"));
@@ -51,8 +48,7 @@ const routes = [
     path: "/admin/categories/:categoryid/:subcategoryid/",
     element: <SlidesListPage />,
   },
-  { path: "/admin/tests", element: <TestCategoriesPage /> },
-  { path: "/admin/tests/:categoryId", element: <TestsListPage /> },
+  { path: "/admin/tests", element: <TestsListPage /> },
   { path: "/admin/test/:id", element: <TestPageAdmin /> },
   { path: "/admin/test/add", element: <TestPageAdmin /> },
   { path: "/library", element: <LibraryPage /> },
