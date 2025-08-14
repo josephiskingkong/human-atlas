@@ -12,7 +12,6 @@ const TestList = () => {
   const [filteredTests, setFilteredTests] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentFilter, setCurrentFilter] = useState("all");
-  const [categories, setCategories] = useState([]);
   const [activeCardId, setActiveCardId] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -24,38 +23,25 @@ const TestList = () => {
       .then((data) => {
         setTests(data);
         setFilteredTests(data);
-        const uniqueCategories = [
-          ...new Set(data.map((test) => test.category)),
-        ];
-        const categoriesData = uniqueCategories.map((category) => {
-          const categoryObj = data.find((test) => test.category === category);
-          return {
-            id: category,
-            name: categoryObj.categoryName,
-          };
-        });
-        setCategories(categoriesData);
+
         setIsLoading(false);
       })
       .catch(() => {
         setTests([]);
         setFilteredTests([]);
-        setCategories([]);
       });
   }, []);
 
   useEffect(() => {
     let filtered = [...tests];
 
-    if (currentFilter !== "all") {
-      filtered = filtered.filter((test) => test.category === currentFilter);
-    }
+    // if (currentFilter !== "all") {
+    //   filtered = filtered.filter((test) => test.category === currentFilter);
+    // }
 
     if (searchQuery) {
-      filtered = filtered.filter(
-        (test) =>
-          test.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          test.categoryName.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter((test) =>
+        test.title.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
 
@@ -99,11 +85,11 @@ const TestList = () => {
       <div className="test-list-container">
         <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
 
-        <CategoryFilter
+        {/* <CategoryFilter
           categories={categories}
           handleCategoryChange={handleCategoryChange}
           currentFilter={currentFilter}
-        />
+        /> */}
 
         {isLoading ? (
           <div className="loader">
@@ -125,7 +111,7 @@ const TestList = () => {
                   onClick={() => handleCardClick(test.id)}
                 >
                   <div className="test-title">{test.title}</div>
-                  <div className="test-category">{test.categoryName}</div>
+                  {/* <div className="test-category">{test.categoryName}</div> */}
                   <div className="test-info">
                     <span>
                       <i className="far fa-clock"></i> {test.duration} минут

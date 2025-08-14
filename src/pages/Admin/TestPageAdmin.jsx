@@ -5,7 +5,6 @@ import NewQuestion from "../../components/Testing/NewQuestion";
 import { useNotification } from "../../context/NotificationContext";
 import { apiRequest } from "../../config/apiRequest";
 import "../../styles/layout/test-page-admin.css";
-import { getTests } from "../../hooks/tests/getTests";
 import { deleteTestById } from "../../hooks/tests/deleteTest";
 import ConfirmationModal from "../../components/Modals/ConfirmationModal";
 
@@ -13,8 +12,8 @@ const TestPageAdmin = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [testTitle, setTestTitle] = useState("");
-  const [categoryId, setCategoryId] = useState("");
-  const [categories, setCategories] = useState([]);
+  // const [categoryId, setCategoryId] = useState("");
+  // const [categories, setCategories] = useState([]);
   const [duration, setDuration] = useState("");
   const [questions, setQuestions] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
@@ -33,23 +32,23 @@ const TestPageAdmin = () => {
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   // Загрузка категорий
-  useEffect(() => {
-    getTests().then((data) => {
-      const uniqueCategories = [
-        ...new Set(data.map((test) => test.categoryId)),
-      ];
-      const categoriesData = uniqueCategories.map((category) => {
-        const categoryObj = data.find((test) => test.categoryId === category);
-        return {
-          id: category,
-          name: categoryObj.categoryName,
-        };
-      });
-      if (categoriesData.length > 0) {
-        setCategories(categoriesData);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   getTests().then((data) => {
+  //     const uniqueCategories = [
+  //       ...new Set(data.map((test) => test.categoryId)),
+  //     ];
+  //     const categoriesData = uniqueCategories.map((category) => {
+  //       const categoryObj = data.find((test) => test.categoryId === category);
+  //       return {
+  //         id: category,
+  //         name: categoryObj.categoryName,
+  //       };
+  //     });
+  //     if (categoriesData.length > 0) {
+  //       setCategories(categoriesData);
+  //     }
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (!id) return;
@@ -57,9 +56,7 @@ const TestPageAdmin = () => {
       try {
         const test = await apiRequest(`/v1/tests/${id}`);
         setTestTitle(test.title || "");
-        setCategoryId(test.categoryId || "");
         setDuration(test.duration || "");
-        // Получаем вопросы
         const questionsApi = await apiRequest(`/v1/tests/${id}/questions`);
         const questionsMapped = questionsApi.map((q) => {
           let options = [];
@@ -108,7 +105,6 @@ const TestPageAdmin = () => {
   const handleSaveTest = async () => {
     if (
       !testTitle.trim() ||
-      !String(categoryId).trim() ||
       !String(duration).trim() ||
       questions.length === 0
     ) {
@@ -129,7 +125,6 @@ const TestPageAdmin = () => {
           },
           body: JSON.stringify({
             title: testTitle,
-            categoryId,
             duration,
           }),
         });
@@ -143,7 +138,6 @@ const TestPageAdmin = () => {
           body: JSON.stringify({
             id: id,
             title: testTitle,
-            categoryId,
             duration,
           }),
         });
@@ -198,7 +192,6 @@ const TestPageAdmin = () => {
 
       if (!id) {
         setTestTitle("");
-        setCategoryId("");
         setDuration("");
         setQuestions([]);
         resetForm();
@@ -227,7 +220,6 @@ const TestPageAdmin = () => {
   };
 
   const handleTitleChange = (e) => setTestTitle(e.target.value);
-  const handleCategoryChange = (e) => setCategoryId(e.target.value);
   const handleDurationChange = (e) => setDuration(e.target.value);
 
   const handleQuestionTextChange = (e) => {
@@ -477,8 +469,8 @@ const TestPageAdmin = () => {
         Назад
       </button>
       <h1>{id ? "Редактирование теста" : "Создание теста"}</h1>
-      <label className="category">Категория</label>
-      <select
+      {/* <label className="category">Категория</label> */}
+      {/* <select
         className="input-category"
         value={categoryId}
         onChange={handleCategoryChange}
@@ -489,7 +481,7 @@ const TestPageAdmin = () => {
             {cat.name}
           </option>
         ))}
-      </select>
+      </select> */}
       <div className="test">
         <div className="title-test-wrapper">
           <input
@@ -543,16 +535,14 @@ const TestPageAdmin = () => {
         <div className="buttons-test">
           <button
             className="button-save"
-            disabled={
-              !testTitle || !categoryId || !duration || questions.length === 0
-            }
+            disabled={!testTitle || !duration || questions.length === 0}
             onClick={handleSaveTest}
           >
             {id ? "Сохранить изменения" : "Сохранить тест"}
           </button>
           <button
             className="button-delete"
-            disabled={!testTitle || !categoryId || !duration}
+            disabled={!testTitle || !duration}
             onClick={() => {
               setShowConfirmModal(true);
             }}
