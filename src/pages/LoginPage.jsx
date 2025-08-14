@@ -28,8 +28,6 @@ export default function LoginPage() {
       sameSite: "None",
       path: "/",
     });
-
-    window.location.reload();
   };
 
   const handleLoginSubmit = async (e) => {
@@ -52,7 +50,7 @@ export default function LoginPage() {
       handleLoginSuccess(user, accessToken);
 
       showNotification("Вы успешно вошли", "success");
-      navigate(-1);
+      navigate("/");
     } catch (error) {
       showNotification("Произошла ошибка при входе. Попробуйте снова", "error");
     }
