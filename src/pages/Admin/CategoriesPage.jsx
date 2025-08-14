@@ -66,24 +66,20 @@ export default function CategoriesPage() {
 
   const handleDeleteCategory = async (id) => {
     try {
-      console.log("Пытаюсь удалить категорию с ID:", id);
       const result = await deleteCategoryById(id);
-      console.log("Результат удаления:", result);
 
       if (result) {
-        console.log("Категории до удаления:", categories);
         setCategories((prevCategories) => {
           const updated = prevCategories.filter(
-            (category) => Number(category.id) !== Number(id) // Явное приведение типов
+            (category) => Number(category.id) !== Number(id)
           );
-          console.log("Категории после удаления (внутри setState):", updated);
+
           return updated; // Убрали лишний spread
         });
       } else {
         showNotification("Не удалось удалить категорию!", "error");
       }
     } catch (error) {
-      console.error("Ошибка при удалении:", error);
       showNotification(
         "Произошла ошибка во время удаления категории! Попробуйте позже.",
         "error"
@@ -104,6 +100,7 @@ export default function CategoriesPage() {
             {categories.map((category, index) => (
               <li key={category.id} className="category-item">
                 <PanelNavigateEditableButton
+                  id={category.id}
                   title={category.name}
                   path={`${category.id}`}
                   onDelete={handleDeleteCategory}

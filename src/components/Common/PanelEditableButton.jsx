@@ -7,6 +7,7 @@ import edit from "../../assets/images/edit.svg";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
 export default function PanelNavigateEditableButton({
+  id,
   title,
   icon,
   path,
@@ -76,7 +77,7 @@ export default function PanelNavigateEditableButton({
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}
         onConfirm={() => {
-          onDelete(path);
+          onDelete(id);
         }}
         title="Подтвердите удаление"
         actionName="Удалить"

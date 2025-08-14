@@ -74,7 +74,7 @@ export default function SlidesPage() {
     if (hasProcessingSlides) {
       const interval = setInterval(() => {
         fetchSlides();
-      }, 2500);
+      }, 60000);
 
       return () => clearInterval(interval);
     }
@@ -124,10 +124,10 @@ export default function SlidesPage() {
         console.log("Категории до удаления:", categories);
         setCategories((prevCategories) => {
           const updated = prevCategories.filter(
-            (category) => Number(category.id) !== Number(id) // Явное приведение типов
+            (category) => Number(category.id) !== Number(id)
           );
-          console.log("Категории после удаления (внутри setState):", updated);
-          return updated; // Убрали лишний spread
+
+          return updated;
         });
       } else {
         showNotification("Не удалось удалить категорию!", "error");
@@ -163,6 +163,7 @@ export default function SlidesPage() {
             {categories.map((category, index) => (
               <li key={category.id} className="category-item">
                 <PanelNavigateEditableButton
+                  id={category.id}
                   title={category.name}
                   path={`/admin/categories/${category.id}`}
                   onDelete={handleDeleteCategory}
