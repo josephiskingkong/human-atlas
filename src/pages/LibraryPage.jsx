@@ -33,7 +33,6 @@ const HistologySlideLibrary = () => {
 
       mockCategories.push(await getMainCategories());
       mockSlides = await getOrgansDone();
-      console.log("Категории", mockCategories);
 
       if (category) {
         subCategories = await getCategoriesByParentId(category);
@@ -47,11 +46,7 @@ const HistologySlideLibrary = () => {
         } else {
           setCurrentFilter([category]);
         }
-      } else {
-        console.log("нету категории");
       }
-
-      console.log("slideeeee", mockSlides);
 
       setSlides(mockSlides);
       setCategoriesMatrix(mockCategories);
@@ -63,40 +58,71 @@ const HistologySlideLibrary = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!slides || slides === undefined || slides.length === 0) {
-      setFilteredSlides([]);
-      return;
-    }
+    let cancelled = false;
 
-    let filtered = [...slides];
-
-    if (currentFilter[currentFilter.length - 1] === "all") {
-      if (currentFilter.length > 1) {
-        filtered = filtered.filter((slide) => {
-          return (
-            currentFilter[currentFilter.length - 2] === slide.categoryid ||
-            categoriesMatrix[currentFilter.length - 1].some(
-              (category) => category.id === slide.categoryid
-            )
-          );
-        });
+    const applyFilter = async () => {
+      if (!slides || slides.length === 0) {
+        if (!cancelled) {
+          setFilteredSlides([]);
+          setIsLoading(false);
+        }
+        return;
       }
-    } else {
-      filtered = filtered.filter(
-        (slide) => currentFilter[currentFilter.length - 1] === slide.categoryid
-      );
-    }
 
-    if (searchQuery.trim() === "") {
-      setFilteredSlides(filtered);
-      return;
-    }
+      let filtered = [...slides];
+      const last = currentFilter[currentFilter.length - 1];
 
-    const fuseResults = fuseSearch(filtered, searchQuery);
-    setFilteredSlides(fuseResults);
-  }, [searchQuery, slides, currentFilter, categoriesMatrix]);
+      if (last === "all") {
+        if (currentFilter.length > 1) {
+          const rootCategoryId = currentFilter[currentFilter.length - 2];
+
+          const collectDescendantIds = async (rootId) => {
+            const result = new Set();
+            const queue = [rootId];
+
+            while (queue.length) {
+              const parentId = queue.pop();
+              const subs = await getCategoriesByParentId(parentId);
+              if (Array.isArray(subs) && subs.length > 0) {
+                for (const c of subs) {
+                  if (!result.has(c.id)) {
+                    result.add(c.id);
+                    queue.push(c.id);
+                  }
+                }
+              }
+            }
+
+            return result;
+          };
+
+          const descendants = await collectDescendantIds(rootCategoryId);
+          const allowed = new Set([rootCategoryId, ...descendants]);
+          filtered = filtered.filter((slide) => allowed.has(slide.categoryid));
+        }
+      } else {
+        filtered = filtered.filter((slide) => last === slide.categoryid);
+      }
+
+      if (searchQuery.trim() !== "") {
+        filtered = fuseSearch(filtered, searchQuery);
+      }
+
+      if (!cancelled) {
+        setFilteredSlides(filtered);
+        setIsLoading(false);
+      }
+    };
+
+    applyFilter();
+    return () => {
+      cancelled = true;
+    };
+  }, [searchQuery, slides, currentFilter]);
 
   const handleCategoryChange = async (category, level) => {
+    setIsLoading(true);
+
     const isNotLastLevel = level < currentFilter.length - 1;
     const subCategories = await getCategoriesByParentId(category);
     const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
@@ -120,16 +146,6 @@ const HistologySlideLibrary = () => {
       return newFilter;
     });
   };
-
-  useEffect(() => {
-    console.log(categoriesMatrix);
-    console.log(currentFilter);
-  }, [categoriesMatrix, currentFilter]);
-
-  useEffect(() => {
-    console.log("Slides data:", slides);
-    console.log("Filtered slides:", filteredSlides);
-  }, [slides, filteredSlides]);
 
   return (
     <div className="histology-page">
