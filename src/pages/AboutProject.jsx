@@ -193,13 +193,13 @@ const AboutPage = () => {
                         <h3 className="organizations__item__name">
                           {org.name}
                         </h3>
-                        <p className="organizations__item__type">{org.type}</p>
+                        {/* <p className="organizations__item__type">{org.type}</p>
                         <p className="organizations__item__location">
                           {org.location}
                         </p>
                         <p className="organizations__item__full-name">
                           {org.fullName}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   </div>
