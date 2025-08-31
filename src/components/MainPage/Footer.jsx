@@ -4,7 +4,6 @@ export default function Footer() {
   return (
     <footer>
       <div className="footer-content">
-        <p>© 2025 ГистоАтлас</p>
         <div className="icons">
           <a href="https://kemsu.ru">
             <img
@@ -25,6 +24,13 @@ export default function Footer() {
             <img src="patburo.png" alt="ККПАБ" />
           </a>
         </div>
+        <p>
+          Работа выполнена в рамках фундаментальной темы НИИ КПССЗ №
+          0419-2024-0001 при финансовой поддержке Министерства науки и высшего
+          образования Российской Федерации в рамках национального проекта «Наука
+          и университеты»
+        </p>
+        <p>© 2025 ГистоАтлас</p>
       </div>
     </footer>
   );
