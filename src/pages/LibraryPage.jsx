@@ -12,6 +12,7 @@ import {
   getMainCategories,
 } from "../hooks/categories";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { TILES_URL } from "../config/constants";
 
 const HistologySlideLibrary = () => {
   const [slides, setSlides] = useState([]);
@@ -192,7 +193,7 @@ const HistologySlideLibrary = () => {
                   >
                     <div className="slide-card__image-container">
                       <img
-                        src={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
+                        src={`${TILES_URL}/${slide.id}/${slide.id}_files/9/0_0.webp`}
                         alt={slide.name}
                         className="slide-card__image"
                       />

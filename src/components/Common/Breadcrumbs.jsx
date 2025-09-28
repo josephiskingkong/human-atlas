@@ -16,9 +16,9 @@ function Breadcrumbs() {
     admin: "Админ-панель",
     slide: "Слайд",
     categories: "Разделы",
-    "human-atlas": "Гисто Атлас",
-    "profile": "Профиль",
-    "tests": "Тесты",
+    morphology: "Гисто Атлас",
+    profile: "Профиль",
+    tests: "Тесты",
   };
 
   useEffect(() => {
@@ -54,7 +54,9 @@ function Breadcrumbs() {
         {isLast ? (
           <span className="breadcrumb-active">{name}</span>
         ) : (
-          <Link to={path} className="breadcrumb-link">{name}</Link>
+          <Link to={path} className="breadcrumb-link">
+            {name}
+          </Link>
         )}
         {!isLast && <span className="breadcrumb-separator"> &gt; </span>}
       </React.Fragment>

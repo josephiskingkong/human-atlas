@@ -1,2 +1,2 @@
-export const ENDPOINT = "https://api.humanatlas.top"
-export const TILES_URL = "https://tiles.humanatlas.top"
+export const ENDPOINT = "https://morphology.kemsu.ru/api";
+export const TILES_URL = "https://morphology.kemsu.ru/tiles";

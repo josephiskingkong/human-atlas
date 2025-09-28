@@ -13,6 +13,7 @@ import {
   getCategoriesByParentId,
 } from "../../hooks/categories";
 import { useNotification } from "../../context/NotificationContext";
+import { TILES_URL } from "../../config/constants";
 
 export default function SlidesPage() {
   const { categoryid, subcategoryid } = useParams();
@@ -182,7 +183,7 @@ export default function SlidesPage() {
                 id={slide.id}
                 title={slide.name}
                 status={slide.status}
-                img={`https://tiles.humanatlas.top/${slide.id}/${slide.id}_files/9/0_0.webp`}
+                img={`${TILES_URL}/${slide.id}/${slide.id}_files/9/0_0.webp`}
                 path={`/admin/slide/${slide.id}`}
                 onDelete={handleDeleteSlide}
               />
