@@ -44,6 +44,7 @@
       "react-app/jest"
     ]
   },
+  "homepage": "https://morphology.kemsu.ru",
   "browserslist": {
     "production": [
       ">0.2%",
