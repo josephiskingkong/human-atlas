@@ -162,76 +162,83 @@ const HistologySlideLibrary = () => {
     <div className="histology-page">
       <Navbar />
 
-      <main className="main">
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
-
-        {categoriesMatrix.map((categoriesLevel, index) => (
-          <CategoryFilter
-            key={index}
-            categories={categoriesLevel}
-            handleCategoryChange={handleCategoryChange}
-            currentFilter={currentFilter[index]}
-            level={index}
+      <div className="main-wrapper">
+        <main className="main">
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
           />
-        ))}
 
-        {isLoading ? (
-          <div className="loader">
-            <div className="loader__spinner"></div>
-          </div>
-        ) : (
-          <>
-            <div className="results">
-              <p className="results__count">
-                {filteredSlides === undefined || filteredSlides.length === 0 ? (
-                  <></>
-                ) : (
-                  `Найдено слайдов: ${filteredSlides.length}`
-                )}
-              </p>
+          {categoriesMatrix.map((categoriesLevel, index) => (
+            <CategoryFilter
+              key={index}
+              categories={categoriesLevel}
+              handleCategoryChange={handleCategoryChange}
+              currentFilter={currentFilter[index]}
+              level={index}
+            />
+          ))}
+
+          {isLoading ? (
+            <div className="loader">
+              <div className="loader__spinner"></div>
             </div>
-
-            <div className="slides-grid">
-              {Array.isArray(filteredSlides) && filteredSlides.length > 0 ? (
-                filteredSlides.map((slide) => (
-                  <div
-                    key={slide.id}
-                    className="slide-card"
-                    onClick={() => {
-                      navigate(`/slide/${slide.id}`);
-                    }}
-                  >
-                    <div className="slide-card__image-container">
-                      <img
-                        src={`${TILES_URL}/${slide.id}/${slide.id}_files/9/0_0.webp`}
-                        alt={slide.name}
-                        className="slide-card__image"
-                      />
-                    </div>
-                    <div className="slide-card__content">
-                      <h3 className="slide-card__title">{slide.name}</h3>
-                      <p className="slide-card__category">{slide.category}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <></>
-              )}
-            </div>
-
-            {!filteredSlides || (filteredSlides.length === 0 && !isLoading) ? (
-              <div className="no-results">
-                <p className="no-results__title">
-                  По вашему запросу ничего не найдено
-                </p>
-                <p className="no-results__message">
-                  Попробуйте изменить запрос или очистить поиск
+          ) : (
+            <>
+              <div className="results">
+                <p className="results__count">
+                  {filteredSlides === undefined ||
+                  filteredSlides.length === 0 ? (
+                    <></>
+                  ) : (
+                    `Найдено слайдов: ${filteredSlides.length}`
+                  )}
                 </p>
               </div>
-            ) : null}
-          </>
-        )}
-      </main>
+
+              <div className="slides-grid">
+                {Array.isArray(filteredSlides) && filteredSlides.length > 0 ? (
+                  filteredSlides.map((slide) => (
+                    <div
+                      key={slide.id}
+                      className="slide-card"
+                      onClick={() => {
+                        navigate(`/slide/${slide.id}`);
+                      }}
+                    >
+                      <div className="slide-card__image-container">
+                        <img
+                          src={`${TILES_URL}/${slide.id}/${slide.id}_files/9/0_0.webp`}
+                          alt={slide.name}
+                          className="slide-card__image"
+                        />
+                      </div>
+                      <div className="slide-card__content">
+                        <h3 className="slide-card__title">{slide.name}</h3>
+                        <p className="slide-card__category">{slide.category}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              {!filteredSlides ||
+              (filteredSlides.length === 0 && !isLoading) ? (
+                <div className="no-results">
+                  <p className="no-results__title">
+                    По вашему запросу ничего не найдено
+                  </p>
+                  <p className="no-results__message">
+                    Попробуйте изменить запрос или очистить поиск
+                  </p>
+                </div>
+              ) : null}
+            </>
+          )}
+        </main>
+      </div>
 
       <Footer />
     </div>
