@@ -9,6 +9,15 @@ body {
   line-height: 1.6;
 }
 
+.tests-page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.tests-page-wrapper .content {
+  flex: 1;
+}
+
 .test-list-container {
   max-width: 1200px;
   margin: 0 auto;
