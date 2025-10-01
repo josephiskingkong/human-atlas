@@ -20,39 +20,48 @@ const HistologySlideLibrary = () => {
   const [currentFilter, setCurrentFilter] = useState(["all"]);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredSlides, setFilteredSlides] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [searchParams] = useSearchParams();
+  const [isFetchingSlides, setIsFetchingSlides] = useState(true);
+  const [isFiltering, setIsFiltering] = useState(false);
+
+  const isLoading = isFetchingSlides || isFiltering;
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchSlides = async () => {
-      let mockSlides;
-      let subCategories;
-      const mockCategories = [];
-      const category = searchParams.get("category");
+      setIsFetchingSlides(true);
 
-      mockCategories.push(await getMainCategories());
-      mockSlides = await getOrgansDone();
+      try {
+        const mockCategories = [];
+        const category = searchParams.get("category");
 
-      if (category) {
-        subCategories = await getCategoriesByParentId(category);
-        const hasSub = Array.isArray(subCategories) && subCategories.length > 0;
+        mockCategories.push(await getMainCategories());
+        const mockSlides = await getOrgansDone();
 
-        mockSlides.filter((slide) => slide.id === category);
+        if (category) {
+          const subCategories = await getCategoriesByParentId(category);
+          const hasSub =
+            Array.isArray(subCategories) && subCategories.length > 0;
 
-        if (hasSub) {
-          setCurrentFilter([category, "all"]);
-          mockCategories.push(subCategories);
-        } else {
-          setCurrentFilter([category]);
+          if (hasSub) {
+            setCurrentFilter([category, "all"]);
+            mockCategories.push(subCategories);
+          } else {
+            setCurrentFilter([category]);
+          }
         }
-      }
 
-      setSlides(mockSlides);
-      setCategoriesMatrix(mockCategories);
-      setFilteredSlides(mockSlides);
-      setIsLoading(false);
+        setSlides(mockSlides);
+        setCategoriesMatrix(mockCategories);
+        setFilteredSlides(mockSlides);
+      } catch (e) {
+        console.error(e);
+        setSlides([]);
+        setFilteredSlides([]);
+      } finally {
+        setIsFetchingSlides(false);
+      }
     };
 
     fetchSlides();
@@ -65,8 +74,9 @@ const HistologySlideLibrary = () => {
       if (!slides || slides.length === 0) {
         if (!cancelled) {
           setFilteredSlides([]);
-          setIsLoading(false);
+          setIsFiltering(false);
         }
+
         return;
       }
 
@@ -111,7 +121,7 @@ const HistologySlideLibrary = () => {
 
       if (!cancelled) {
         setFilteredSlides(filtered);
-        setIsLoading(false);
+        setIsFiltering(false);
       }
     };
 
@@ -122,7 +132,7 @@ const HistologySlideLibrary = () => {
   }, [searchQuery, slides, currentFilter]);
 
   const handleCategoryChange = async (category, level) => {
-    setIsLoading(true);
+    setIsFiltering(true);
 
     const isNotLastLevel = level < currentFilter.length - 1;
     const subCategories = await getCategoriesByParentId(category);
