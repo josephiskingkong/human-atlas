@@ -7,7 +7,6 @@ $background-light: #f9fafb; // gray-50
 $white: #ffffff;
 $shadow-glow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
 
-// Основные стили для страницы
 .histology-page {
   display: flex;
   flex-direction: column;
@@ -17,14 +16,12 @@ $shadow-glow: 0 0 15px 5px rgba(0, 123, 255, 0.6);
 }
 
 
-// Стили для основного контента
 .main {
   flex-grow: 1;
-  max-width: 72rem;
+  max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
+  padding: 20px;
 }
 
 // Стили для индикатора загрузки
