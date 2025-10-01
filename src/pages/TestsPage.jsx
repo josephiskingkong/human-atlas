@@ -79,70 +79,75 @@ const TestList = () => {
   };
 
   return (
-    <>
+    <div className="tests-page-wrapper">
       <Navbar />
 
-      <div className="test-list-container">
-        <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <div className="content">
+        <div className="test-list-container">
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
 
-        {/* <CategoryFilter
+          {/* <CategoryFilter
           categories={categories}
           handleCategoryChange={handleCategoryChange}
           currentFilter={currentFilter}
         /> */}
 
-        {isLoading ? (
-          <div className="loader">
-            <div className="loader__spinner"></div>
-          </div>
-        ) : (
-          <div className="test-list">
-            {filteredTests.length === 0 ? (
-              <div className="no-results">
-                Тесты не найдены. Попробуйте изменить параметры поиска.
-              </div>
-            ) : (
-              filteredTests.map((test) => (
-                <div
-                  key={test.id}
-                  className={`test-card ${
-                    activeCardId === test.id ? "active" : ""
-                  }`}
-                  onClick={() => handleCardClick(test.id)}
-                >
-                  <div className="test-title">{test.title}</div>
-                  {/* <div className="test-category">{test.categoryName}</div> */}
-                  <div className="test-info">
-                    <span>
-                      <i className="far fa-clock"></i> {test.duration} минут
-                    </span>
-                    <span>
-                      <i className="far fa-question-circle"></i>{" "}
-                      {test.questionCount} вопросов
-                    </span>
-                  </div>
-
-                  <div
-                    className={`test-action ${
-                      activeCardId === test.id ? "visible" : ""
-                    }`}
-                  >
-                    <button
-                      className="start-btn"
-                      onClick={(e) => handleTestSelect(test, e)}
-                    >
-                      Начать тест
-                    </button>
-                  </div>
+          {isLoading ? (
+            <div className="loader">
+              <div className="loader__spinner"></div>
+            </div>
+          ) : (
+            <div className="test-list">
+              {filteredTests.length === 0 ? (
+                <div className="no-results">
+                  Тесты не найдены. Попробуйте изменить параметры поиска.
                 </div>
-              ))
-            )}
-          </div>
-        )}
+              ) : (
+                filteredTests.map((test) => (
+                  <div
+                    key={test.id}
+                    className={`test-card ${
+                      activeCardId === test.id ? "active" : ""
+                    }`}
+                    onClick={() => handleCardClick(test.id)}
+                  >
+                    <div className="test-title">{test.title}</div>
+                    {/* <div className="test-category">{test.categoryName}</div> */}
+                    <div className="test-info">
+                      <span>
+                        <i className="far fa-clock"></i> {test.duration} минут
+                      </span>
+                      <span>
+                        <i className="far fa-question-circle"></i>{" "}
+                        {test.questionCount} вопросов
+                      </span>
+                    </div>
+
+                    <div
+                      className={`test-action ${
+                        activeCardId === test.id ? "visible" : ""
+                      }`}
+                    >
+                      <button
+                        className="start-btn"
+                        onClick={(e) => handleTestSelect(test, e)}
+                      >
+                        Начать тест
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
       <Footer />
-    </>
+    </div>
   );
 };
 
