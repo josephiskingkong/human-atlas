@@ -5,12 +5,37 @@ import { useNavigate } from "react-router-dom";
 import { deleteOrganById } from "../../hooks/organs/deleteOrgan";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 import { useNotification } from "../../context/NotificationContext";
+import editSlide from "../../hooks/organs/edit";
+import EditSlideModal from "../Modals/EditSlideModal";
 
-export default function SlideItem({ img, title, status, path, id, onDelete }) {
+export default function SlideItem({
+  img,
+  title,
+  status,
+  path,
+  id,
+  categoryId,
+  onEdit,
+  onDelete,
+}) {
   const [isDeleting, setIsDeleting] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const navigate = useNavigate();
   const { showNotification } = useNotification();
+
+  const handleEditSlide = async (id, newName, newCategoryId) => {
+    try {
+      await editSlide(id, newName, newCategoryId);
+    } catch (error) {
+      showNotification("Не удалось редактировать слайд", "error");
+    } finally {
+      onEdit(id, newName, newCategoryId);
+      setShowEditModal(false);
+    }
+
+    showNotification("Слайд отредактирован!", "success");
+  };
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -61,13 +86,30 @@ export default function SlideItem({ img, title, status, path, id, onDelete }) {
           <div className="slide-header">
             {renderStatus()}
             {status !== "PROCESSING" && (
-              <button
-                className="slide-delete-button"
-                onClick={() => setShowConfirmModal(true)}
-                disabled={isDeleting}
-              >
-                {isDeleting ? <MoonLoader size={12} color="#fff" /> : "Удалить"}
-              </button>
+              <>
+                <button
+                  className="slide-edit-button"
+                  onClick={() => setShowEditModal(true)}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <MoonLoader size={12} color="#fff" />
+                  ) : (
+                    "Изменить"
+                  )}
+                </button>
+                <button
+                  className="slide-delete-button"
+                  onClick={() => setShowConfirmModal(true)}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <MoonLoader size={12} color="#fff" />
+                  ) : (
+                    "Удалить"
+                  )}
+                </button>
+              </>
             )}
           </div>
           <div className="slide-info">
@@ -81,6 +123,14 @@ export default function SlideItem({ img, title, status, path, id, onDelete }) {
         </div>
       </div>
       <img className="slide-background" src={img} alt="img" />
+      <EditSlideModal
+        isOpen={showEditModal}
+        id={id}
+        categoryId={categoryId}
+        slideName={title}
+        onClose={() => setShowEditModal(false)}
+        onSave={handleEditSlide}
+      />
       <ConfirmationModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}

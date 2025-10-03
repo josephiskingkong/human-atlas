@@ -5,18 +5,22 @@ import dots from "../../assets/images/dots.svg";
 import trash from "../../assets/images/trash.svg";
 import edit from "../../assets/images/edit.svg";
 import ConfirmationModal from "../Modals/ConfirmationModal";
+import EditCategoryModal from "../Modals/EditCategoryModal";
 
 export default function PanelNavigateEditableButton({
   id,
+  categoryId,
   title,
   icon,
   path,
+  onEdit,
   onDelete,
 }) {
   const navigate = useNavigate();
   const [menuVisible, setMenuVisible] = useState(false);
   const menuRef = useRef(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
 
   const handleClick = () => {
     navigate(path);
@@ -44,6 +48,10 @@ export default function PanelNavigateEditableButton({
     setShowConfirmModal(true);
   };
 
+  const handleEdit = () => {
+    setShowEditModal(true);
+  };
+
   return (
     <div className="panel-navigate-editable">
       <button className="panel-navigate-button" onClick={handleClick}>
@@ -57,7 +65,7 @@ export default function PanelNavigateEditableButton({
 
           {menuVisible && (
             <div className="dropdown-menu" ref={menuRef}>
-              <button className="dropdown-item">
+              <button className="dropdown-item" onClick={handleEdit}>
                 <img src={edit} alt="edit" />
                 Редактировать
               </button>
@@ -73,6 +81,14 @@ export default function PanelNavigateEditableButton({
           )}
         </button>
       </button>
+      <EditCategoryModal
+        id={id}
+        categoryId={categoryId}
+        categoryName={title}
+        isOpen={showEditModal}
+        onSave={onEdit}
+        onClose={() => setShowEditModal(false)}
+      />
       <ConfirmationModal
         isOpen={showConfirmModal}
         onClose={() => setShowConfirmModal(false)}

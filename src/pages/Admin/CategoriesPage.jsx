@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { deleteCategoryById, getMainCategories } from "../../hooks/categories";
+import {
+  deleteCategoryById,
+  editCategory,
+  getMainCategories,
+} from "../../hooks/categories";
 import AddCategoryModal from "../../components/Modals/AddCategoryModal";
 
 import "../../styles/layout/admin-menu.css";
@@ -15,10 +19,6 @@ export default function CategoriesPage() {
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const { showNotification } = useNotification();
-
-  useEffect(() => {
-    console.log(categories);
-  }, [categories]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -87,6 +87,32 @@ export default function CategoriesPage() {
     }
   };
 
+  const handleEditCategory = async (id, newName, categoryId) => {
+    try {
+      const result = await editCategory(categoryId, newName, id);
+
+      if (result) {
+        setCategories((prevCategories) => {
+          const updated = prevCategories.map((category) =>
+            Number(category.id) === Number(id)
+              ? { ...category, name: newName }
+              : category
+          );
+
+          return updated;
+        });
+        showNotification("Категория успешно обновлена!", "success");
+      } else {
+        showNotification("Не удалось обновить категорию!", "error");
+      }
+    } catch (error) {
+      showNotification(
+        "Произошла ошибка во время обновления категории! Попробуйте позже.",
+        "error"
+      );
+    }
+  };
+
   return (
     <AdminPageLayout title="Разделы">
       <div className="admin-content">
@@ -103,6 +129,7 @@ export default function CategoriesPage() {
                   id={category.id}
                   title={category.name}
                   path={`${category.id}`}
+                  onEdit={handleEditCategory}
                   onDelete={handleDeleteCategory}
                 />
               </li>

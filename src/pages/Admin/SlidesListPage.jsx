@@ -10,6 +10,7 @@ import AddCategoryModal from "../../components/Modals/AddCategoryModal";
 import PanelNavigateEditableButton from "../../components/Common/PanelEditableButton";
 import {
   deleteCategoryById,
+  editCategory,
   getCategoriesByParentId,
 } from "../../hooks/categories";
 import { useNotification } from "../../context/NotificationContext";
@@ -89,6 +90,16 @@ export default function SlidesPage() {
     setSlides((prevSlides) => prevSlides.filter((slide) => slide.id !== id));
   };
 
+  const handleEditSlide = (id, newName) => {
+    setSlides((prevSlides) => {
+      const updated = prevSlides.map((slide) =>
+        Number(slide.id) === Number(id) ? { ...slide, name: newName } : slide
+      );
+
+      return updated;
+    });
+  };
+
   if (loading) {
     return (
       <AdminPageLayout title="Разделы">
@@ -112,17 +123,14 @@ export default function SlidesPage() {
       const updatedCategories = [...prevCategories, newCategory];
       return updatedCategories.sort((a, b) => a.name.localeCompare(b.name));
     });
-    setNotFoundSlides(null);
+    setNotFoundCategorites(null);
   };
 
   const handleDeleteCategory = async (id) => {
     try {
-      console.log("Пытаюсь удалить категорию с ID:", id);
       const result = await deleteCategoryById(id);
-      console.log("Результат удаления:", result);
 
       if (result) {
-        console.log("Категории до удаления:", categories);
         setCategories((prevCategories) => {
           const updated = prevCategories.filter(
             (category) => Number(category.id) !== Number(id)
@@ -137,6 +145,36 @@ export default function SlidesPage() {
       console.error("Ошибка при удалении:", error);
       showNotification(
         "Произошла ошибка во время удаления категории! Попробуйте позже.",
+        "error"
+      );
+    }
+  };
+
+  const handleEditCategory = async (id, newName, categoryId) => {
+    try {
+      const result = await editCategory(categoryId, newName, id);
+
+      if (result) {
+        setCategories((prevCategories) => {
+          const updated = prevCategories
+            .map((category) =>
+              Number(category.id) === Number(id)
+                ? { ...category, name: newName, categoryId }
+                : category
+            )
+            .filter(
+              (category) => Number(category.categoryId) === Number(categoryid)
+            );
+
+          return updated;
+        });
+        showNotification("Категория успешно обновлена!", "success");
+      } else {
+        showNotification("Не удалось обновить категорию!", "error");
+      }
+    } catch (error) {
+      showNotification(
+        "Произошла ошибка во время обновления категории! Попробуйте позже.",
         "error"
       );
     }
@@ -165,8 +203,10 @@ export default function SlidesPage() {
               <li key={category.id} className="category-item">
                 <PanelNavigateEditableButton
                   id={category.id}
+                  categoryId={categoryid}
                   title={category.name}
                   path={`/admin/categories/${category.id}`}
+                  onEdit={handleEditCategory}
                   onDelete={handleDeleteCategory}
                 />
               </li>
@@ -181,10 +221,12 @@ export default function SlidesPage() {
               <SlideItem
                 key={slide.id}
                 id={slide.id}
+                categoryId={categoryid}
                 title={slide.name}
                 status={slide.status}
                 img={`${TILES_URL}/${slide.id}/${slide.id}_files/9/0_0.webp`}
                 path={`/admin/slide/${slide.id}`}
+                onEdit={handleEditSlide}
                 onDelete={handleDeleteSlide}
               />
             ))}
