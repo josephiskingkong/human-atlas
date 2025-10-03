@@ -90,11 +90,15 @@ export default function SlidesPage() {
     setSlides((prevSlides) => prevSlides.filter((slide) => slide.id !== id));
   };
 
-  const handleEditSlide = (id, newName) => {
+  const handleEditSlide = (id, newName, newCategoryId) => {
     setSlides((prevSlides) => {
-      const updated = prevSlides.map((slide) =>
-        Number(slide.id) === Number(id) ? { ...slide, name: newName } : slide
-      );
+      const updated = prevSlides
+        .map((slide) =>
+          Number(slide.id) === Number(id)
+            ? { ...slide, name: newName, categoryId: newCategoryId }
+            : slide
+        )
+        .filter((slide) => Number(slide.categoryId) === Number(categoryid)); // оставляем только слайды текущей категории
 
       return updated;
     });
