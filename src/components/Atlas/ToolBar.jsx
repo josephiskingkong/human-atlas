@@ -53,7 +53,6 @@ export default function ToolBar() {
   ];
 
   const handleToolChange = (name) => {
-    console.log(name);
     dispatch(setActiveTool(name));
   };
 

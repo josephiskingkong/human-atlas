@@ -24,7 +24,6 @@ export default function AddCategoryModal({
     setLoading(true);
 
     try {
-      console.log("CATEGORY: ", categoryId);
       const newCategory = await addCategory(categoryName, categoryId);
 
       if (newCategory) {

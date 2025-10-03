@@ -14,7 +14,7 @@ import eyeBlue from "../../../../assets/images/eye-blue.svg";
 import Markdown from "../../../Common/Markdown";
 import ButtonIcon from "./ButtonIcon";
 import "../../../../styles/components/menu/point-menu.css";
-import ConfirmationModal from '../../../Modals/ConfirmationModal';
+import ConfirmationModal from "../../../Modals/ConfirmationModal";
 import { useNotification } from "../../../../context/NotificationContext";
 
 export default function PointMenu() {
@@ -43,8 +43,6 @@ export default function PointMenu() {
     let description = infoPoint;
 
     if (title) {
-      console.log(title + " " + description);
-
       editPoint({ id, name: title, description });
 
       const newPoint = {
@@ -55,7 +53,6 @@ export default function PointMenu() {
       };
 
       dispatch(setTargetPoint({ ...newPoint }));
-      console.log(newPoint);
 
       dispatch(setCurrMenu("close"));
 
@@ -71,7 +68,7 @@ export default function PointMenu() {
     dispatch(setTargetPoint({ id: targetPoint.id, status: "del" }));
     dispatch(setCurrMenu("close"));
 
-    showNotification("Точка успешно удалена", "info")
+    showNotification("Точка успешно удалена", "info");
   };
 
   const closeModal = () => {
@@ -80,17 +77,20 @@ export default function PointMenu() {
 
   const textAreaHandler = (event) => {
     const textarea = textArea.current;
-  
+
     if (!isFocus || !textarea) return;
-  
+
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const selectedText = infoPoint.slice(start, end);
-  
-    const isBoldShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyB";
-    const isItalicShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyI";
-    const isUnderlineShortcut = (event.ctrlKey || event.metaKey) && event.code === "KeyU";
-  
+
+    const isBoldShortcut =
+      (event.ctrlKey || event.metaKey) && event.code === "KeyB";
+    const isItalicShortcut =
+      (event.ctrlKey || event.metaKey) && event.code === "KeyI";
+    const isUnderlineShortcut =
+      (event.ctrlKey || event.metaKey) && event.code === "KeyU";
+
     if (isBoldShortcut) {
       event.preventDefault();
       setInfoPoint(
@@ -104,7 +104,9 @@ export default function PointMenu() {
     } else if (isUnderlineShortcut) {
       event.preventDefault();
       setInfoPoint(
-        `${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(end)}`
+        `${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(
+          end
+        )}`
       );
     }
   };

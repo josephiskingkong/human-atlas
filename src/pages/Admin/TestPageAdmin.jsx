@@ -205,8 +205,6 @@ const TestPageAdmin = () => {
     if (!id) return;
 
     try {
-      console.log("удаление", id);
-
       const success = await deleteTestById(id);
       if (success) {
         showNotification("Тест успешно удалён", "success");

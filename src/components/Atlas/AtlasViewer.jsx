@@ -10,7 +10,11 @@ import "../../service/osd-scalebar/openseadragon-scalebar";
 import PointMarker from "./PointMarker";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import store from "../../redux/atlas/atlas-store";
-import { setActiveTool, setCurrMenu, setTargetPoint } from "../../redux/atlas/atlas-slice";
+import {
+  setActiveTool,
+  setCurrMenu,
+  setTargetPoint,
+} from "../../redux/atlas/atlas-slice";
 import { addPointToBack } from "../../hooks/points/addPoint";
 import { editPoint } from "../../hooks/points/editPoint";
 import { getOrganByOrganId } from "../../hooks/organs/getOrgan";
@@ -32,7 +36,6 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     const overlayContainer = document.createElement("div");
 
     overlays.current.push({ point, container: overlayContainer });
-    console.log(osdViewer);
 
     osdViewer.current.addOverlay({
       element: overlayContainer,
@@ -41,7 +44,11 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     });
 
     const root = createRoot(overlayContainer);
-    root.render(<Provider store={ store }><PointMarker point={point} osdViewer={ osdViewer }/></Provider>);
+    root.render(
+      <Provider store={store}>
+        <PointMarker point={point} osdViewer={osdViewer} />
+      </Provider>
+    );
   };
 
   const removeOverlay = () => {
@@ -51,9 +58,9 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
       }
     });
 
-    console.log("REMOVE OVERLAY", targetPoint);
-
-    overlays.current = overlays.current.filter(({ point }) => point.id !== targetPoint.id);
+    overlays.current = overlays.current.filter(
+      ({ point }) => point.id !== targetPoint.id
+    );
   };
 
   const removeOverlays = () => {
@@ -66,11 +73,10 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
   const showOverlay = () => {
     pointsData.current.forEach((point) => {
       if (point.id === targetPoint.id) {
-        console.log("SHOW OVERLAY", point);
         addPoint(point);
       }
     });
-  }
+  };
 
   const showOverlays = () => {
     pointsData.current.forEach((point) => addPoint(point));
@@ -102,10 +108,9 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
 
     addScalebar();
 
-    console.log("OSD");
-    console.log(osdViewer);
-
-    osdViewer.current.addHandler("canvas-click", (e) => { e.preventDefaultAction = true });
+    osdViewer.current.addHandler("canvas-click", (e) => {
+      e.preventDefaultAction = true;
+    });
 
     osdViewer.current.addHandler("open", () => {
       pointsData.current.forEach((point) => addPoint(point));
@@ -121,18 +126,13 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
       }
       overlays.current.forEach(({ container }) => container.remove());
       overlays.current = [];
-
-      console.log("END");
     };
   }, []);
 
   async function addScalebar() {
-    console.log("MPP");
-
     const organ = await getOrganByOrganId(slideData.organ.id);
 
     const mpp_x = Number(organ.mpp_x);
-    console.log(mpp_x);
     const pixelsPerMeter = 1 / (mpp_x * 1e-6);
 
     osdViewer.current.scalebar({
@@ -147,67 +147,69 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
       yOffset: 35,
       minWidth: "200px",
       maxWidth: "100px",
-      stayInsideImage: false
+      stayInsideImage: false,
     });
   }
 
   useEffect(() => {
-    if (targetPoint.status === 'del') {
-      pointsData.current = pointsData.current.filter((point) =>
-        point.id !== targetPoint.id
+    if (targetPoint.status === "del") {
+      pointsData.current = pointsData.current.filter(
+        (point) => point.id !== targetPoint.id
       );
-
-      console.log("ZDES");
 
       removeOverlay();
     }
 
     const { status, ...targetWithoutStatus } = targetPoint;
 
-    pointsData.current = pointsData.current.map((point) => 
+    pointsData.current = pointsData.current.map((point) =>
       point.id === targetPoint.id ? { ...point, ...targetWithoutStatus } : point
     );
-
-    console.log("TARGET", targetPoint);
-  }, [targetPoint])
+  }, [targetPoint]);
 
   useEffect(() => {
     async function canvasClick(e) {
       e.preventDefaultAction = true;
-      console.log("CANVAS-CLICK", activeTool);
+
       if (activeTool === "Добавить точку") {
         const position = osdViewer.current.viewport.pointFromPixel(e.position);
 
-        const res = await addPointToBack(position.x, position.y, slideData.organ.id, '', '');
-        showNotification("Точка успешно добавлена", "info")
-
-        console.log("POINT ID", res.point_id);
+        const res = await addPointToBack(
+          position.x,
+          position.y,
+          slideData.organ.id,
+          "",
+          ""
+        );
+        showNotification("Точка успешно добавлена", "info");
 
         const newPoint = {
-          description: '',
+          description: "",
           id: res.point_id,
-          name: '',
+          name: "",
           organid: slideData.organ.id,
           x: position.x,
           y: position.y,
-        }
+        };
 
         addPoint(newPoint);
         pointsData.current.push(newPoint);
         dispatch(setTargetPoint(newPoint));
-        dispatch(setCurrMenu('menu'));
+        dispatch(setCurrMenu("menu"));
         dispatch(setActiveTool("Курсор"));
       }
 
       if (activeTool === "Переместить точку") {
-        console.log("PEREMESTIL", targetPoint);
-        if (targetPoint.status === 'move') {
-          console.log("MOVE");
-          const position = osdViewer.current.viewport.pointFromPixel(e.position);
+        if (targetPoint.status === "move") {
+          const position = osdViewer.current.viewport.pointFromPixel(
+            e.position
+          );
 
           editPointMove(targetPoint.id, position.x, position.y);
-          dispatch(setTargetPoint({ ...targetPoint, x: position.x, y: position.y }));
-          console.log(targetPoint);
+
+          dispatch(
+            setTargetPoint({ ...targetPoint, x: position.x, y: position.y })
+          );
         }
       }
     }
@@ -215,33 +217,29 @@ const AtlasViewer = forwardRef(({ slideData, onViewerReady }, ref) => {
     if (!osdViewer.current) return;
 
     if (activeTool === "Переместить точку") {
-      dispatch(setCurrMenu('close'));
-    } else if (targetPoint.status === 'move') {
-      console.log("REMOVE STATUS", targetPoint);
+      dispatch(setCurrMenu("close"));
+    } else if (targetPoint.status === "move") {
       editPointMove(targetPoint.id, targetPoint.x, targetPoint.y);
-      dispatch(setTargetPoint({ ...targetPoint, status: '' }));
+      dispatch(setTargetPoint({ ...targetPoint, status: "" }));
     }
 
     osdViewer.current.addHandler("canvas-click", canvasClick);
 
     return () => {
-      console.log("remove HANDLERS");
       if (osdViewer.current) {
         osdViewer.current.removeHandler("canvas-click", canvasClick);
       }
     };
-  }, [activeTool, targetPoint])
+  }, [activeTool, targetPoint]);
 
   const editPointMove = async (id, x, y) => {
     const res = await editPoint({ id, x, y });
-    console.log(res);
-    console.log("position", x, y);
-  }
+  };
 
   useEffect(() => {
     removeOverlay();
     showOverlay();
-    
+
     slideData.points = pointsData.current;
   }, [pointsData.current]);
 

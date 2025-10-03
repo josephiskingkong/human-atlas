@@ -33,7 +33,7 @@ const TestPage = () => {
       try {
         const test = await apiRequest(`/v1/tests/${testId}`);
         setTestInfo(test);
-        console.log(test);
+
         setTimeLeft(test.duration * 60);
         const questionsApi = await apiRequest(`/v1/tests/${testId}/questions`, {
           method: "GET",
@@ -80,9 +80,7 @@ const TestPage = () => {
   }, [testId]);
 
   useEffect(() => {
-    // Используем уникальный ключ для получения данных из localStorage
     const savedTest = localStorage.getItem(localStorageKey);
-    console.log("Loading from localStorage:", localStorageKey, savedTest);
 
     if (savedTest && testStarted === true) {
       const testData = JSON.parse(savedTest);
@@ -121,9 +119,8 @@ const TestPage = () => {
           initialTime: testInfo.duration * 60,
           questionCount: questions.length,
         };
-        // Используем уникальный ключ для сохранения данных
+
         localStorage.setItem(localStorageKey, JSON.stringify(testData));
-        console.log("Saving to localStorage:", localStorageKey, testData);
       } catch (e) {
         console.error("Error saving to localStorage:", e);
       }
@@ -368,10 +365,7 @@ const TestPage = () => {
           </div>
         </div>
         <div className="retake-button-container">
-          <button
-            className="retake-button"
-            onClick={() => navigate("/tests")}
-          >
+          <button className="retake-button" onClick={() => navigate("/tests")}>
             Вернуться к списку тестов
           </button>
           <button className="retake-button" onClick={onRetake}>

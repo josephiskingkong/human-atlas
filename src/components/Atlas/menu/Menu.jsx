@@ -21,7 +21,6 @@ export default function Menu({ slideData }) {
   }, [currMenu]);
 
   const closeMenuHandler = () => {
-    console.log(prevMenu);
     if (currMenu === "close") {
       switch (prevMenu) {
         case "menu":
