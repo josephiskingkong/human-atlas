@@ -14,8 +14,6 @@ async function getMainCategories() {
 
 async function getCategoriesByParentId(categoryid) {
   try {
-    console.log("CATEGORY_ID", categoryid);
-
     const response = await apiRequest(
       `/v1/categories/get-by-categoryid/${categoryid}`
     );
@@ -46,8 +44,6 @@ async function addCategory(name, categoryid = null) {
     categoryid,
   };
 
-  console.log("ZAPROS", categoryid);
-
   const filteredBody = Object.fromEntries(
     Object.entries(body).filter(([_, value]) => value !== null)
   );
@@ -64,6 +60,29 @@ async function addCategory(name, categoryid = null) {
     return response;
   } catch (error) {
     console.error("Error adding category:", error.message);
+    return null;
+  }
+}
+
+async function editCategory(categoryId, name, id) {
+  const body = {
+    name,
+    id,
+    categoryId,
+  };
+
+  try {
+    const response = await apiRequest(`/v1/categories/edit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    return response;
+  } catch (error) {
+    console.error("Error editting category:", error.message);
     return null;
   }
 }
@@ -92,6 +111,7 @@ export {
   getCategoriesByParentId,
   getMainCategories,
   addCategory,
+  editCategory,
   deleteCategoryById,
   getCategoryById,
 };
