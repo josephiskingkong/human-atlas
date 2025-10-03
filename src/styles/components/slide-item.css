@@ -46,7 +46,8 @@
 .slide-item .slide-container .slide-content .slide-header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: end;
+  gap: 16px;
 }
 .slide-item .slide-container .slide-content .slide-header .slide-status {
   display: flex;
@@ -61,6 +62,19 @@
 }
 .slide-item .slide-container .slide-content .slide-header .slide-status.slide-error {
   color: #f02b2b;
+}
+.slide-item .slide-container .slide-content .slide-header .slide-edit-button {
+  display: flex;
+  background-color: #fff;
+  align-items: center;
+  gap: 4px;
+  font-size: 16px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  color: #3754ed;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
 }
 .slide-item .slide-container .slide-content .slide-header .slide-delete-button {
   display: flex;

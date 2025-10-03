@@ -43,7 +43,8 @@
       .slide-header {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
+        justify-content: end;
+        gap: 16px;
 
         .slide-status {
           display: flex;
@@ -59,6 +60,20 @@
           &.slide-error {
             color: $red-color
           }
+        }
+
+        .slide-edit-button {
+          display: flex;
+          background-color: #fff;
+          align-items: center;
+          gap: 4px;
+          font-size: 16px;
+          padding: 4px 8px;
+          border-radius: 8px;
+          color: $primary-color;
+          font-weight: 700;
+          border: none;
+          cursor: pointer;
         }
 
         .slide-delete-button {
