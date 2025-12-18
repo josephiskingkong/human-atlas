@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import "../../styles/components/navbar.css";
-import "../../styles/layout/admin-menu.css";
 import LoginModal from "../Modals/LoginModal";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 import Cookies from "js-cookie";
