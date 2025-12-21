@@ -2,11 +2,13 @@ import InfoBar from "./InfoBar";
 import "../../../styles/components/menu/menu.css";
 import CloseMenuButton from "./CloseMenuButton";
 import { useDispatch, useSelector } from "react-redux";
-import PointInfo from "./PointInfo";
-import PointMenu from "./point-menu/PointMenu";
+import TargetInfo from "./TargetInfo";
+import TargetMenu from "./target-menu/TargetMenu";
 import { useEffect, useState } from "react";
 import { setCurrMenu } from "../../../redux/atlas/atlas-slice";
 import PointSearch from "./point-search/PointSearch";
+import SlideMenu from "./SlideMenu";
+import SlideInfo from "./SlideInfo";
 
 export default function Menu({ slideData }) {
   const currMenu = useSelector((state) => state.atlas.currMenu);
@@ -22,28 +24,9 @@ export default function Menu({ slideData }) {
 
   const closeMenuHandler = () => {
     if (currMenu === "close") {
-      switch (prevMenu) {
-        case "menu":
-          dispatch(setCurrMenu("menu"));
-
-          break;
-        case "info":
-          dispatch(setCurrMenu("info"));
-
-          break;
-        default:
-          dispatch(setCurrMenu("menu"));
-
-          break;
-      }
+      dispatch(setCurrMenu(prevMenu));
     } else {
-      if (currMenu === "menu") {
-        setPrevMenu("menu");
-      }
-
-      if (currMenu === "info") {
-        setPrevMenu("info");
-      }
+      setPrevMenu(currMenu);
 
       dispatch(setCurrMenu("close"));
     }
@@ -68,8 +51,10 @@ export default function Menu({ slideData }) {
         />
         {currMenu !== "close" && (
           <div className="menu-container">
-            {currMenu === "info" && <PointInfo />}
-            {currMenu === "menu" && <PointMenu />}
+            {currMenu === "infoSlide" && <SlideInfo />}
+            {currMenu === "menuSlide" && <SlideMenu />}
+            {currMenu === "info" && <TargetInfo />}
+            {currMenu === "menu" && <TargetMenu />}
             {currMenu === "search" && <PointSearch points={slideData.points} />}
           </div>
         )}

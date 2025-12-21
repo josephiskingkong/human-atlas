@@ -11,7 +11,11 @@ import arrow from "../assets/images/arrow.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
-import { setCurrMenu } from "../redux/atlas/atlas-slice";
+import {
+  resetAtlas,
+  setCurrMenu,
+  setSlideDetails,
+} from "../redux/atlas/atlas-slice";
 import { useDispatch } from "react-redux";
 import Menu from "../components/Atlas/menu/Menu";
 import Cookies from "js-cookie";
@@ -30,6 +34,8 @@ const SlidePage = () => {
   const [measureActive, setMeasureActive] = useState(false);
 
   useEffect(() => {
+    dispatch(resetAtlas());
+
     const userCookie = Cookies.get("user");
     if (userCookie) {
       try {
@@ -51,6 +57,14 @@ const SlidePage = () => {
         }
         const dziPath = `${TILES_URL}/${id}/${id}.dzi`;
         setSlideData({ points, dziPath, organ });
+
+        dispatch(
+          setSlideDetails({
+            id,
+            name: organ.name,
+            description: organ.details,
+          })
+        );
       } catch (error) {
       } finally {
         setLoadingData(false);
@@ -70,18 +84,24 @@ const SlidePage = () => {
   };
 
   const handleGoBack = () => {
-  if (window.history.length > 1) {
-    navigate(-1);
-  } else {
-    navigate("/");
-  }
-};
+    if (window.history.length > 1) {
+      navigate(-1);
+    } else {
+      navigate("/");
+    }
+  };
 
   return (
     <div className="slide-page-container">
       {slideData && (
         <>
-          <button className="go-back-button" onClick={() => { dispatch(setCurrMenu('close')); handleGoBack(); }}>
+          <button
+            className="go-back-button"
+            onClick={() => {
+              dispatch(setCurrMenu("close"));
+              handleGoBack();
+            }}
+          >
             <img src={arrow} alt="arrow" />
           </button>
 
@@ -97,13 +117,10 @@ const SlidePage = () => {
           <Zoombar />
 
           <div className="overlay-menu-grid">
-            
-              <div className="toolbar-layout">
-                {user && user.isAdmin && (
-                <ToolBar />
-                )}
-              </div>
-            
+            <div className="toolbar-layout">
+              {user && user.isAdmin && <ToolBar />}
+            </div>
+
             <div className="point-menu-layout">
               <Menu slideData={slideData} />
             </div>

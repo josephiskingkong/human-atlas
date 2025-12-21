@@ -1,9 +1,10 @@
 import { apiRequest } from "../../config/apiRequest";
 
-export default async function editSlide(id, name, categoryId) {
+export default async function editSlide(id, name, details, categoryId) {
   const body = {
     name,
     id,
+    details,
     categoryId,
   };
 

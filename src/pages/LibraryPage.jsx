@@ -13,6 +13,7 @@ import {
 } from "../hooks/categories";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { TILES_URL } from "../config/constants";
+import Pagination from "../components/Common/Pagination";
 
 const HistologySlideLibrary = () => {
   const [slides, setSlides] = useState([]);
@@ -238,6 +239,7 @@ const HistologySlideLibrary = () => {
             </>
           )}
         </main>
+        <Pagination />
       </div>
 
       <Footer />

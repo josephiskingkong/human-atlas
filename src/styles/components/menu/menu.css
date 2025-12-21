@@ -63,6 +63,7 @@
 }
 .info-bar-container .info-container .organ-title {
   display: -webkit-box;
+  cursor: pointer;
   font-size: 32px;
   font-weight: 600;
   overflow: hidden;

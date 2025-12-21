@@ -4,6 +4,7 @@ import HintMenu from "./HintMenu";
 import { editPoint } from "../../../../hooks/points/editPoint";
 import {
   setCurrMenu,
+  setSlideDetails,
   setTargetPoint,
 } from "../../../../redux/atlas/atlas-slice";
 import { deletePointById } from "../../../../hooks/points/deletePoint";
@@ -16,15 +17,18 @@ import ButtonIcon from "./ButtonIcon";
 import "../../../../styles/components/menu/point-menu.css";
 import ConfirmationModal from "../../../Modals/ConfirmationModal";
 import { useNotification } from "../../../../context/NotificationContext";
+import editSlide from "../../../../hooks/organs/edit";
 
-export default function PointMenu() {
-  const targetPoint = useSelector((state) => state.atlas.targetPoint);
+export default function TargetMenu({ isSlide = false }) {
+  const target = useSelector((state) =>
+    isSlide ? state.atlas.slideDetails : state.atlas.targetPoint
+  );
   const dispatch = useDispatch();
 
   const { showNotification } = useNotification();
 
-  const [titlePoint, setTitlePoint] = useState("");
-  const [infoPoint, setInfoPoint] = useState("");
+  const [title, setTitle] = useState("");
+  const [info, setInfo] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const [isDelModalOpen, setIsDelModalOpen] = useState(false);
   const [isMarkdown, setIsMarkdown] = useState(true);
@@ -33,39 +37,67 @@ export default function PointMenu() {
   const textArea = useRef(null);
 
   useEffect(() => {
-    setTitlePoint(targetPoint.name);
-    setInfoPoint(targetPoint.description);
-  }, [targetPoint]);
+    setTitle(target.name);
+
+    if (!target.description) {
+      setInfo("");
+      return;
+    }
+
+    setInfo(target.description);
+  }, [target]);
 
   const saveHandler = async () => {
-    let id = targetPoint.id;
-    let title = titlePoint;
-    let description = infoPoint;
+    let id = target.id;
+    let titleTemp = title;
+    let description = info;
 
-    if (title) {
-      editPoint({ id, name: title, description });
+    if (titleTemp) {
+      if (isSlide) {
+        editSlide(id, titleTemp, description, target.categoryId);
 
-      const newPoint = {
-        ...targetPoint,
-        id,
-        name: title,
-        description,
-      };
+        dispatch(
+          setSlideDetails({
+            id,
+            name: titleTemp,
+            description,
+          })
+        );
 
-      dispatch(setTargetPoint({ ...newPoint }));
+        showNotification(
+          "Слайд успешно обновлен (для корректного отображения изменений перезагрузите страницу)",
+          "info"
+        );
+      } else {
+        editPoint({ id, name: titleTemp, description });
 
-      dispatch(setCurrMenu("close"));
+        const newPoint = {
+          ...target,
+          id,
+          name: titleTemp,
+          description,
+        };
 
-      showNotification("Точка успешно обновлена", "info");
+        dispatch(setTargetPoint({ ...newPoint }));
+
+        dispatch(setCurrMenu("close"));
+
+        showNotification("Точка успешно обновлена", "info");
+      }
     } else {
-      showNotification("У точки должно быть название", "error");
+      showNotification(
+        isSlide
+          ? "У слайда должно быть название"
+          : "У точки должно быть название",
+        "error"
+      );
     }
   };
 
   const delPoint = async () => {
-    await deletePointById(targetPoint.id);
+    await deletePointById(target.id);
 
-    dispatch(setTargetPoint({ id: targetPoint.id, status: "del" }));
+    dispatch(setTargetPoint({ id: target.id, status: "del" }));
     dispatch(setCurrMenu("close"));
 
     showNotification("Точка успешно удалена", "info");
@@ -82,7 +114,7 @@ export default function PointMenu() {
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const selectedText = infoPoint.slice(start, end);
+    const selectedText = info.slice(start, end);
 
     const isBoldShortcut =
       (event.ctrlKey || event.metaKey) && event.code === "KeyB";
@@ -93,20 +125,14 @@ export default function PointMenu() {
 
     if (isBoldShortcut) {
       event.preventDefault();
-      setInfoPoint(
-        `${infoPoint.slice(0, start)}**${selectedText}**${infoPoint.slice(end)}`
-      );
+      setInfo(`${info.slice(0, start)}**${selectedText}**${info.slice(end)}`);
     } else if (isItalicShortcut) {
       event.preventDefault();
-      setInfoPoint(
-        `${infoPoint.slice(0, start)}*${selectedText}*${infoPoint.slice(end)}`
-      );
+      setInfo(`${info.slice(0, start)}*${selectedText}*${info.slice(end)}`);
     } else if (isUnderlineShortcut) {
       event.preventDefault();
-      setInfoPoint(
-        `${infoPoint.slice(0, start)}<u>${selectedText}</u>${infoPoint.slice(
-          end
-        )}`
+      setInfo(
+        `${info.slice(0, start)}<u>${selectedText}</u>${info.slice(end)}`
       );
     }
   };
@@ -118,7 +144,11 @@ export default function PointMenu() {
         onClose={closeModal}
         onConfirm={delPoint}
         title="Подтвердите удаление"
-        message="Вы уверены, что хотите удалить точку?"
+        message={
+          isSlide
+            ? "Вы уверены, что хотите удалить слайд?"
+            : "Вы уверены, что хотите удалить точку?"
+        }
         actionName="Удалить"
         actionColor="red"
       />
@@ -129,8 +159,8 @@ export default function PointMenu() {
         <input
           type="text"
           className="input-title"
-          value={titlePoint}
-          onChange={(event) => setTitlePoint(event.target.value)}
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
         ></input>
         <div className="textarea-container">
           <div className="view-info-buttons">
@@ -158,15 +188,15 @@ export default function PointMenu() {
           <div className="input-info-container">
             {!isMarkdown ? (
               <div className="markdown-wrapper">
-                <Markdown>{infoPoint}</Markdown>
+                <Markdown>{info}</Markdown>
               </div>
             ) : (
               <textarea
                 type="text"
                 className="input-info"
                 ref={textArea}
-                value={infoPoint}
-                onChange={(event) => setInfoPoint(event.target.value)}
+                value={info}
+                onChange={(event) => setInfo(event.target.value)}
                 onKeyDown={textAreaHandler}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
@@ -178,12 +208,14 @@ export default function PointMenu() {
           <button className="save-button" onClick={saveHandler}>
             Сохранить
           </button>
-          <button
-            className="del-button"
-            onClick={() => setIsDelModalOpen(true)}
-          >
-            Удалить
-          </button>
+          {!isSlide && (
+            <button
+              className="del-button"
+              onClick={() => setIsDelModalOpen(true)}
+            >
+              Удалить
+            </button>
+          )}
         </div>
       </div>
     </>
