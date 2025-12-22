@@ -57,7 +57,7 @@ export default function NavBar() {
   };
 
   const handleProfileClick = () => {
-    navigate("/profile");
+    navigate("/admin/in-dev");
   };
 
   const handleLogout = () => {
@@ -185,7 +185,9 @@ export default function NavBar() {
             <p onClick={() => handleMobileNavigate("/about")}>О проекте</p>
             {user ? (
               <>
-                <p onClick={() => handleMobileNavigate("/profile")}>Профиль</p>
+                <p onClick={() => handleMobileNavigate("/admin/in-dev")}>
+                  Профиль
+                </p>
                 {user.isAdmin && (
                   <p onClick={() => handleMobileNavigate("/admin")}>
                     Админ-панель
