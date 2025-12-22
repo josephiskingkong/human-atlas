@@ -239,7 +239,7 @@ const HistologySlideLibrary = () => {
             </>
           )}
         </main>
-        <Pagination />
+        {/* <Pagination /> */}
       </div>
 
       <Footer />
