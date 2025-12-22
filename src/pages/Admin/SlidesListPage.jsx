@@ -107,7 +107,7 @@ export default function SlidesPage() {
   if (loading) {
     return (
       <AdminPageLayout title="Разделы">
-        <div className="slides-grid">
+        <div className="slides-list">
           <SkeletonSlidesLoader count={6} />
         </div>
       </AdminPageLayout>
@@ -220,7 +220,7 @@ export default function SlidesPage() {
         {notFoundSlides ? (
           <div className="error">{notFoundSlides}</div>
         ) : (
-          <div className="slides-grid">
+          <div className="slides-list">
             {slides.map((slide) => (
               <SlideItem
                 key={slide.id}

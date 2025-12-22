@@ -75,6 +75,49 @@
   position: relative;
   cursor: pointer;
 }
+.profile-info .dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px;
+  width: -moz-max-content;
+  width: max-content;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+  gap: 2px;
+}
+.profile-info .dropdown-menu .dropdown-item {
+  display: inline-flex;
+  flex-direction: row;
+  background-color: #fff;
+  word-break: keep-all;
+  border: none;
+  gap: 6px;
+  padding: 6px;
+  width: 100%;
+  border-radius: 4px;
+  font-weight: 700;
+  align-items: center;
+  cursor: pointer;
+}
+.profile-info .dropdown-menu .dropdown-item img {
+  width: 18px;
+  height: 18px;
+}
+.profile-info .dropdown-menu .dropdown-item.red-text {
+  color: #f02b2b;
+}
+.profile-info .dropdown-menu .dropdown-item:hover {
+  background-color: #f7f7f7;
+}
+.profile-info .dropdown-menu .dropdown-item .admin-logo {
+  margin: 0;
+}
 
 .admin-logo {
   margin-right: 8px;
