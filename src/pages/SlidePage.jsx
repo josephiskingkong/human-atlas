@@ -11,12 +11,8 @@ import arrow from "../assets/images/arrow.svg";
 import "../styles/layout/slide-page.css";
 import Zoombar from "../components/Atlas/ZoomBar";
 import ToolBar from "../components/Atlas/ToolBar";
-import {
-  resetAtlas,
-  setCurrMenu,
-  setSlideDetails,
-} from "../redux/atlas/atlas-slice";
-import { useDispatch } from "react-redux";
+import { setCurrMenu, setSlideDetails } from "../redux/atlas/atlas-slice";
+import { useDispatch, useSelector } from "react-redux";
 import Menu from "../components/Atlas/menu/Menu";
 import Cookies from "js-cookie";
 
@@ -30,12 +26,11 @@ const SlidePage = () => {
   const [slideData, setSlideData] = useState(null);
   const [loadingData, setLoadingData] = useState(true);
   const [viewerReady, setViewerReady] = useState(false);
+  const slideDetails = useSelector((state) => state.atlas.slideDetails);
   const navigate = useNavigate();
   const [measureActive, setMeasureActive] = useState(false);
 
   useEffect(() => {
-    dispatch(resetAtlas());
-
     const userCookie = Cookies.get("user");
     if (userCookie) {
       try {
@@ -57,6 +52,12 @@ const SlidePage = () => {
         }
         const dziPath = `${TILES_URL}/${id}/${id}.dzi`;
         setSlideData({ points, dziPath, organ });
+
+        if (organ.details) {
+          dispatch(setCurrMenu("infoSlide"));
+        } else {
+          dispatch(setCurrMenu("search"));
+        }
 
         dispatch(
           setSlideDetails({
@@ -98,7 +99,6 @@ const SlidePage = () => {
           <button
             className="go-back-button"
             onClick={() => {
-              dispatch(setCurrMenu("close"));
               handleGoBack();
             }}
           >
