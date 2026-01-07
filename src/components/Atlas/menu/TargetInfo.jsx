@@ -9,10 +9,14 @@ export default function TargetInfo({ isSlide = false }) {
 
   return (
     <div className="point-info-container">
-      <h1>
-        {target.name}
-        <br />
-      </h1>
+      {!isSlide ? (
+        <h1>
+          {target.name}
+          <br />
+        </h1>
+      ) : (
+        <></>
+      )}
       <div className="markdown-wrapper">
         <Markdown>{target.description}</Markdown>
       </div>
